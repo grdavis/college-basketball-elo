@@ -9,7 +9,7 @@ ERRORS_START = 4
 K_FACTOR = 47
 SEASON_CARRY = 1.0
 HOME_ADVANTAGE = 83
-DATA_FOLDER = 'DATA/'
+DATA_FOLDER = scraper.DATA_FOLDER
 
 class Team():
 	def __init__(self, name, starting_elo):
@@ -130,10 +130,11 @@ def main(filepath, top_x = 25, update = False, stop_short = False):
 	data = scraper.read_csv(filepath)
 	this_sim = sim(data, K_FACTOR, SEASON_CARRY, HOME_ADVANTAGE, stop_short = stop_short)
 	rank = 1
-	for team in this_sim.get_top(int(top_x)):
-		print(str(rank) + '\t\t' + team[0] + (' ' * (33 - len(team[0]))) + str(round(team[1])))
-		rank += 1
-
+	if top_x != False:
+		for team in this_sim.get_top(int(top_x)):
+			print(str(rank) + '\t\t' + team[0] + (' ' * (33 - len(team[0]))) + str(round(team[1])))
+			rank += 1
+			
 	return this_sim
 
 if __name__ == '__main__':
