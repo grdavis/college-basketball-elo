@@ -51,7 +51,7 @@ def main(filepath):
 	print(sorted(errors, key = lambda x: x[1]))
 
 if __name__ == '__main__':
-	main('20101101-20210303.csv')
+	pass
 
 # start measuring after season 3
 # best: (6787.1710585282635, 0.010835972134262182, 47, 1, 83)

@@ -5,6 +5,7 @@ from selenium import webdriver
 from bs4 import BeautifulSoup
 
 URL = 'https://www.sports-reference.com/cbb/boxscores/index.cgi?month=MONTH&day=DAY&year=YEAR'
+DATA_FOLDER = 'Data/'
 
 def save_data(filepath, data):
 	with open(filepath, "w") as f:
@@ -67,18 +68,24 @@ def scrape_by_day(file_start, scrape_start, end, all_data):
 			print(len(new_data), "games recorded")
 			all_data.extend(new_data)
 			new_data = []
-			save_data(file_start + "-" + fix_dates_for_data(i) + ".csv", all_data)
+			save_data(DATA_FOLDER + file_start + "-" + fix_dates_for_data(i) + ".csv", all_data)
 	print(len(new_data), "games recorded")
 	all_data.extend(new_data)
-	save_data(file_start + "-" + fix_dates_for_data(i) + ".csv", all_data)
+	save_data(DATA_FOLDER + file_start + "-" + fix_dates_for_data(i) + ".csv", all_data)
 	driver.quit()
 	return all_data
 
 def main(file_start, scrape_start, scrape_end, data_filepath = False):
+	#assumes data formats used throughout are YYYYMMDD
+	#scrapes from scrape_start through scrape_end and appends results to provided data_filepath
+	#file_start is used for naming purposes as the start of data_filepath may be different from scrape_start
 	start = datetime.datetime.strptime(scrape_start, "%Y%m%d")
 	end = datetime.datetime.strptime(scrape_end, "%Y%m%d")
-	all_data = [] if not data_filepath else read_csv(data_filepath)
+	if data_filepath != False:
+		all_data = read_csv(data_filepath)
+		if all_data[-1][-1] >= scrape_end:
+			print('data already updated')
+			return
+	else:
+		all_data = []
 	scrape_by_day(file_start, start, end, all_data)
-
-if __name__ == '__main__':
-	main(file_start = '20101101', scrape_start = '20210226', scrape_end = '20210302', data_filepath = '20101101-20210226.csv')

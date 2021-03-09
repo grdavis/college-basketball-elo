@@ -1,5 +1,7 @@
 import csv
 import scraper
+import sys
+import datetime
 
 ELO_BASE = 1500
 NEW_ELO = 1050
@@ -7,6 +9,7 @@ ERRORS_START = 4
 K_FACTOR = 47
 SEASON_CARRY = 1.0
 HOME_ADVANTAGE = 83
+DATA_FOLDER = 'DATA/'
 
 class Team():
 	def __init__(self, name, starting_elo):
@@ -18,7 +21,7 @@ class Team():
 
 class ELO_Sim():
 	def __init__(self):
-		self.teams = {}
+		self.teams = {} #maintain a dictionary mapping string team name to a Team object
 		self.error1 = 0
 		self.predict_tracker = {}
 		self.win_tracker = {}
@@ -38,13 +41,6 @@ class ELO_Sim():
 		self.teams[winner].update_elo(delta)
 		self.teams[loser].update_elo(-delta)
 
-	def update_errors(self, w_winp):
-		if self.season_count >= ERRORS_START:
-			self.error1 += (1 - w_winp)**2
-			self.win_tracker[round(w_winp, 2)] = self.win_tracker.get(round(w_winp, 2), 0) + 1
-			self.predict_tracker[round(w_winp, 2)] = self.predict_tracker.get(round(w_winp, 2), 0) + 1
-			self.predict_tracker[round(1-w_winp, 2)] = self.predict_tracker.get(round(1-w_winp, 2), 0) + 1
-
 	def get_top(self, x):
 		return sorted([(self.teams[team].name, round(self.teams[team].elo, 2)) for team in self.teams], key = lambda x: x[1], reverse = True)[:x]
 
@@ -52,6 +48,14 @@ class ELO_Sim():
 		for i in sorted(self.predict_tracker):
 			result = self.win_tracker.get(i, 0)/self.predict_tracker[i]
 			print(i, result)
+
+	#error functions used in tuning.py
+	def update_errors(self, w_winp):
+		if self.season_count >= ERRORS_START:
+			self.error1 += (1 - w_winp)**2
+			self.win_tracker[round(w_winp, 2)] = self.win_tracker.get(round(w_winp, 2), 0) + 1
+			self.predict_tracker[round(w_winp, 2)] = self.predict_tracker.get(round(w_winp, 2), 0) + 1
+			self.predict_tracker[round(1-w_winp, 2)] = self.predict_tracker.get(round(1-w_winp, 2), 0) + 1
 
 	def get_errors(self):
 		error2 = 0
@@ -97,7 +101,7 @@ def step_elo(this_sim, row, k_factor, home_elo):
 	this_sim.update_elos(winner, loser, elo_delta)
 	this_sim.update_errors(w_winp)
 
-def sim(data, k_factor, new_season_carry, home_elo, stop_short = False, performance_tracker = False, top_x = False):
+def sim(data, k_factor, new_season_carry, home_elo, stop_short = False, performance_tracker = False):
 	this_sim = ELO_Sim()
 	this_month = data[0][-1][4:6]
 
@@ -110,16 +114,28 @@ def sim(data, k_factor, new_season_carry, home_elo, stop_short = False, performa
 		this_month = row_month
 		step_elo(this_sim, row, k_factor, home_elo)
 	
-	if top_x: print(this_sim.get_top(top_x))
 	if performance_tracker: this_sim.print_predict_tracker()
-
 	return this_sim
 
-def main(filepath, stop_short = False, performance_tracker = False, top_x = False):
+def main(filepath, top_x = 25, update = False, stop_short = False):
+	#assumes data formats used throughout are YYYYMMDD
+	#by default returns the top 25 teams by the end of the filepath provided
+	#if updating, updates through games completed yesterday
+	#if stopping short, ends sim the day before stop_short
+	if update != False: 
+		yesterday = (datetime.date.today() - datetime.timedelta(days = 1)).strftime('%Y%m%d')
+		scraper.main(filepath[len(DATA_FOLDER):][0:8], filepath[len(DATA_FOLDER):][-12:-4], yesterday, filepath)
+		filepath = 	filepath[:8 + len(DATA_FOLDER)] + '-' + datetime.date.today().strftime('%Y%m%d') + '.csv'
+
 	data = scraper.read_csv(filepath)
-	this_sim = sim(data, K_FACTOR, SEASON_CARRY, HOME_ADVANTAGE, stop_short = stop_short, performance_tracker = performance_tracker, top_x = top_x)
+	this_sim = sim(data, K_FACTOR, SEASON_CARRY, HOME_ADVANTAGE, stop_short = stop_short)
+	rank = 1
+	for team in this_sim.get_top(int(top_x)):
+		print(str(rank) + '\t\t' + team[0] + (' ' * (33 - len(team[0]))) + str(round(team[1])))
+		rank += 1
+
 	return this_sim
 
 if __name__ == '__main__':
-	main('', top_x = 25)
+	main(*sys.argv[1:])
 

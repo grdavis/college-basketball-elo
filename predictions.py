@@ -62,7 +62,7 @@ def evaluate_brackets(predictions, real_results):
 		predictions_score += sum([scores[index] if predictions[ROUNDS[index]][i] == real_results[ROUNDS[index]][i] else 0 for i in range(len(predictions[ROUNDS[index]]))])
 	return predictions_score
 
-def main(data_filepath, tourney_filepath, stop_date, sims = 10000, save_sims = False, evaluate = False):
+def main(data_filepath, tourney_filepath, stop_date, sims = 50000, save_sims = False, evaluate = False):
 	elo_state = elo.main(data_filepath, stop_short = stop_date, top_25 = True)
 	df = pd.read_csv(tourney_filepath)
 	tournamant_teams = list(df['first'].dropna())
@@ -87,4 +87,4 @@ predict_game(elo_state, 'Gonzaga', "Saint Mary's", neutral = True, verbose = Tru
 # 660
 
 
-
+#predict a tournament, predict a game
