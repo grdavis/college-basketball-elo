@@ -1,7 +1,7 @@
 import numpy as np
 from tqdm import tqdm
 from elo import sim
-from scraper import read_csv
+import utils
 import random
 
 def random_tune(data, number):
@@ -41,7 +41,7 @@ def brute_tune(data):
 	return errors
 
 def main(filepath):
-	data = read_csv(filepath)
+	data = utils.read_csv(filepath)
 
 	#start with random_tune, then switch to brute_tune when the ranges for values are tight enough so as not to take too long to run
 	errors = random_tune(data, 5)

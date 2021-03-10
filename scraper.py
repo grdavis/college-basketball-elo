@@ -1,21 +1,11 @@
-from datetime import timedelta
 import datetime
 import csv
 from selenium import webdriver
 from bs4 import BeautifulSoup
+import utils
 
 URL = 'https://www.sports-reference.com/cbb/boxscores/index.cgi?month=MONTH&day=DAY&year=YEAR'
-DATA_FOLDER = 'Data/'
-
-def save_data(filepath, data):
-	with open(filepath, "w") as f:
-		wr = csv.writer(f)
-		for row in data:
-			wr.writerow(row)
-
-def read_csv(filepath):
-	with open(filepath, encoding = 'utf-8-sig') as csvfile:
-		return list(csv.reader(csvfile))
+DATA_FOLDER = utils.DATA_FOLDER
 
 def new_driver():
 	chrome_options = webdriver.ChromeOptions()  
@@ -59,19 +49,19 @@ def scrape_by_day(file_start, scrape_start, end, all_data):
 	this_month = scrape_start.month
 	while i <= end:
 		if i.month in [5, 6, 7, 8, 9, 10]: 
-			i += timedelta(days = 1)
+			i += datetime.timedelta(days = 1)
 			continue
 		new_data.extend(scrape_scores(i, driver))
-		i += timedelta(days = 1)
+		i += datetime.timedelta(days = 1)
 		if i.month != this_month:
 			this_month = i.month
 			print(len(new_data), "games recorded")
 			all_data.extend(new_data)
 			new_data = []
-			save_data(DATA_FOLDER + file_start + "-" + fix_dates_for_data(i) + ".csv", all_data)
+			utils.save_data(DATA_FOLDER + file_start + "-" + fix_dates_for_data(i) + ".csv", all_data)
 	print(len(new_data), "games recorded")
 	all_data.extend(new_data)
-	save_data(DATA_FOLDER + file_start + "-" + fix_dates_for_data(i) + ".csv", all_data)
+	utils.save_data(DATA_FOLDER + file_start + "-" + fix_dates_for_data(i) + ".csv", all_data)
 	driver.quit()
 	return all_data
 
@@ -82,7 +72,7 @@ def main(file_start, scrape_start, scrape_end, data_filepath = False):
 	start = datetime.datetime.strptime(scrape_start, "%Y%m%d")
 	end = datetime.datetime.strptime(scrape_end, "%Y%m%d")
 	if data_filepath != False:
-		all_data = read_csv(data_filepath)
+		all_data = utils.read_csv(data_filepath)
 		if all_data[-1][-1] >= scrape_end:
 			print('data already updated')
 			return

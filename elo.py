@@ -1,7 +1,9 @@
-import csv
 import scraper
+import utils
 import sys
 import datetime
+import argparse
+import pandas as pd
 
 ELO_BASE = 1500
 NEW_ELO = 1050
@@ -9,7 +11,7 @@ ERRORS_START = 4
 K_FACTOR = 47
 SEASON_CARRY = 1.0
 HOME_ADVANTAGE = 83
-DATA_FOLDER = scraper.DATA_FOLDER
+DATA_FOLDER = utils.DATA_FOLDER
 
 class Team():
 	def __init__(self, name, starting_elo):
@@ -26,6 +28,7 @@ class ELO_Sim():
 		self.predict_tracker = {}
 		self.win_tracker = {}
 		self.season_count = 0
+		self.date = ''
 
 	def get_elo(self, name):
 		return self.teams[name].elo
@@ -107,6 +110,7 @@ def sim(data, k_factor, new_season_carry, home_elo, stop_short = False, performa
 
 	for row in data:
 		if row[-1] == stop_short: break
+		this_sim.date = row[-1]
 		row_month = int(row[-1][4:6])
 		if this_month == 4 and row_month == 11:
 			this_sim.season_count += 1
@@ -117,26 +121,34 @@ def sim(data, k_factor, new_season_carry, home_elo, stop_short = False, performa
 	if performance_tracker: this_sim.print_predict_tracker()
 	return this_sim
 
-def main(filepath, top_x = 25, update = False, stop_short = False):
-	#assumes data formats used throughout are YYYYMMDD
-	#by default returns the top 25 teams by the end of the filepath provided
-	#if updating, updates through games completed yesterday
-	#if stopping short, ends sim the day before stop_short
-	if update != False: 
+def main(args):
+	#args is a dictionary mapping 'u', 't', and 'd' to their various inputs (all default to None, except 't' defaults to 25)
+	#Assumes data formats used throughout are YYYYMMDD
+	#By default returns the top 25 teams at the end of the filepath provided.
+	#If updating, updates through games completed yesterday. If stopping short, ends sim the day before day specified in 'd'
+	filepath = utils.get_latest_data_filepath()
+	if args['u']: 
 		yesterday = (datetime.date.today() - datetime.timedelta(days = 1)).strftime('%Y%m%d')
 		scraper.main(filepath[len(DATA_FOLDER):][0:8], filepath[len(DATA_FOLDER):][-12:-4], yesterday, filepath)
-		filepath = 	filepath[:8 + len(DATA_FOLDER)] + '-' + datetime.date.today().strftime('%Y%m%d') + '.csv'
+		filepath = filepath[:8 + len(DATA_FOLDER)] + '-' + datetime.date.today().strftime('%Y%m%d') + '.csv'
 
-	data = scraper.read_csv(filepath)
-	this_sim = sim(data, K_FACTOR, SEASON_CARRY, HOME_ADVANTAGE, stop_short = stop_short)
+	data = utils.read_csv(filepath)
+	this_sim = sim(data, K_FACTOR, SEASON_CARRY, HOME_ADVANTAGE, stop_short = args['d'])
 	rank = 1
-	if top_x != False:
-		for team in this_sim.get_top(int(top_x)):
-			print(str(rank) + '\t\t' + team[0] + (' ' * (33 - len(team[0]))) + str(round(team[1])))
-			rank += 1
+	if args['t'] != False:
+		output = pd.DataFrame(this_sim.get_top(int(args['t'])), columns = ['Team', 'Elo Rating']).round()
+		output['Rank'] = [i for i in range (1, args['t']+1)]
+		utils.table_output(output, 'Ratings through ' + this_sim.date, ['Rank', 'Team', 'Elo Rating'])
 			
 	return this_sim
 
+def parseArguments():
+	parser = argparse.ArgumentParser()
+	parser.add_argument('-u', action = 'store_true', help = 'Asks to scrape and update the data with games completed through yesterday')
+	parser.add_argument('-t', type = int, default = 25, help = 'Specify how many of the top teams to output. Default is to display the top 25')
+	parser.add_argument('-d', type = str, help = 'Use to see the top teams as of a date in the past. Enter date as YYYYMMDD (e.g. 20190315)')
+	return parser.parse_args()
+
 if __name__ == '__main__':
-	main(*sys.argv[1:])
+	main(parseArguments().__dict__)
 

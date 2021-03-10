@@ -1,12 +1,10 @@
 import elo
-import scraper
 import random
 import pandas as pd
+import utils
 import argparse
-import re
-from os import listdir
 
-DATA_FOLDER = scraper.DATA_FOLDER
+DATA_FOLDER = utils.DATA_FOLDER
 ROUNDS = ['second', 'sixteen', 'eight', 'four', 'final', 'champion']
 
 def matchups_from_list(team_list):
@@ -40,8 +38,8 @@ def predict_tournament(elo_state, tournamant_teams, pick_favorites = False, verb
 		results[r] = winners
 
 	if verbose:
-		df = pd.DataFrame.from_dict(results, orient = 'index')
-		print(df.transpose().fillna('').to_string(index = False, na_rep = ''))
+		output = pd.DataFrame.from_dict(results, orient = 'index').transpose().fillna('')
+		utils.table_output(output, 'Tournament Predictions Based on Ratings through ' + elo_state.date)
 
 	return results
 
@@ -58,46 +56,17 @@ def sim_tournaments(elo_state, tournamant_teams, n, verbose = False):
 
 	if verbose:
 		formatted = [[team] + [round(i/n, 4) for i in sim_results[team]] for team in tournamant_teams]
-		df = pd.DataFrame(formatted, columns = ['team'] + ROUNDS).sort_values(ROUNDS[-1], ascending = False)
-		print(df.to_string(index = False))
-
-def evaluate_brackets(predictions, real_results):
-	scores = [10, 20, 40, 80, 160, 320] #ESPN scoring system for correct game in round
-	predictions_score = 0
-	for index in range(len(ROUNDS)):
-		predictions_score += sum([scores[index] if predictions[ROUNDS[index]][i] == real_results[ROUNDS[index]][i] else 0 for i in range(len(predictions[ROUNDS[index]]))])
-	return predictions_score
-
-def main(data_filepath, tourney_filepath, stop_date, sims = 50000, save_sims = False, evaluate = False):
-	elo_state = elo.main(data_filepath, stop_short = stop_date, top_25 = True)
-	df = pd.read_csv(tourney_filepath)
-	tournamant_teams = list(df['first'].dropna())
-	if evaluate:
-		results = {'first': tournamant_teams}
-		for r in ROUNDS:
-			results[r] = df[r].dropna().values
-		best_bracket = predict_tournament(elo_state, tournamant_teams, pick_favorites = True)
-		return evaluate_brackets(best_bracket, results)
-
-	sim_tournaments(elo_state, tournamant_teams, sims)
-
-def get_latest_data_filepath():
-	r = re.compile("[0-9]{8}-[0-9]{8}.csv")
-	elligible_data = list(filter(r.match, listdir(DATA_FOLDER)))
-	return DATA_FOLDER + sorted(elligible_data, key = lambda x: x[9:17], reverse = True)[0]
+		output = pd.DataFrame(formatted, columns = ['team'] + ROUNDS).sort_values(ROUNDS[-1], ascending = False)
+		utils.table_output(output, 'Tournament Predictions Based on Ratings through ' + elo_state.date + ' and ' + str(n) + ' Simulations')
 
 def main(args):
 	# args is a dictionary mapping 'd', 'n', 'G', 'P', 'b', and 'S' to their various inputs (all default to None, except 'n' and 'b')
 	# use the latest data in the DATA_FOLDER that's in the right format: YYYYMMDD-YYYYMMDD.csv
-	latest_data_path = get_latest_data_filepath()
-	elo_state = elo.main(latest_data_path, top_x = False, stop_short = args['d'])
-	if args['d'] != None:
-		print('As of', args['d'] + '...')
-	else:
-		print('As of', latest_data_path[len(DATA_FOLDER):][9:17] + '...')
-
+	elo_state = elo.main({'t': False, 'd': args['d'], 'u': None})
+	
 	if args['G'] != None:
 		home, away = args['G']
+		print('Ratings through ' + elo_state.date)
 		if args['n']:
 			print(home, "vs.", away, "@ neutral site")
 		else:
@@ -122,20 +91,31 @@ def parseArguments():
 	parser.add_argument('-d', type = str, help = 'Use if predicting a game or tournament as of a date in the past. Enter date as YYYYMMDD (e.g. 20190315)')
 	parser.add_argument('-P', type = str, help = "Use to predict results of a tournament (i.e. generate a single bracket). Enter the filename storing the tournament participants. Use the -b flag to pick the better team in each matchup. Don't forget to use -d if predicting this tournament as of a date in the past")
 	parser.add_argument('-b', action = 'store_true', help = "By default, the winner for each matchup in a tournament is selected probabilistically. Use this flag to always choose the 'better' team instead")
-	
 	return parser.parse_args()
-
-# scraper.main(file_start = '20101101', scrape_start = '20210303', scrape_end = '20210307', data_filepath = '20101101-20210303.csv')
-# elo_state = elo.main('20101101-20210308.csv')
-# predict_game(elo_state, 'Gonzaga', "Saint Mary's", neutral = True, verbose = True)
-# print(elo_state.get_top(75))
-# print(main('20101101-20210303.csv', 'tournament_results_2019.csv', '20190320', evaluate = True))
-# 1260
-# print(main('20101101-20210303.csv', 'tournament_results_2018.csv', '20180314', evaluate = True))
-# 1230
-# print(main('20101101-20210303.csv', 'tournament_results_2017.csv', '20180315', evaluate = True))
-# 660
 
 if __name__ == '__main__':
 	main(parseArguments().__dict__)
 
+#################################################
+'''
+def evaluate_brackets(predictions, real_results):
+	scores = [10, 20, 40, 80, 160, 320] #ESPN scoring system for correct game in round
+	predictions_score = 0
+	for index in range(len(ROUNDS)):
+		predictions_score += sum([scores[index] if predictions[ROUNDS[index]][i] == real_results[ROUNDS[index]][i] else 0 for i in range(len(predictions[ROUNDS[index]]))])
+	return predictions_score
+
+for stop_date, tourney_filepath in [('20190321', 'tournament_results_2019.csv'), ('20180315', 'tournament_results_2018.csv'), ('20170316', 'tournament_results_2017.csv')]:
+	elo_state = elo.main({'t': False, 'd': stop_date, 'u': None})
+	df = pd.read_csv(DATA_FOLDER + tourney_filepath)
+	tournamant_teams = list(df['first'].dropna())
+	results = {'first': tournamant_teams}
+	for r in ROUNDS:
+		results[r] = df[r].dropna().values
+	best_bracket = predict_tournament(elo_state, tournamant_teams, pick_favorites = True)
+	print(evaluate_brackets(best_bracket, results))
+
+#2019: 1260
+#2018: 830
+#2017: 720
+'''
