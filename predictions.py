@@ -89,7 +89,7 @@ def parseArguments():
 	parser.add_argument('-G', nargs = 2, type = str, help = 'Use to predict a single game. List home team as a string and away team as a string. Use -n flag to indicate a neutral site')
 	parser.add_argument('-n', action = 'store_true', help = 'Use if predicting a single game at a neutral site')
 	parser.add_argument('-S', nargs = 2, help = 'Use to run monte carlo simulations to predict most likely tournament outcomes. Enter the filename storing the tournament participants and the number of simulations to run')
-	parser.add_argument('-d', type = str, help = 'Use if predicting a game or tournament as of a date in the past. Enter date as YYYYMMDD (e.g. 20190315)')
+	parser.add_argument('-d', type = str, default = '99999999', help = 'Use if predicting a game or tournament as of a date in the past. Enter date as YYYYMMDD (e.g. 20190315)')
 	parser.add_argument('-P', type = str, help = "Use to predict results of a tournament (i.e. generate a single bracket). Enter the filename storing the tournament participants. Use the -b flag to pick the better team in each matchup. Don't forget to use -d if predicting this tournament as of a date in the past")
 	parser.add_argument('-b', action = 'store_true', help = "By default, the winner for each matchup in a tournament is selected probabilistically. Use this flag to always choose the 'better' team instead")
 	return parser.parse_args()
