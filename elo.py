@@ -11,12 +11,14 @@ ERRORS_START = 4
 K_FACTOR = 47
 SEASON_CARRY = 1.0
 HOME_ADVANTAGE = 83
+ELO_TO_POINTS_FACTOR = -25.25 #divide an elo margin by this to get the point spread
 DATA_FOLDER = utils.DATA_FOLDER
 
 class Team():
 	def __init__(self, name, starting_elo):
 		self.name = name
 		self.elo = starting_elo
+		self.seven_days_ago = starting_elo
 
 	def update_elo(self, change):
 		self.elo = max(0, self.elo + change)
@@ -45,12 +47,11 @@ class ELO_Sim():
 		self.teams[loser].update_elo(-delta)
 
 	def get_top(self, x):
-		return sorted([(self.teams[team].name, round(self.teams[team].elo, 2)) for team in self.teams], key = lambda x: x[1], reverse = True)[:x]
+		return sorted([(self.teams[team].name, round(self.get_elo(team), 0), "{0:+.0f}".format(self.get_elo(team) - self.teams[team].seven_days_ago)) for team in self.teams], key = lambda x: x[1], reverse = True)[:x]
 
-	def print_predict_tracker(self):
-		for i in sorted(self.predict_tracker):
-			result = self.win_tracker.get(i, 0)/self.predict_tracker[i]
-			print(i, result)
+	def last_week_save(self):
+		for team in self.teams:
+			self.teams[team].seven_days_ago = self.get_elo(team)
 
 	#error functions used in tuning.py
 	def update_errors(self, w_winp):
@@ -104,12 +105,18 @@ def step_elo(this_sim, row, k_factor, home_elo):
 	this_sim.update_elos(winner, loser, elo_delta)
 	this_sim.update_errors(w_winp)
 
-def sim(data, k_factor, new_season_carry, home_elo, stop_short = False, performance_tracker = False):
+def sim(data, k_factor, new_season_carry, home_elo, stop_short = '99999999'):
 	this_sim = ELO_Sim()
 	this_month = data[0][-1][4:6]
+	last_day = data[-1][-1] if stop_short > data[-1][-1] else (datetime.datetime.strptime(stop_short, '%Y%m%d') - datetime.timedelta(days = 1)).strftime('%Y%m%d')
+	week_early = (datetime.datetime.strptime(last_day, '%Y%m%d') - datetime.timedelta(days = 6)).strftime('%Y%m%d')
+	set_early = False
 
 	for row in data:
-		if row[-1] == stop_short: break
+		if row[-1] >= week_early and not set_early: 
+			this_sim.last_week_save() #save each team's elo here so we can calculate change in the last 7 days at the end
+			set_early = True
+		if row[-1] >= stop_short: break
 		this_sim.date = row[-1]
 		row_month = int(row[-1][4:6])
 		if this_month == 4 and row_month == 11:
@@ -118,7 +125,6 @@ def sim(data, k_factor, new_season_carry, home_elo, stop_short = False, performa
 		this_month = row_month
 		step_elo(this_sim, row, k_factor, home_elo)
 	
-	if performance_tracker: this_sim.print_predict_tracker()
 	return this_sim
 
 def main(args):
@@ -136,9 +142,10 @@ def main(args):
 	this_sim = sim(data, K_FACTOR, SEASON_CARRY, HOME_ADVANTAGE, stop_short = args['d'])
 	rank = 1
 	if args['t'] != False:
-		output = pd.DataFrame(this_sim.get_top(int(args['t'])), columns = ['Team', 'Elo Rating']).round()
+		output = pd.DataFrame(this_sim.get_top(int(args['t'])), columns = ['Team', 'Elo Rating', '7 Day Change'])
+		output['Point Spread vs. Next Rank'] = ["{0:+.1f}".format(((output['Elo Rating'][i] - output['Elo Rating'][i+1])/ELO_TO_POINTS_FACTOR)) for i in range(args['t'] - 1)] + ['']
 		output['Rank'] = [i for i in range (1, args['t']+1)]
-		utils.table_output(output, 'Ratings through ' + this_sim.date, ['Rank', 'Team', 'Elo Rating'])
+		utils.table_output(output, 'Ratings through ' + this_sim.date, ['Rank', 'Team', 'Elo Rating', 'Point Spread vs. Next Rank', '7 Day Change'])
 			
 	return this_sim
 
@@ -151,4 +158,3 @@ def parseArguments():
 
 if __name__ == '__main__':
 	main(parseArguments().__dict__)
-

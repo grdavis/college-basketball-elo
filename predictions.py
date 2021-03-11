@@ -19,8 +19,9 @@ def predict_game(elo_state, home, away, pick_favorite = False, neutral = False, 
 	home_elo = elo_state.get_elo(home) + home_boost
 	away_elo = elo_state.get_elo(away)
 	winp_home = elo.winp(home_elo - away_elo)
+	home_spread = round((home_elo - away_elo)/elo.ELO_TO_POINTS_FACTOR, 1)
 
-	if verbose: print(home, "{0:.0%}".format(winp_home), away, "{0:.0%}".format(1 - winp_home))
+	if verbose: print(home, "{0:.0%}".format(winp_home), str(home_spread), away, "{0:.0%}".format(1 - winp_home), str(-home_spread))
 
 	if pick_favorite:
 		return home if home_elo > away_elo else away
