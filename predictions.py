@@ -60,63 +60,46 @@ def sim_tournaments(elo_state, tournamant_teams, n, verbose = False):
 		output = pd.DataFrame(formatted, columns = ['team'] + ROUNDS).sort_values(ROUNDS[-1], ascending = False)
 		utils.table_output(output, 'Tournament Predictions Based on Ratings through ' + elo_state.date + ' and ' + str(n) + ' Simulations')
 
-def main(args):
-	# args is a dictionary mapping 'd', 'n', 'G', 'P', 'b', and 'S' to their various inputs (all default to None, except 'n' and 'b')
-	# use the latest data in the DATA_FOLDER that's in the right format: YYYYMMDD-YYYYMMDD.csv
-	elo_state = elo.main({'t': False, 'd': args['d'], 'u': None})
-	
-	if args['G'] != None:
-		home, away = args['G']
+def main(matchup, neutral, sim_mode, stop_short, bracket, pick_favorites):
+	'''
+	Retrieves an elo simulation through the specified 'stop_short' date then cascades through options:
+	1. if a 'matchup' of two teams is provided, print out predictions for that matchup - factoring in 
+	whether the matchup is at a 'neutral' site or not
+	2. if 'sim_mode' is specified [a filepath to a bracket, a number of simulations], then run the specified 
+	number of bracket simulations on the specified bracket
+	3. if just 'bracket', which is a filepath to a bracket, is specified, deliver a one-time prediction for that 
+	bracket based on the starting teams. 'pick favorites' decides whether or not to always choose the better team in each matchup
+	4. if nothing is specified, print out an explanation
+	'''
+	elo_state = elo.main(stop_short = stop_short)
+	if matchup != False:
+		home, away = matchup
 		print('Ratings through ' + elo_state.date)
-		if args['n']:
+		if neutral:
 			print(home, "vs.", away, "@ neutral site")
 		else:
 			print(away, "@", home)
-		predict_game(elo_state, args['G'][0], args['G'][1], neutral = args['n'], verbose = True)
-	elif args['S'] != None:
-		df = pd.read_csv(args['S'][0])
-		tournamant_teams = list(df['first'].dropna())
-		sim_tournaments(elo_state, tournamant_teams, n = int(args['S'][1]), verbose = True)
-	elif args['P'] != None:
-		df = pd.read_csv(args['P'])
-		tournamant_teams = list(df['first'].dropna())
-		predict_tournament(elo_state, tournamant_teams, pick_favorites = args['b'], verbose = True)
+		predict_game(elo_state, home, away, neutral = neutral, verbose = True)
+	elif sim_mode != False:
+		file, simulations = sim_mode
+		tournamant_teams = list(pd.read_csv(file)['first'].dropna())
+		sim_tournaments(elo_state, tournamant_teams, n = int(simulations), verbose = True)
+	elif bracket != False:
+		tournamant_teams = list(pd.read_csv(bracket)['first'].dropna())
+		predict_tournament(elo_state, tournamant_teams, pick_favorites = pick_favorites, verbose = True)
 	else:
 		print('You must enter some optional arguments for something to happen. Use -h to see options.')
 
 def parseArguments():
-	parser = argparse.ArgumentParser()
-	parser.add_argument('-G', nargs = 2, type = str, help = 'Use to predict a single game. List home team as a string and away team as a string. Use -n flag to indicate a neutral site')
-	parser.add_argument('-n', action = 'store_true', help = 'Use if predicting a single game at a neutral site')
-	parser.add_argument('-S', nargs = 2, help = 'Use to run monte carlo simulations to predict most likely tournament outcomes. Enter the filename storing the tournament participants and the number of simulations to run')
-	parser.add_argument('-d', type = str, default = '99999999', help = 'Use if predicting a game or tournament as of a date in the past. Enter date as YYYYMMDD (e.g. 20190315)')
-	parser.add_argument('-P', type = str, help = "Use to predict results of a tournament (i.e. generate a single bracket). Enter the filename storing the tournament participants. Use the -b flag to pick the better team in each matchup. Don't forget to use -d if predicting this tournament as of a date in the past")
-	parser.add_argument('-b', action = 'store_true', help = "By default, the winner for each matchup in a tournament is selected probabilistically. Use this flag to always choose the 'better' team instead")
+	parser = argparse.ArgumentParser(description = 'ON ITS WAY')
+	parser.add_argument('-G', '--GamePredictor', default = False, nargs = 2, type = str, help = 'Use to predict a single game. List home team as a string and away team as a string. Use -n flag to indicate a neutral site')
+	parser.add_argument('-n', '--neutral', action = 'store_true', help = 'Use if predicting a single game at a neutral site')
+	parser.add_argument('-S', '--SimMode', default = False, nargs = 2, help = 'Use to run monte carlo simulations to predict most likely tournament outcomes. Enter the filename storing the tournament participants and the number of simulations to run')
+	parser.add_argument('-d', '--dateSim', type = str, default = '99999999', help = 'Use if predicting a game or tournament as of a date in the past. Enter date as YYYYMMDD (e.g. 20190315)')
+	parser.add_argument('-P', '--PredictBracket', default = False, type = str, help = "Use to predict results of a tournament (i.e. generate a single bracket). Enter the filename storing the tournament participants. Use the -b flag to pick the better team in each matchup. Don't forget to use -d if predicting this tournament as of a date in the past")
+	parser.add_argument('-b', '--bestwins', action = 'store_true', help = "By default, the winner for each matchup in a tournament is selected probabilistically. Use this flag to always choose the 'better' team instead")
 	return parser.parse_args()
 
 if __name__ == '__main__':
-	main(parseArguments().__dict__)
-
-#################################################
-'''
-def evaluate_brackets(predictions, real_results):
-	scores = [10, 20, 40, 80, 160, 320] #ESPN scoring system for correct game in round
-	predictions_score = 0
-	for index in range(len(ROUNDS)):
-		predictions_score += sum([scores[index] if predictions[ROUNDS[index]][i] == real_results[ROUNDS[index]][i] else 0 for i in range(len(predictions[ROUNDS[index]]))])
-	return predictions_score
-
-for stop_date, tourney_filepath in [('20190321', 'tournament_results_2019.csv'), ('20180315', 'tournament_results_2018.csv'), ('20170316', 'tournament_results_2017.csv')]:
-	elo_state = elo.main({'t': False, 'd': stop_date, 'u': None})
-	df = pd.read_csv(DATA_FOLDER + tourney_filepath)
-	tournamant_teams = list(df['first'].dropna())
-	results = {'first': tournamant_teams}
-	for r in ROUNDS:
-		results[r] = df[r].dropna().values
-	best_bracket = predict_tournament(elo_state, tournamant_teams, pick_favorites = True)
-	print(evaluate_brackets(best_bracket, results))
-
-#2019: 1260
-#2018: 830
-#2017: 720
-'''
+	args = parseArguments()
+	main(matchup = args.GamePredictor, neutral = args.neutral, sim_mode = args.SimMode, stop_short = args.dateSim, bracket = args.PredictBracket, pick_favorites = args.bestwins)

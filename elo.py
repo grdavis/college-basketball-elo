@@ -14,9 +14,10 @@ ELO_TO_POINTS_FACTOR = -25.5 #divide an elo margin by this to get the predicted 
 DATA_FOLDER = utils.DATA_FOLDER
 
 class Team():
-	def __init__(self, name, starting_elo):
+	def __init__(self, name, date, starting_elo):
 		self.name = name
 		self.elo = starting_elo
+		self.snapshots = [(date, starting_elo)] #list of ('date', elo)
 		self.seven_days_ago = starting_elo
 
 	def update_elo(self, change):
@@ -31,23 +32,24 @@ class ELO_Sim():
 	def get_elo(self, name):
 		return self.teams[name].elo
 
+	def snapshot(self):
+		for team in self.teams:
+			self.teams[team].snapshots.append((self.date, self.get_elo(team)))
+
 	def season_reset(self, new_season_carry):
+		self.snapshot()
 		for team in self.teams:
 			self.teams[team].elo = (self.get_elo(team) * new_season_carry) + ((1 - new_season_carry) * ELO_BASE)
 
 	def add_team(self, name):
-		self.teams[name] = Team(name, ELO_BASE if self.season_count == 0 else NEW_ELO)
+		self.teams[name] = Team(name, self.date, ELO_BASE if self.season_count == 0 else NEW_ELO)
 
 	def update_elos(self, winner, loser, delta):
 		self.teams[winner].update_elo(delta)
 		self.teams[loser].update_elo(-delta)
 
 	def get_top(self, x):
-		return sorted([(self.teams[team].name, round(self.get_elo(team), 0), "{0:+.0f}".format(self.get_elo(team) - self.teams[team].seven_days_ago)) for team in self.teams], key = lambda x: x[1], reverse = True)[:x]
-
-	def last_week_save(self):
-		for team in self.teams:
-			self.teams[team].seven_days_ago = self.get_elo(team)
+		return sorted([(self.teams[team].name, round(self.get_elo(team), 0), "{0:+.0f}".format(self.get_elo(team) - self.teams[team].snapshots[-1][-1])) for team in self.teams], key = lambda x: x[1], reverse = True)[:x]
 
 def calc_MoV_multiplier(elo_margin, MoV):
 	#adjusted 538s NBA MoV multiplier curve to better fit the distribution of NCAA MoVs
@@ -86,56 +88,60 @@ def step_elo(this_sim, row, k_factor, home_elo):
 
 	return elo_margin, MoV
 
-def sim(data, k_factor, new_season_carry, home_elo, stop_short = '99999999'):
+def sim(data, k_factor, new_season_carry, home_elo, stop_short, last_snap):
 	this_sim = ELO_Sim()
 	this_month = data[0][-1][4:6]
-	last_day = data[-1][-1] if stop_short > data[-1][-1] else (datetime.datetime.strptime(stop_short, '%Y%m%d') - datetime.timedelta(days = 1)).strftime('%Y%m%d')
-	week_early = (datetime.datetime.strptime(last_day, '%Y%m%d') - datetime.timedelta(days = 6)).strftime('%Y%m%d')
+	last_day = data[-1][-1] if stop_short > data[-1][-1] else stop_short
+	early = (datetime.datetime.strptime(last_day, '%Y%m%d') - datetime.timedelta(days = last_snap)).strftime('%Y%m%d')
 	set_early = False
 
 	for row in data:
-		if row[-1] >= week_early and not set_early: 
-			this_sim.last_week_save() #save each team's elo here so we can calculate change in the last 7 days at the end
+		if row[-1] > early and not set_early: 
+			this_sim.snapshot() #save each team's elo here so we can calculate change in the last 7 days at the end
 			set_early = True
-		if row[-1] >= stop_short: break
-		this_sim.date = row[-1]
+		if row[-1] > stop_short: break
 		row_month = int(row[-1][4:6])
-		if this_month == 4 and row_month == 11:
+		if this_month == 4 and row_month == 11: #when the data jumps from April to November, it's the start of a new season
 			this_sim.season_count += 1
 			this_sim.season_reset(new_season_carry)
+		this_sim.date = row[-1]
 		this_month = row_month
 		step_elo(this_sim, row, k_factor, home_elo)
 	
 	return this_sim
 
-def main(args):
-	#args is a dictionary mapping 'u', 't', and 'd' to their various inputs. 'u' defaults to None, 't' defaults to 25, 'd' defaults to '99999999'
-	#Assumes data formats used throughout are YYYYMMDD
-	#By default returns the top 25 teams at the end of the filepath provided.
-	#If updating, updates through games completed yesterday. If stopping short, ends sim the day before day specified in 'd'
+def main(update = False, topteams = False, stop_short = '99999999', period = 7):
+	'''
+	By default, this returns a simulation run on the latest data in the data folder
+	It includes several options:
+	- 'update' the data through games completed yesterday
+	- output the x 'topteams' by elo rating along with each teams projected point spread over the next team and their change in elo in the last 'period' days
+	- 'stop_short' of simulating through the entire dataset by specifying a day to simulate through instead
+	'''	
 	filepath = utils.get_latest_data_filepath()
-	if args['u']: 
+	if update: 
 		yesterday = (datetime.date.today() - datetime.timedelta(days = 1)).strftime('%Y%m%d')
 		scraper.main(filepath[len(DATA_FOLDER):][0:8], filepath[len(DATA_FOLDER):][-12:-4], yesterday, filepath)
 		filepath = filepath[:8 + len(DATA_FOLDER)] + '-' + datetime.date.today().strftime('%Y%m%d') + '.csv'
 
 	data = utils.read_csv(filepath)
-	this_sim = sim(data, K_FACTOR, SEASON_CARRY, HOME_ADVANTAGE, stop_short = args['d'])
-	rank = 1
-	if args['t'] != False:
-		output = pd.DataFrame(this_sim.get_top(int(args['t'])), columns = ['Team', 'Elo Rating', '7 Day Change'])
-		output['Point Spread vs. Next Rank'] = ["{0:+.1f}".format(((output['Elo Rating'][i] - output['Elo Rating'][i+1])/ELO_TO_POINTS_FACTOR)) for i in range(args['t'] - 1)] + ['']
-		output['Rank'] = [i for i in range (1, args['t']+1)]
-		utils.table_output(output, 'Ratings through ' + this_sim.date, ['Rank', 'Team', 'Elo Rating', 'Point Spread vs. Next Rank', '7 Day Change'])
+	this_sim = sim(data, K_FACTOR, SEASON_CARRY, HOME_ADVANTAGE, stop_short, period)
+	if topteams != False:
+		output = pd.DataFrame(this_sim.get_top(int(topteams)), columns = ['Team', 'Elo Rating', '%i Day Change' % period])
+		output['Point Spread vs. Next Rank'] = ["{0:+.1f}".format(((output['Elo Rating'][i] - output['Elo Rating'][i+1])/ELO_TO_POINTS_FACTOR)) for i in range(topteams - 1)] + ['']
+		output['Rank'] = [i for i in range (1, topteams+1)]
+		utils.table_output(output, 'Ratings through ' + this_sim.date, ['Rank', 'Team', 'Elo Rating', 'Point Spread vs. Next Rank', '%i Day Change' % period])
 			
 	return this_sim
 
 def parseArguments():
-	parser = argparse.ArgumentParser()
-	parser.add_argument('-u', action = 'store_true', help = 'Asks to scrape and update the data with games completed through yesterday')
-	parser.add_argument('-t', type = int, default = 25, help = 'Specify how many of the top teams to output. Default is to display the top 25')
-	parser.add_argument('-d', default = '99999999', type = str, help = 'Use to see the top teams as of a date in the past. Enter date as YYYYMMDD (e.g. 20190315)')
+	parser = argparse.ArgumentParser(description = 'ON ITS WAY')
+	parser.add_argument('-u', '--update', default = False, action = 'store_true', help = 'Asks to scrape and update the data with games completed through yesterday')
+	parser.add_argument('-t', '--topteams', type = int, default = 25, help = 'Specify how many of the top teams to output. Default is to display the top 25')
+	parser.add_argument('-d', '--date', default = '99999999', type = str, help = 'Use to see the top teams as of a date in the past. Enter date as YYYYMMDD (e.g. 20190315)')
+	parser.add_argument('-p', '--period', default = 7, type = int, help = "In the last column of the output, you see each team's change in elo over a period. Specify how many days you want that period to be. Default is 7.")
 	return parser.parse_args()
 
 if __name__ == '__main__':
-	main(parseArguments().__dict__)
+	args = parseArguments()
+	main(update = args.update, topteams = args.topteams, stop_short = args.date, period = args.period)
