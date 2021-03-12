@@ -7,11 +7,10 @@ import pandas as pd
 
 ELO_BASE = 1500
 NEW_ELO = 1050
-ERRORS_START = 4
 K_FACTOR = 47
 SEASON_CARRY = 1.0
 HOME_ADVANTAGE = 83
-ELO_TO_POINTS_FACTOR = -25.25 #divide an elo margin by this to get the point spread
+ELO_TO_POINTS_FACTOR = -25.5 #divide an elo margin by this to get the predicted point spread
 DATA_FOLDER = utils.DATA_FOLDER
 
 class Team():
@@ -26,9 +25,6 @@ class Team():
 class ELO_Sim():
 	def __init__(self):
 		self.teams = {} #maintain a dictionary mapping string team name to a Team object
-		self.error1 = 0
-		self.predict_tracker = {}
-		self.win_tracker = {}
 		self.season_count = 0
 		self.date = ''
 
@@ -52,22 +48,6 @@ class ELO_Sim():
 	def last_week_save(self):
 		for team in self.teams:
 			self.teams[team].seven_days_ago = self.get_elo(team)
-
-	#error functions used in tuning.py
-	def update_errors(self, w_winp):
-		if self.season_count >= ERRORS_START:
-			self.error1 += (1 - w_winp)**2
-			self.win_tracker[round(w_winp, 2)] = self.win_tracker.get(round(w_winp, 2), 0) + 1
-			self.predict_tracker[round(w_winp, 2)] = self.predict_tracker.get(round(w_winp, 2), 0) + 1
-			self.predict_tracker[round(1-w_winp, 2)] = self.predict_tracker.get(round(1-w_winp, 2), 0) + 1
-
-	def get_errors(self):
-		error2 = 0
-		total_games = sum(self.predict_tracker.values())
-		for i in sorted(self.predict_tracker):
-			result = self.win_tracker.get(i, 0)/self.predict_tracker[i]
-			error2 += self.predict_tracker[i] * abs(result - i)
-		return (self.error1, error2 / total_games)
 
 def calc_MoV_multiplier(elo_margin, MoV):
 	#adjusted 538s NBA MoV multiplier curve to better fit the distribution of NCAA MoVs
@@ -103,7 +83,8 @@ def step_elo(this_sim, row, k_factor, home_elo):
 	MoV_multiplier = calc_MoV_multiplier(elo_margin, MoV)
 	elo_delta = round(k_factor * MoV_multiplier * (1 - w_winp), 2)
 	this_sim.update_elos(winner, loser, elo_delta)
-	this_sim.update_errors(w_winp)
+
+	return elo_margin, MoV
 
 def sim(data, k_factor, new_season_carry, home_elo, stop_short = '99999999'):
 	this_sim = ELO_Sim()
@@ -128,7 +109,7 @@ def sim(data, k_factor, new_season_carry, home_elo, stop_short = '99999999'):
 	return this_sim
 
 def main(args):
-	#args is a dictionary mapping 'u', 't', and 'd' to their various inputs (all default to None, except 't' defaults to 25)
+	#args is a dictionary mapping 'u', 't', and 'd' to their various inputs. 'u' defaults to None, 't' defaults to 25, 'd' defaults to '99999999'
 	#Assumes data formats used throughout are YYYYMMDD
 	#By default returns the top 25 teams at the end of the filepath provided.
 	#If updating, updates through games completed yesterday. If stopping short, ends sim the day before day specified in 'd'
@@ -153,7 +134,7 @@ def parseArguments():
 	parser = argparse.ArgumentParser()
 	parser.add_argument('-u', action = 'store_true', help = 'Asks to scrape and update the data with games completed through yesterday')
 	parser.add_argument('-t', type = int, default = 25, help = 'Specify how many of the top teams to output. Default is to display the top 25')
-	parser.add_argument('-d', type = str, help = 'Use to see the top teams as of a date in the past. Enter date as YYYYMMDD (e.g. 20190315)')
+	parser.add_argument('-d', default = '99999999', type = str, help = 'Use to see the top teams as of a date in the past. Enter date as YYYYMMDD (e.g. 20190315)')
 	return parser.parse_args()
 
 if __name__ == '__main__':
