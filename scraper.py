@@ -58,10 +58,10 @@ def scrape_by_day(file_start, scrape_start, end, all_data):
 			print(len(new_data), "games recorded")
 			all_data.extend(new_data)
 			new_data = []
-			utils.save_data(DATA_FOLDER + file_start + "-" + fix_dates_for_data(i) + ".csv", all_data)
+			utils.save_data(DATA_FOLDER + file_start + "-" + fix_dates_for_data(i - datetime.timedelta(days = 1)) + ".csv", all_data)
 	print(len(new_data), "games recorded")
 	all_data.extend(new_data)
-	utils.save_data(DATA_FOLDER + file_start + "-" + fix_dates_for_data(i) + ".csv", all_data)
+	utils.save_data(DATA_FOLDER + file_start + "-" + fix_dates_for_data(i - datetime.timedelta(days = 1)) + ".csv", all_data)
 	driver.quit()
 	return all_data
 

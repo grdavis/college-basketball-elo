@@ -2,6 +2,7 @@ import csv
 import re
 from os import listdir
 import plotly.graph_objects as go
+from datetime import datetime, timedelta
 
 DATA_FOLDER = 'Data/'
 
@@ -14,6 +15,9 @@ def save_data(filepath, data):
 def read_csv(filepath):
 	with open(filepath, encoding = 'utf-8-sig') as csvfile:
 		return list(csv.reader(csvfile))
+
+def shift_dstring(day_string, days):
+	return (datetime.strptime(day_string, "%Y%m%d") + timedelta(days = days)).strftime('%Y%m%d')
 
 def get_latest_data_filepath():
 	r = re.compile("[0-9]{8}-[0-9]{8}.csv")

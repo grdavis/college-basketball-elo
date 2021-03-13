@@ -110,22 +110,24 @@ def sim(data, k_factor, new_season_carry, home_elo, stop_short, last_snap):
 	
 	return this_sim
 
-def main(update = False, topteams = False, stop_short = '99999999', period = 7):
+def main(topteams = False, stop_short = '99999999', period = 7):
 	'''
-	By default, this returns a simulation run on the latest data in the data folder
+	By default, this updates the data by scraping games through yesterday and returns an elo simulation run on the latest data
 	It includes several options:
-	- 'update' the data through games completed yesterday
 	- output the x 'topteams' by elo rating along with each teams projected point spread over the next team and their change in elo in the last 'period' days
 	- 'stop_short' of simulating through the entire dataset by specifying a day to simulate through instead
 	'''	
-	filepath = utils.get_latest_data_filepath()
-	if update: 
-		yesterday = (datetime.date.today() - datetime.timedelta(days = 1)).strftime('%Y%m%d')
-		scraper.main(filepath[len(DATA_FOLDER):][0:8], filepath[len(DATA_FOLDER):][-12:-4], yesterday, filepath)
-		filepath = filepath[:8 + len(DATA_FOLDER)] + '-' + datetime.date.today().strftime('%Y%m%d') + '.csv'
+	filepath = utils.get_latest_data_filepath() 
+	yesterday = (datetime.date.today() - datetime.timedelta(days = 1)).strftime('%Y%m%d')
+	if filepath[len(DATA_FOLDER):][-12:-4] != yesterday:
+		print('updating data...')
+		scrape_start = utils.shift_dstring(filepath[len(DATA_FOLDER):][-12:-4], 1)
+		scraper.main(filepath[len(DATA_FOLDER):][0:8], scrape_start, yesterday, filepath)
+		filepath = utils.get_latest_data_filepath()
 
 	data = utils.read_csv(filepath)
 	this_sim = sim(data, K_FACTOR, SEASON_CARRY, HOME_ADVANTAGE, stop_short, period)
+
 	if topteams != False:
 		output = pd.DataFrame(this_sim.get_top(int(topteams)), columns = ['Team', 'Elo Rating', '%i Day Change' % period])
 		output['Point Spread vs. Next Rank'] = ["{0:+.1f}".format(((output['Elo Rating'][i] - output['Elo Rating'][i+1])/ELO_TO_POINTS_FACTOR)) for i in range(topteams - 1)] + ['']
@@ -135,13 +137,12 @@ def main(update = False, topteams = False, stop_short = '99999999', period = 7):
 	return this_sim
 
 def parseArguments():
-	parser = argparse.ArgumentParser(description = 'ON ITS WAY')
-	parser.add_argument('-u', '--update', default = False, action = 'store_true', help = 'Asks to scrape and update the data with games completed through yesterday')
+	parser = argparse.ArgumentParser(description = 'This script allows the user to view the top elo-rated teams at any given time since the start of the 2010 season. The user has the ability to specify the number of top teams to display, and to specify what date they would like to evaluate on')
 	parser.add_argument('-t', '--topteams', type = int, default = 25, help = 'Specify how many of the top teams to output. Default is to display the top 25')
-	parser.add_argument('-d', '--date', default = '99999999', type = str, help = 'Use to see the top teams as of a date in the past. Enter date as YYYYMMDD (e.g. 20190315)')
-	parser.add_argument('-p', '--period', default = 7, type = int, help = "In the last column of the output, you see each team's change in elo over a period. Specify how many days you want that period to be. Default is 7.")
+	parser.add_argument('-d', '--date', default = '99999999', type = str, help = 'Use to see the top teams as of a date in the past. Enter date as YYYYMMDD (e.g. 20190315). Default is to calculate through the end of the most recent data in the data folder (after an update if the -u flag is used)')
+	parser.add_argument('-p', '--period', default = 7, type = int, help = "In the last column of the output, you see each team's change in elo over a period of time. Specify how many days you want that period to be. Default is 7.")
 	return parser.parse_args()
 
 if __name__ == '__main__':
 	args = parseArguments()
-	main(update = args.update, topteams = args.topteams, stop_short = args.date, period = args.period)
+	main(topteams = args.topteams, stop_short = args.date, period = args.period)
