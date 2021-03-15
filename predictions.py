@@ -27,11 +27,13 @@ def predict_game(elo_state, home, away, pick_mode = False, neutral = False, verb
 	if verbose: print(home, "{0:.0%}".format(winp_home), str(home_spread), away, "{0:.0%}".format(1 - winp_home), str(-home_spread))
 
 	if pick_mode == 1:
-		return home if home_elo > away_elo else away
+		winner = home if home_elo > away_elo else away
 	elif pick_mode == 2:
-		return random.choice([home, away])
+		winner = random.choice([home, away])
 	else:
-		return random.choices([home, away], weights = (winp_home, 1-winp_home))[0]
+		winner = random.choices([home, away], weights = (winp_home, 1-winp_home))[0]
+
+	return winner, "{0:.0%}".format(winp_home) if winner == home else "{0:.0%}".format(1 - winp_home)
 
 def predict_tournament(elo_state, tournamant_teams, pick_mode = 0, verbose = False):
 	results = {'first': tournamant_teams}
@@ -40,11 +42,11 @@ def predict_tournament(elo_state, tournamant_teams, pick_mode = 0, verbose = Fal
 	for r in ROUNDS:
 		matchups = matchups_from_list(remaining)
 		winners = [predict_game(elo_state, i[0], i[1], pick_mode = pick_mode, neutral = True) for i in matchups]
-		remaining = winners
+		remaining = [i[0] for i in winners]
 		results[r] = winners
 
 	if verbose:
-		output = pd.DataFrame.from_dict(results, orient = 'index').transpose().fillna('')
+		output = pd.DataFrame.from_dict(results, orient = 'index').transpose().fillna('').replace('(', '').replace(')', '')
 		utils.table_output(output, 'Tournament Predictions Based on Ratings through ' + elo_state.date)
 
 	return results

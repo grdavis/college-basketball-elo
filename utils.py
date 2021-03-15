@@ -5,6 +5,7 @@ import plotly.graph_objects as go
 from datetime import datetime, timedelta
 
 DATA_FOLDER = 'Data/'
+OUTPUTS_FOLDER = 'Outputs/'
 
 def save_data(filepath, data):
 	with open(filepath, "w") as f:
@@ -27,6 +28,7 @@ def get_latest_data_filepath():
 def table_output(df, table_title, order = None):
 	if order != None:
 		df = df[order]
+	df.to_csv(OUTPUTS_FOLDER + table_title + '.csv', index = False)
 	fig = go.Figure(data=[go.Table(
 	    header=dict(values=list(df.columns),
 	                fill_color='paleturquoise',
