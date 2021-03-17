@@ -60,7 +60,7 @@ def sim_tournaments(elo_state, tournamant_teams, n, verbose = False):
 		results = predict_tournament(elo_state, tournamant_teams)
 		for r in range(len(ROUNDS)):
 			for team in results[ROUNDS[r]]:
-				sim_results[team][r] += 1
+				sim_results[team[0]][r] += 1
 
 	if verbose:
 		formatted = [[team] + [round(i/n, 4) for i in sim_results[team]] for team in tournamant_teams]
