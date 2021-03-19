@@ -1,7 +1,7 @@
 # college-basketball-elo
-Inspired by the folks at FiveThirtyEight who leverage Elo rating systems to make their [NBA](https://fivethirtyeight.com/features/how-we-calculate-nba-elo-ratings/) and NFL predictions, I created my own version of the Elo rating system for NCAA Men's College Basketball. FiveThirtyEight has this as well, but they don't expose the inner-workings of their model like they do for NBA and NFL. Additionally they use it only as one component in their ensemble methodology for NCAAA predictions - and they are only available during March Madness.
+Inspired by the folks at [FiveThirtyEight](https://fivethirtyeight.com/) who leverage [Elo rating systems](https://en.wikipedia.org/wiki/Elo_rating_system) to make their [NBA](https://projects.fivethirtyeight.com/2021-nba-predictions/) and [NFL](https://projects.fivethirtyeight.com/2020-nfl-predictions/) predictions, I created my own version of the Elo rating system for NCAA Men's College Basketball. FiveThirtyEight has this as well, but they don't expose the inner-workings of their model like they do for NBA and NFL. Additionally, they use it only as one component in [their ensemble methodology](https://fivethirtyeight.com/features/how-our-march-madness-predictions-work-2/) for NCAAA predictions - and [their predictions](https://projects.fivethirtyeight.com/2021-march-madness-predictions/) are only available during March Madness.
 
-This version of the Elo rating system is primarily based on the methodology used for FiveThirtyEight's NBA system and is operated on data from SportsReference going back to the start of the 2010 season. You can use these scripts to see team ratings, predict individual games, predict tournaments, or even simulate entire tournaments thousands of times as of any date in the last 10 years. This documentation walks through usage, methodology, tuning, and performance.  
+This version of the Elo rating system is primarily based on FiveThirtyEight's [NBA methodology](https://fivethirtyeight.com/features/how-we-calculate-nba-elo-ratings/) with some tuning adjustments. Game log data is from [Sports Reference](https://www.sports-reference.com/cbb/) and goes back to the start of the 2010 season. You can use these scripts to see team ratings, predict individual games, predict tournaments, or even simulate entire tournaments thousands of times as of any date in the last 10 years. This documentation walks through usage, methodology, tuning, and performance.  
 
 ## Usage
 There are several ways to use this program. They are organized into two scripts, each with several optional inputs to control functionality.
@@ -65,5 +65,8 @@ For completeness, `predictions.py` can be run with the following options:
   * `-m` or `--mode`: By default, the winner for each matchup in a tournament prediction is selected probabilistically (mode 0). Use `1` to have the model always pick the 'better' team according to Elo ratings. Use `2` to decide each matchup with a coinflip (random selection)
 
 ## Methodology
+The methodology for Elo rating systems is discussed in much more detail in several sources on the web, including the [Elo rating systems](https://en.wikipedia.org/wiki/Elo_rating_system) Wikipedia page. This particular implementation was most closely guided by FiveThirtyEight methodologies for the [NBA](https://fivethirtyeight.com/features/how-we-calculate-nba-elo-ratings/) and [NFL](https://fivethirtyeight.com/methodology/how-our-nfl-predictions-work/).
+
+The major advantage of an Elo system is its simplicity. Elo ratings are updated
 
 ## Tuning and Performance
