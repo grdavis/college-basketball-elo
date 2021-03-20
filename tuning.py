@@ -165,32 +165,32 @@ explore = tuning_sim(data, elo.K_FACTOR, elo.SEASON_CARRY, elo.HOME_ADVANTAGE)
 # fig.show()
 
 #################Elo Season-over-Season########################
-season_totals = {}
-season_teams = {}
-years = ['20110404', '20120402', '20130408', '20140407', '20150406', '20160404', '20170403', '20180402', '20190408']
-for team in explore.teams:
-	for year in years:
-		for date, snap in explore.teams[team].snapshots:
-			if date == year:
-				season_totals[year] = season_totals.get(year, 0) + snap
-				season_teams[year] = season_teams.get(year, 0) + 1
-y_vals = [round(season_totals[i]/season_teams[i]) for i in season_teams]
-x_vals = [i[:4] for i in season_teams]
-sizes = ['teams = ' + str(season_teams[i]) for i in season_teams]
-fig = go.Figure([go.Bar(x = x_vals, y = y_vals, text = sizes, textposition = 'auto')])
-fig.update_layout(title_text = 'Average End-of-Season Elo over Time: Spring 2011 - Spring 2019', xaxis_title = 'Year', yaxis_title = 'End of Season Elo')
-fig.show()
+# season_totals = {}
+# season_teams = {}
+# years = ['20110404', '20120402', '20130408', '20140407', '20150406', '20160404', '20170403', '20180402', '20190408']
+# for team in explore.teams:
+# 	for year in years:
+# 		for date, snap in explore.teams[team].snapshots:
+# 			if date == year:
+# 				season_totals[year] = season_totals.get(year, 0) + snap
+# 				season_teams[year] = season_teams.get(year, 0) + 1
+# y_vals = [round(season_totals[i]/season_teams[i]) for i in season_teams]
+# x_vals = [i[:4] for i in season_teams]
+# sizes = ['teams = ' + str(season_teams[i]) for i in season_teams]
+# fig = go.Figure([go.Bar(x = x_vals, y = y_vals, text = sizes, textposition = 'auto')])
+# fig.update_layout(title_text = 'Average End-of-Season Elo over Time: Spring 2011 - Spring 2019', xaxis_title = 'Year', yaxis_title = 'End of Season Elo')
+# fig.show()
 
 ##################LATEST DISTRIBUTION##########################
-bucketing = {}
-for team in explore.teams:
-	rounded = round(explore.get_elo(team) / 50) * 50
-	bucketing[rounded] = bucketing.get(rounded, 0) + 1
-x_vals = [i for i in range(min(bucketing), max(bucketing) + 1, 10)]
-y_vals = [bucketing.get(i, 0) for i in x_vals]
-fig = go.Figure([go.Bar(x = x_vals, y = y_vals)])
-fig.update_layout(title_text = 'Elo Distribution through ' + explore.date, xaxis_title = 'Elo Rating', yaxis_title = 'Number of Teams')
-fig.show()
+# bucketing = {}
+# for team in explore.teams:
+# 	rounded = round(explore.get_elo(team) / 50) * 50
+# 	bucketing[rounded] = bucketing.get(rounded, 0) + 1
+# x_vals = [i for i in range(min(bucketing), max(bucketing) + 1, 10)]
+# y_vals = [bucketing.get(i, 0) for i in x_vals]
+# fig = go.Figure([go.Bar(x = x_vals, y = y_vals)])
+# fig.update_layout(title_text = 'Elo Distribution through ' + explore.date, xaxis_title = 'Elo Rating', yaxis_title = 'Number of Teams')
+# fig.show()
 
 ###############HISTORICAL BRACKET PERFORMANCE##################
 # scores = [10, 20, 40, 80, 160, 320] #ESPN scoring system for correct game in round

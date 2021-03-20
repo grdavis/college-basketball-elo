@@ -47,7 +47,8 @@ def predict_tournament(elo_state, tournamant_teams, pick_mode = 0, verbose = Fal
 
 	if verbose:
 		output = pd.DataFrame.from_dict(results, orient = 'index').transpose().fillna('').replace('(', '').replace(')', '')
-		utils.table_output(output, 'Tournament Predictions Based on Ratings through ' + elo_state.date)
+		modes = {0: "Probabilistic Choice", 1: "Better Team", 2: "Random Team"}
+		utils.table_output(output, 'Tournament Predictions Based on Ratings through ' + elo_state.date + ' - ' + modes[pick_mode])
 
 	return results
 
@@ -101,10 +102,10 @@ def parseArguments():
 	parser = argparse.ArgumentParser(description = 'This script allows the user to predict results of individual games, create a bracket prediction for a tournament, or simulate most likely outcomes for a bracket')
 	parser.add_argument('-G', '--GamePredictor', default = False, nargs = 2, type = str, help = 'Use to predict a single game. List home team as a string and away team as a string. Use -n flag to indicate a neutral site')
 	parser.add_argument('-n', '--neutral', action = 'store_true', help = 'Use if predicting a single game at a neutral site')
-	parser.add_argument('-S', '--SimMode', default = False, nargs = 2, help = 'Use to run monte carlo simulations to predict most likely tournament outcomes. Enter the filename storing the tournament participants and the number of simulations to run')
+	parser.add_argument('-S', '--SimMode', default = False, nargs = 2, help = 'Use this to run monte carlo simulations for a tournament and see in what share of simulations a team makes it to each round. Enter the filename storing the tournament participants as a string and an integer number of simulations to run')
 	parser.add_argument('-d', '--dateSim', type = str, default = '99999999', help = 'Use if predicting a game or tournament as of a date in the past. Enter date as YYYYMMDD (e.g. 20190315)')
-	parser.add_argument('-P', '--PredictBracket', default = False, type = str, help = "Use to predict results of a tournament (i.e. generate a single bracket). Enter the filename storing the tournament participants. Use the -b flag to pick the better team in each matchup. Don't forget to use -d if predicting this tournament as of a date in the past")
-	parser.add_argument('-m', '--mode', default = 0, choices = [1, 2], type = int, help = "By default, the winner for each matchup in a tournament is selected probabilistically. Use 1 to have the model always pick the 'better' team. Use 2 to decide each matchup with a coinflip (randomly)")
+	parser.add_argument('-P', '--PredictBracket', default = False, type = str, help = "Use to predict results of a tournament (i.e. generate a single bracket). Enter the filename storing the tournament participants in the first column. Use the -m flag to specify how each matchup should be decided. Don't forget to use -d if predicting this tournament as of a date in the past")
+	parser.add_argument('-m', '--mode', default = 0, choices = [0, 1, 2], type = int, help = "By default, the winner for each matchup in a tournament prediction is selected probabilistically (mode 0). Use 1 to have the model always pick the 'better' team according to Elo ratings. Use 2 to decide each matchup with a coinflip (random selection)")
 	return parser.parse_args()
 
 if __name__ == '__main__':

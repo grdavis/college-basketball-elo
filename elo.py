@@ -132,14 +132,14 @@ def main(topteams = False, stop_short = '99999999', period = 7):
 		output = pd.DataFrame(this_sim.get_top(int(topteams)), columns = ['Team', 'Elo Rating', '%i Day Change' % period])
 		output['Point Spread vs. Next Rank'] = ["{0:+.1f}".format(((output['Elo Rating'][i] - output['Elo Rating'][i+1])/ELO_TO_POINTS_FACTOR)) for i in range(topteams - 1)] + ['']
 		output['Rank'] = [i for i in range (1, topteams+1)]
-		utils.table_output(output, 'Ratings through ' + this_sim.date, ['Rank', 'Team', 'Elo Rating', 'Point Spread vs. Next Rank', '%i Day Change' % period])
+		utils.table_output(output, 'Ratings through ' + this_sim.date + ' - Top ' + str(topteams), ['Rank', 'Team', 'Elo Rating', 'Point Spread vs. Next Rank', '%i Day Change' % period])
 			
 	return this_sim
 
 def parseArguments():
 	parser = argparse.ArgumentParser(description = 'This script allows the user to view the top elo-rated teams at any given time since the start of the 2010 season. The user has the ability to specify the number of top teams to display, and to specify what date they would like to evaluate on')
 	parser.add_argument('-t', '--topteams', type = int, default = 25, help = 'Specify how many of the top teams to output. Default is to display the top 25')
-	parser.add_argument('-d', '--date', default = '99999999', type = str, help = 'Use to see the top teams as of a date in the past. Enter date as YYYYMMDD (e.g. 20190315). Default is to calculate through the end of the most recent data in the data folder (after an update if the -u flag is used)')
+	parser.add_argument('-d', '--date', default = '99999999', type = str, help = 'Use to see the top teams as of a date in the past. Enter date as YYYYMMDD (e.g. 20190315). Default is to calculate through the last game in the most recent data')
 	parser.add_argument('-p', '--period', default = 7, type = int, help = "In the last column of the output, you see each team's change in elo over a period of time. Specify how many days you want that period to be. Default is 7.")
 	return parser.parse_args()
 
