@@ -3,6 +3,8 @@ import random
 import pandas as pd
 import utils
 import argparse
+import scraper
+import datetime
 
 DATA_FOLDER = utils.DATA_FOLDER
 ROUNDS = ['second', 'sixteen', 'eight', 'four', 'final', 'champion']
@@ -33,7 +35,7 @@ def predict_game(elo_state, home, away, pick_mode = False, neutral = False, verb
 	else:
 		winner = random.choices([home, away], weights = (winp_home, 1-winp_home))[0]
 
-	return winner, "{0:.0%}".format(winp_home) if winner == home else "{0:.0%}".format(1 - winp_home)
+	return winner, "{0:.0%}".format(winp_home) if winner == home else "{0:.0%}".format(1 - winp_home), home_spread
 
 def predict_tournament(elo_state, tournamant_teams, pick_mode = 0, verbose = False):
 	results = {'first': tournamant_teams}
@@ -43,7 +45,7 @@ def predict_tournament(elo_state, tournamant_teams, pick_mode = 0, verbose = Fal
 		matchups = matchups_from_list(remaining)
 		winners = [predict_game(elo_state, i[0], i[1], pick_mode = pick_mode, neutral = True) for i in matchups]
 		remaining = [i[0] for i in winners]
-		results[r] = winners
+		results[r] = winners[:2]
 
 	if verbose:
 		output = pd.DataFrame.from_dict(results, orient = 'index').transpose().fillna('').replace('(', '').replace(')', '')
@@ -67,6 +69,23 @@ def sim_tournaments(elo_state, tournamant_teams, n, verbose = False):
 		formatted = [[team] + [round(i/n, 4) for i in sim_results[team]] for team in tournamant_teams]
 		output = pd.DataFrame(formatted, columns = ['team'] + ROUNDS).sort_values(ROUNDS[-1], ascending = False)
 		utils.table_output(output, 'Tournament Predictions Based on Ratings through ' + elo_state.date + ' and ' + str(n) + ' Simulations')
+
+def predict_next_day(elo_state, stop_short):
+	predict_day = datetime.date.today() if stop_short == '99999999' else datetime.datetime.strptime(stop_short, "%Y%m%d")
+	games = scraper.scrape_scores(predict_day, scraper.new_driver())
+	if games == []:
+		print("No games scheduled on Sports Reference at this time for " + predict_day.strftime('%Y%m%d'))
+		return
+	predictions = []
+	for game in games:
+		is_neutral = True if game[0] == 1 else False
+		winner, prob, home_spread = predict_game(elo_state, game[1], game[3], neutral = is_neutral)
+		if game[1] == winner:
+			predictions.append([game[0], game[1], prob, home_spread, game[3], "{0:.0%}".format(1 - (float(prob[:-1])/100)), -home_spread])
+		else:
+			predictions.append([game[0], game[1], "{0:.0%}".format(1 - (float(prob[:-1])/100)), home_spread, game[3], prob, -home_spread])
+	output = pd.DataFrame(predictions, columns = ['Neutral', 'Home', 'Home Win Prob.', 'Home Pred. Spread', 'Away', 'Away Win Prob.', 'Away Pred. Spread'])
+	utils.table_output(output, predict_day.strftime('%Y%m%d') + ' Game Predictions Based on Ratings through ' + elo_state.date)
 
 def main(matchup = False, neutral = False, sim_mode = False, stop_short = '99999999', bracket = False, pick_mode = 0):
 	'''
@@ -96,14 +115,14 @@ def main(matchup = False, neutral = False, sim_mode = False, stop_short = '99999
 		tournamant_teams = list(pd.read_csv(bracket)['first'].dropna())
 		predict_tournament(elo_state, tournamant_teams, pick_mode = pick_mode, verbose = True)
 	else:
-		print('You must enter some optional arguments for something to happen. Use -h to see options.')
+		predict_next_day(elo_state, stop_short)
 
 def parseArguments():
 	parser = argparse.ArgumentParser(description = 'This script allows the user to predict results of individual games, create a bracket prediction for a tournament, or simulate most likely outcomes for a bracket')
 	parser.add_argument('-G', '--GamePredictor', default = False, nargs = 2, type = str, help = 'Use to predict a single game. List home team as a string and away team as a string. Use -n flag to indicate a neutral site')
 	parser.add_argument('-n', '--neutral', action = 'store_true', help = 'Use if predicting a single game at a neutral site')
 	parser.add_argument('-S', '--SimMode', default = False, nargs = 2, help = 'Use this to run monte carlo simulations for a tournament and see in what share of simulations a team makes it to each round. Enter the filename storing the tournament participants as a string and an integer number of simulations to run')
-	parser.add_argument('-d', '--dateSim', type = str, default = '99999999', help = 'Use if predicting a game or tournament as of a date in the past. Enter date as YYYYMMDD (e.g. 20190315)')
+	parser.add_argument('-d', '--dateSim', type = str, default = '99999999', help = 'Use if predicting a game or tournament as of a date in the past. Enter date as YYYYMMDD (e.g. 20190315). If trying to predict games for a particular date in the future, set -d equal to the day you want to predict')
 	parser.add_argument('-P', '--PredictBracket', default = False, type = str, help = "Use to predict results of a tournament (i.e. generate a single bracket). Enter the filename storing the tournament participants in the first column. Use the -m flag to specify how each matchup should be decided. Don't forget to use -d if predicting this tournament as of a date in the past")
 	parser.add_argument('-m', '--mode', default = 0, choices = [0, 1, 2], type = int, help = "By default, the winner for each matchup in a tournament prediction is selected probabilistically (mode 0). Use 1 to have the model always pick the 'better' team according to Elo ratings. Use 2 to decide each matchup with a coinflip (random selection)")
 	return parser.parse_args()

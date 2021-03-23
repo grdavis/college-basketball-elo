@@ -24,9 +24,16 @@ The script can be run with the following options:
   * `-p` or `--period`: The default is to display the Elo ratings change over the last 7 days in the table. Specify an integer number of days to use for that column instead of 7
 
 #### predictions.py
-This script allows you to make a number of different types of predictions using the Elo model. You can predict ad-hoc individual matchups, populate a traditional bracket with picks, or simulate a tournament to get each team's chances of making it to each round. Similar to elo.py, you have the option to specify a historical date of interest along with a number of other options depending on the desired functionality.
+This script allows you to make a number of different types of predictions using the Elo model. You can predict all scheduled games on a future day, ad-hoc individual matchups, populate a traditional bracket with picks, or simulate a tournament to get each team's chances of making it to each round. Similar to elo.py, you have the option to specify a historical date of interest along with a number of other options depending on the desired functionality.
 
 ###### Example 1
+```
+python3 predictions.py -d '20210327'
+```
+This example demonstrates the default functionality of the script. This will return predictions for all games scheduled according to [Sports Reference](https://www.sports-reference.com/cbb/) on the date specified date with the `-d` flag. If no date is specified and you just run, `python3 predictions.py`, predictions will be made based on today's schedule on Sports Reference. The output is a Plotly table showing each matchup, each team's win probability, and predicted spread. There is also an indicator for whether or not the game is played at a neutral site. The output tables are saved in the `Outputs` folder as a csv for further examination.
+![alt text](https://github.com/grdavis/college-basketball-elo/blob/main/Images/future_game_predictions.png?raw=true)
+
+###### Example 2
 ```
 python3 predictions.py -G 'UConn' 'Maryland' -n
 ```
@@ -36,8 +43,9 @@ Ratings through 20210319
 UConn vs. Maryland @ neutral site
 UConn 59% -2.5 Maryland 41% 2.5
 ```
+The advantage of this use over the default `predictions.py` functionality is you can predict the results of a hypothetical matchup or one that is not scheduled on Sports Reference.
 
-###### Example 2
+###### Example 3
 ```
 python3 predictions.py -P 'Data/tournament_results_2021.csv' -m 1
 ```
@@ -46,11 +54,11 @@ In this example, we want the model to predict the outcomes of a tournament with 
 As an output, you will see your original first column, then half the number of teams in the second column, a quarter in the third, and so on until a column has just 1 name. A team that advances from one column to the next is deemed to have won their matchup. The last team remaining (in the rightmost column) is the champion. Next to each team name will be the percent probability that this team won their previous matchup. In this example, you see Gonzaga is predicted as the 2021 champion and had a 64% chance of winning their matchup with Illinois in the finals. If `-m` was set to `0`, Gonzaga would have a 64% chance of being picked to win this matchup. Instead, since `-m` was set to `1`, Gonzaga was picked automatically because their Elo rating is greater than Illinois'. The output tables are saved in the `Outputs` folder as a csv for further examination.
 ![alt text](https://github.com/grdavis/college-basketball-elo/blob/main/Images/bracket_pred_current_output.png?raw=true)
 
-###### Example 3
+###### Example 4
 ```
 python3 predictions.py -S 'Data/tournament_results_2019.csv' 10000 -d '20190320'
 ```
-In this example, we are simulating 10,000 possible outcomes for the 2019 March Madness tournament based on the Elo ratings from 3/20/2019 (the day before the tournament started). The `-d` flag, which is optional, was used here to roll the ratings back to the specific date where we would have made the predictions prior to the 2019 tournament. If it was not specified, the simulations would be for the 2019 tournament matchups, but with today's Elo ratings (which are not as favorable to Duke, for example). The `-d` flag can also be used with the functionality demonstrated in examples 1 and 2. 
+In this example, we are simulating 10,000 possible outcomes for the 2019 March Madness tournament based on the Elo ratings from 3/20/2019 (the day before the tournament started). The `-d` flag, which is optional, was used here to roll the ratings back to the specific date where we would have made the predictions prior to the 2019 tournament. If it was not specified, the simulations would be for the 2019 tournament matchups, but with today's Elo ratings (which are not as favorable to Duke, for example). The `-d` flag can also be used with the functionality demonstrated in examples 2 and 3. 
 
 As an output you will see one column for each round of the tournament a team could possibly make it to - including being named champion. Each row tells us in what share of simulations that team made it to the corresponding round. For example, in ~63% of simulations, Virginia made it to the Elite 8. In ~15%, they won the whole thing (which they did end up doing). The output is sorted by this final column. The winners of each matchup in each simulation are chosen probabilistically. The output tables are saved in the `Outputs` folder as a csv for further examination. 
 ![alt text](https://github.com/grdavis/college-basketball-elo/blob/main/Images/historical_simulation_output.png?raw=true)
@@ -60,7 +68,7 @@ For completeness, `predictions.py` can be run with the following options:
   * `-G` or `--GamePredictor`: Use this to predict a single game. Supply a home team and an away team - both as strings. Use `-n` flag to indicate a neutral site. This can be used in conjunction with the `-d` flag to make predictions as they would have been made in the past
   * `-n` or `--neutral`: If provided and using `--GamePredictor`, this will indicate the matchup should be simulated as if the teams are at a neutral location. No advantage will be given to the home team (the first team listed)
   * `-S` or `SimMode`: Use this to run monte carlo simulations for a tournament and see in what share of simulations a team makes it to each round. Enter the filename storing the tournament participants as a string and an integer number of simulations to run. Don't forget to use `-d` if predicting this tournament as of a date in the past
-  * `-d` or `--dateSim`: Specify a date in the past on which to make predictions. The model will freeze Elo ratings on the date specified to simulate making predictions as of that date. Enter date as a YYYYMMDD integer (e.g. 20190320). The default is to calculate through the last game in the most recent data. `-d` can be specified at any time (making single game predictions, single bracket predictions, or simulating bracket outcomes)
+  * `-d` or `--dateSim`: Specify a date in the past on which to make predictions. In the default mode of predicting an entire future day's games, the `-d` flag indicates what day's schedule to look up on Sports Reference. In the other modes, `-d` can be thought of as the "stop short" date. The model will freeze Elo ratings on the date specified to simulate making predictions as of that date. Enter date as a YYYYMMDD integer (e.g. 20190320). If not specified, the default is to calculate through the last game in the most recent data and make predictions for today's games. `-d` can be specified at any time (making future game predictions for a day, single game predictions, single bracket predictions, or simulating bracket outcomes)
   * `-P` or `--PredictBracket`: Use to predict results of a tournament (i.e. generate a single bracket). Enter the filename storing the tournament participants in the first column. Use the `-m` flag to specify how each matchup should be decided. Don't forget to use `-d` if predicting this tournament as of a date in the past
   * `-m` or `--mode`: By default, the winner for each matchup in a tournament prediction is selected probabilistically (mode 0). Use `1` to have the model always pick the 'better' team according to Elo ratings. Use `2` to decide each matchup with a coinflip (random selection)
 

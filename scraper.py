@@ -42,6 +42,8 @@ def scrape_scores(date_obj, driver):
 		day_stats.append(stats + [this_day_string])
 	return day_stats
 
+# print(scrape_scores(datetime.datetime.strptime('20210327', "%Y%m%d"), new_driver()))
+
 def scrape_by_day(file_start, scrape_start, end, all_data):
 	driver = new_driver()
 	new_data = []
