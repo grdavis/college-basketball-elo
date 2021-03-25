@@ -37,15 +37,15 @@ def predict_game(elo_state, home, away, pick_mode = False, neutral = False, verb
 
 	return winner, "{0:.0%}".format(winp_home) if winner == home else "{0:.0%}".format(1 - winp_home), home_spread
 
-def predict_tournament(elo_state, tournamant_teams, pick_mode = 0, verbose = False):
-	results = {'first': tournamant_teams}
+def predict_tournament(elo_state, tournamant_teams, pick_mode = 0, verbose = False, rounds = ROUNDS):
+	results = {rounds[0]: tournamant_teams}
 	remaining = tournamant_teams
 
-	for r in ROUNDS:
+	for r in rounds[1:]:
 		matchups = matchups_from_list(remaining)
 		winners = [predict_game(elo_state, i[0], i[1], pick_mode = pick_mode, neutral = True) for i in matchups]
 		remaining = [i[0] for i in winners]
-		results[r] = winners[:2]
+		results[r] = [(i[0], i[1]) for i in winners]
 
 	if verbose:
 		output = pd.DataFrame.from_dict(results, orient = 'index').transpose().fillna('').replace('(', '').replace(')', '')
@@ -54,20 +54,20 @@ def predict_tournament(elo_state, tournamant_teams, pick_mode = 0, verbose = Fal
 
 	return results
 
-def sim_tournaments(elo_state, tournamant_teams, n, verbose = False):
+def sim_tournaments(elo_state, tournamant_teams, n, verbose = False, rounds = ROUNDS):
 	sim_results = {}
 	for team in tournamant_teams:
-		sim_results[team] = [0, 0, 0, 0, 0, 0]
+		sim_results[team] = [0 for _ in range(len(rounds) - 1)]
 
-	for i in range(n):
-		results = predict_tournament(elo_state, tournamant_teams)
-		for r in range(len(ROUNDS)):
-			for team in results[ROUNDS[r]]:
-				sim_results[team[0]][r] += 1
+	for _ in range(n):
+		results = predict_tournament(elo_state, tournamant_teams, rounds = rounds)
+		for r in range(1, len(rounds)):
+			for team in results[rounds[r]]:
+				sim_results[team[0]][r-1] += 1
 
 	if verbose:
 		formatted = [[team] + [round(i/n, 4) for i in sim_results[team]] for team in tournamant_teams]
-		output = pd.DataFrame(formatted, columns = ['team'] + ROUNDS).sort_values(ROUNDS[-1], ascending = False)
+		output = pd.DataFrame(formatted, columns = ['team'] + rounds[1:]).sort_values(rounds[-1], ascending = False)
 		utils.table_output(output, 'Tournament Predictions Based on Ratings through ' + elo_state.date + ' and ' + str(n) + ' Simulations')
 
 def predict_next_day(elo_state, forecast_date):
@@ -108,11 +108,13 @@ def main(forecast_date = False, matchup = False, neutral = False, sim_mode = Fal
 		predict_game(elo_state, home, away, neutral = neutral, verbose = True)
 	elif sim_mode != False:
 		file, simulations = sim_mode
-		tournamant_teams = list(pd.read_csv(file)['first'].dropna())
-		sim_tournaments(elo_state, tournamant_teams, n = int(simulations), verbose = True)
+		tournamant_teams = list(pd.read_csv(file).iloc[:,0].dropna())
+		rounds = list(pd.read_csv(file).columns)
+		sim_tournaments(elo_state, tournamant_teams, n = int(simulations), verbose = True, rounds = rounds)
 	elif bracket != False:
-		tournamant_teams = list(pd.read_csv(bracket)['first'].dropna())
-		predict_tournament(elo_state, tournamant_teams, pick_mode = pick_mode, verbose = True)
+		tournamant_teams = list(pd.read_csv(bracket).iloc[:,0].dropna())
+		rounds = list(pd.read_csv(bracket).columns)
+		predict_tournament(elo_state, tournamant_teams, pick_mode = pick_mode, verbose = True, rounds = rounds)
 	else:
 		forecast_date = datetime.date.today() if forecast_date == False else datetime.datetime.strptime(forecast_date, "%Y%m%d")
 		predict_next_day(elo_state, forecast_date)
