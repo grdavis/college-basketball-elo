@@ -10,6 +10,9 @@ DATA_FOLDER = utils.DATA_FOLDER
 ROUNDS = ['second', 'sixteen', 'eight', 'four', 'final', 'champion']
 
 def matchups_from_list(team_list):
+	'''
+	convert a list of team names to a list of tuples that will match up consecutive teams together as opponents
+	'''
 	ret_list = []
 	for i in range(len(team_list)):
 		if i % 2 == 0:
@@ -18,7 +21,10 @@ def matchups_from_list(team_list):
 
 def predict_game(elo_state, home, away, pick_mode = False, neutral = False, verbose = False):
 	'''
-	pick_mode = 0 -> chooose winners probabilistically, 1 -> always choose the better team, 2 -> choose a random team
+	uses the specified elo_state to predict the outcome of a game between home and away
+	pick_mode: 0 -> chooose winners probabilistically, 1 -> always choose the better team, 2 -> choose a random team
+	neutral: specifies if the game is played at a neutral site
+	returns a winner (either home or away), their win probability, and the home team's predicted spread
 	'''
 	home_boost = elo.HOME_ADVANTAGE if not neutral else 0
 	home_elo = elo_state.get_elo(home) + home_boost
@@ -38,6 +44,11 @@ def predict_game(elo_state, home, away, pick_mode = False, neutral = False, verb
 	return winner, "{0:.0%}".format(winp_home) if winner == home else "{0:.0%}".format(1 - winp_home), home_spread
 
 def predict_tournament(elo_state, tournamant_teams, pick_mode = 0, verbose = False, rounds = ROUNDS):
+	'''
+	uses the specified elo_state to simulate a single tournament for teams in tournament teams
+	pick_mode: 0 -> chooose winners probabilistically, 1 -> always choose the better team, 2 -> choose a random team
+	outputs a Plotly table summarizing predictions and saves a csv
+	'''
 	results = {rounds[0]: tournamant_teams}
 	remaining = tournamant_teams
 
@@ -55,6 +66,11 @@ def predict_tournament(elo_state, tournamant_teams, pick_mode = 0, verbose = Fal
 	return results
 
 def sim_tournaments(elo_state, tournamant_teams, n, verbose = False, rounds = ROUNDS):
+	'''
+	uses the specified elo_state to simulate a tournament (specified by tournament_teams) n times
+	each row in the output specifies the share of simulations in which a team made it to the corresponding round
+	outputs a Plotly table summarizing predictions and saves a csv
+	'''
 	sim_results = {}
 	for team in tournamant_teams:
 		sim_results[team] = [0 for _ in range(len(rounds) - 1)]
@@ -71,6 +87,10 @@ def sim_tournaments(elo_state, tournamant_teams, n, verbose = False, rounds = RO
 		utils.table_output(output, 'Tournament Predictions Based on Ratings through ' + elo_state.date + ' and ' + str(n) + ' Simulations')
 
 def predict_next_day(elo_state, forecast_date):
+	'''
+	checks Sports Reference for games on the specified date object date and uses the elo state to predict each game's outcome 
+	outputs a Plotly table summarizing predictions and saves a csv
+	'''
 	games = scraper.scrape_scores(forecast_date, scraper.new_driver())
 	if games == []:
 		print("No games scheduled on Sports Reference at this time for " + forecast_date.strftime('%Y%m%d'))

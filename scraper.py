@@ -8,28 +8,30 @@ URL = 'https://www.sports-reference.com/cbb/boxscores/index.cgi?month=MONTH&day=
 DATA_FOLDER = utils.DATA_FOLDER
 
 def new_driver():
+	'''
+	return a new healdless chrome webdriver
+	'''
 	chrome_options = webdriver.ChromeOptions()  
 	chrome_options.add_argument("--headless")
 	return webdriver.Chrome(options = chrome_options)
 
 def get_chrome_data(url, driver):
+	'''
+	given a driver object, retrieve the page source of the specified url
+	'''
 	driver.get(url)
 	return driver.page_source
 
-def fix_dates_for_data(date_obj):
-	#make sure dates are in the format: 20210130
-	new_month = str(date_obj.month) if len(str(date_obj.month)) == 2 else "0" + str(date_obj.month)
-	new_day = str(date_obj.day) if len(str(date_obj.day)) == 2 else "0" + str(date_obj.day)
-	return str(date_obj.year) + new_month + new_day 
-
 def scrape_scores(date_obj, driver):
-	#scrape the scores from a single day
+	'''
+	scrape and return stats in the form of a list of lists where each sublist is information from a single game played on the specified day 
+	'''
 	day, month, year = str(date_obj.day), str(date_obj.month), str(date_obj.year)
 	day_stats = []
 	url = URL.replace("DAY", day).replace("MONTH", month).replace("YEAR", year)
 	data = get_chrome_data(url, driver)
 	table_divs = BeautifulSoup(data,'html.parser').find_all("div", {'class': 'game_summary'})
-	this_day_string = fix_dates_for_data(date_obj)
+	this_day_string = date_obj.strftime('%Y%m%d')
 	print(this_day_string)
 	for div in table_divs:
 		tables = div.find('tbody')
@@ -42,14 +44,19 @@ def scrape_scores(date_obj, driver):
 		day_stats.append(stats + [this_day_string])
 	return day_stats
 
-# print(scrape_scores(datetime.datetime.strptime('20210327', "%Y%m%d"), new_driver()))
-
-def scrape_by_day(file_start, scrape_start, end, all_data):
+def scrape_by_day(file_start, scrape_start, scrape_end, all_data):
+	'''
+	scrape data from scrape_start to end, append it to all_data, and save this new file as a csv
+	file_start: specifies a string to use for save name purposes. This is the date ('YYYYMMDD') on which the data file begins
+	scrape_start: different from the file start, this is the date object of the day on which to start scraping new data
+	scrape_end: this is the date object specifying what the last day to scrape should be
+	all_data: this is a list of all the existing data that the new data will be appended to
+	'''
 	driver = new_driver()
 	new_data = []
 	i = scrape_start
 	this_month = scrape_start.month
-	while i <= end:
+	while i <= scrape_end:
 		if i.month in [5, 6, 7, 8, 9, 10]: 
 			i += datetime.timedelta(days = 1)
 			continue
@@ -60,17 +67,21 @@ def scrape_by_day(file_start, scrape_start, end, all_data):
 			print(len(new_data), "games recorded")
 			all_data.extend(new_data)
 			new_data = []
-			utils.save_data(DATA_FOLDER + file_start + "-" + fix_dates_for_data(i - datetime.timedelta(days = 1)) + ".csv", all_data)
+			utils.save_data(DATA_FOLDER + file_start + "-" + (i - datetime.timedelta(days = 1)).strftime('%Y%m%d') + ".csv", all_data)
 	print(len(new_data), "games recorded")
 	all_data.extend(new_data)
-	utils.save_data(DATA_FOLDER + file_start + "-" + fix_dates_for_data(i - datetime.timedelta(days = 1)) + ".csv", all_data)
+	utils.save_data(DATA_FOLDER + file_start + "-" + (i - datetime.timedelta(days = 1)).strftime('%Y%m%d') + ".csv", all_data)
 	driver.quit()
 	return all_data
 
 def main(file_start, scrape_start, scrape_end, data_filepath = False):
-	#assumes data formats used throughout are YYYYMMDD
-	#scrapes from scrape_start through scrape_end and appends results to provided data_filepath
-	#file_start is used for naming purposes as the start of data_filepath may be different from scrape_start
+	'''
+	performs some preliminary setup work and calls functions to scrape data in the specified date ranges and add it to an already exisiting file of data (if specified)
+	file_start: specifies a string to use for save name purposes. This is the date ('YYYYMMDD') on which the data file begins
+	scrape_start: different from the file start, this is the date string ('YYYYMMDD') of the day on which to start scraping new data
+	scrape_end: this is a string date ('YYYYMMDD') specifying what the last day to scrape should be
+	data_filepath: specifies where to find the existing data we want to append new data to. If not specified, the scraped data is saved as a standalone
+	'''
 	start = datetime.datetime.strptime(scrape_start, "%Y%m%d")
 	end = datetime.datetime.strptime(scrape_end, "%Y%m%d")
 	if data_filepath != False:

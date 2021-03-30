@@ -14,6 +14,9 @@ ELO_TO_POINTS_FACTOR = -25.5 #divide an elo margin by this to get the predicted 
 DATA_FOLDER = utils.DATA_FOLDER
 
 class Team():
+	'''
+	class for storing information about a specific team including their elo rating, historical elos, and name
+	'''
 	def __init__(self, name, date, starting_elo):
 		self.name = name
 		self.elo = starting_elo
@@ -24,6 +27,9 @@ class Team():
 		self.elo = max(0, self.elo + change)
 
 class ELO_Sim():
+	'''
+	class for keeping track of the state of a given simulation run through the data including all of the relevant Team objects for the simulation 
+	'''
 	def __init__(self):
 		self.teams = {} #maintain a dictionary mapping string team name to a Team object
 		self.season_count = 0
@@ -52,12 +58,18 @@ class ELO_Sim():
 		return sorted([(self.teams[team].name, round(self.get_elo(team), 0), "{0:+.0f}".format(self.get_elo(team) - self.teams[team].snapshots[-1][-1])) for team in self.teams], key = lambda x: x[1], reverse = True)[:x]
 
 def calc_MoV_multiplier(elo_margin, MoV):
-	#adjusted 538s NBA MoV multiplier curve to better fit the distribution of NCAA MoVs
+	'''
+	return the MoV multiplier based on the elo_margin and MoV
+	this function is 538s NBA MoV multiplier curve asjusted to better fit the distribution of NCAA MoVs
+	'''
 	a = (MoV + 2.5)**.7 #nba adds 3 and raise to .8
 	b = 6 + max(.006 * elo_margin, -5.99) #nba does 7.5 + .006 * elo_margin
 	return a/b
 
 def winp(elo_spread):
+	'''
+	return a win probability based on an elo difference
+	'''
 	if elo_spread > ELO_BASE:
 		return 1
 	if elo_spread < -ELO_BASE:
@@ -65,6 +77,11 @@ def winp(elo_spread):
 	return 1 / (1 + 10**(-elo_spread/400))
 
 def step_elo(this_sim, row, k_factor, home_elo):
+	'''
+	step the ELO_sim forward based on the game data provided in the specified row
+	this updates the home and away team's elo ratings based on the results in row
+	row: list of a neutral flag, away team, away score, home team, home score
+	'''
 	home, away = row[3], row[1]
 	homeScore, awayScore = int(row[4]), int(row[2])
 	winner, loser = home if homeScore > awayScore else away, home if awayScore > homeScore else away
@@ -89,6 +106,11 @@ def step_elo(this_sim, row, k_factor, home_elo):
 	return elo_margin, MoV
 
 def sim(data, k_factor, new_season_carry, home_elo, stop_short, last_snap):
+	'''
+	creates a new ELO_Sim objectm, steps it through each row in the provided data up until stop_short, and returns the object
+	stop_short: a date string ('YYYYMMDD') that indicates whether or not to stop the simulation before the end of the data on the provided date
+	last_snap: when taking a final snapshot of a team's elo before the end of the simulation, specify an integer number of days back to take the snapshot
+	'''
 	this_sim = ELO_Sim()
 	this_month = data[0][-1][4:6]
 	last_day = data[-1][-1] if stop_short > data[-1][-1] else stop_short
