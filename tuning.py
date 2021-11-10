@@ -21,7 +21,7 @@ class Tuning_ELO_Sim(elo.ELO_Sim):
 	def __init__(self):
 		super().__init__()
 		self.predict_tracker = {}
-		self.win_tracker = {}
+		self.win_tracker = {0.0: 0}
 		self.elo_margin_tracker = {}
 		self.MoV_tracker = {}
 		self.error1 = []
@@ -50,14 +50,15 @@ class Tuning_ELO_Sim(elo.ELO_Sim):
 			error2 += self.predict_tracker[i] * abs(result - i)
 		return (sum(self.error1), error2 / total_games)
 
-def tuning_sim(data, k_factor, new_season_carry, home_elo):
+def tuning_sim(data, k_factor, new_season_carry, home_elo, new_team_elo):
 	'''
 	This function runs through all of the data and updates elo and errors along the way
 	It is a simplified version of the official sim function used in elo.py
 	'''
 	this_sim = Tuning_ELO_Sim()
 	this_month = data[0][-1][4:6]
-	
+	elo.NEW_ELO = new_team_elo
+
 	for row in data:
 		row_month = int(row[-1][4:6])
 		if this_month == 4 and row_month == 11:
@@ -77,51 +78,54 @@ def random_tune(data, number):
 	Start with wide ranges, then use the outputs (which are sorted by their errors) to inform a tighter range for the next iteration
 	Once windows are small enough, switch to brute_tune
 	'''
-	k_range = np.arange(10, 60.5, .5)
-	carry_range = np.arange(.5, 1.05, .05)
-	home_range = np.arange(50, 200, 5)
+	k_range = [44, 45, 46, 47]
+	carry_range = np.arange(.87, .93, .01)
+	home_range = np.arange(77, 85, 1)
+	new_team_range = [900]
 	errors = []
 	
 	for i in tqdm(range(number)):
-		k_factor, new_season_carry, home_elo = random.choice(k_range), random.choice(carry_range), random.choice(home_range)
-		error1, error2 = tuning_sim(data, k_factor, new_season_carry, home_elo).get_errors()
-		errors.append((error1, error2, k_factor, new_season_carry, home_elo))
+		k_factor, new_season_carry, home_elo, nte = random.choice(k_range), random.choice(carry_range), random.choice(home_range), random.choice(new_team_range)
+		error1, error2 = tuning_sim(data, k_factor, new_season_carry, home_elo, nte).get_errors()
+		errors.append((error1, error2, k_factor, new_season_carry, home_elo, nte))
 
 	return errors
 
 def brute_tune(data):
 	'''
-	Use this function to cycle through all possible combinations of the 3 variables within the defined ranges and find the optimal solution
+	Use this function to cycle through all possible combinations of the 4 variables within the defined ranges and find the optimal solution
 	Since brute force can take some time to run, random_tune first to help narrow possible ranges
 	'''
-	k_range = np.arange(42, 52, .5)
-	carry_range = np.arange(.95, 1.025, .025)
-	home_range = np.arange(75, 96, 1)
+	k_range = [44, 45, 46]#[64, 65, 66]
+	carry_range = [.89, .9, .91]#np.arange(.7, 1.00, .05)
+	home_range = [78, 79, 80, 81]#[110, 111, 112]
+	new_team_range = [875, 900, 925] #np.arange(750, 1250, 50)
 	errors = []
 
 	for k in tqdm(k_range):
-		for c in carry_range:
-			for h in home_range:
-				error1, error2 = tuning_sim(data, k, c, h).get_errors()
-				errors.append((error1, error2, k, c, h))
+		for c in tqdm(carry_range, leave = False):
+			for h in tqdm(home_range, leave = False):
+				for n in tqdm(new_team_range, leave = False):
+					error1, error2 = tuning_sim(data, k, c, h, n).get_errors()
+					errors.append((error1, error2, k, c, h, n))
 
 	return errors
 
 def tune(data):
 	#start with random_tune, then switch to brute_tune when the ranges for values are tight enough so as not to take too long to run
-	errors = random_tune(data, 5)
-	# errors = brute_tune(data)
+	# errors = random_tune(data, 50)
+	errors = brute_tune(data)
 	print(sorted(errors, key = lambda x: x[0]))
 	print(sorted(errors, key = lambda x: x[1]))
 
 filepath = utils.get_latest_data_filepath()
 data = utils.read_csv(filepath)
-explore = tuning_sim(data, elo.K_FACTOR, elo.SEASON_CARRY, elo.HOME_ADVANTAGE)
+explore = tuning_sim(data, elo.K_FACTOR, elo.SEASON_CARRY, elo.HOME_ADVANTAGE, elo.NEW_ELO)
 
 ###########################TUNING############################
 # tune(data)
-# # start measuring after season 3 (start fall 2014)
-# # best: (error1 = 6787.1710585282635, error2 = 0.010835972134262182, k_factor = 47, carryover = 1, home_elo = 83)
+# # start measuring after season 3 (start fall 2014), errors as of games through 11/8/2021
+# # best: (error1 = 6810, error2 = 0.0107, k_factor = 45, carryover = .9, home_elo = 80, new_team = 900)
 
 ################Brier (Error 1) Over Time####################
 # size = 5700 #roughly the number of games per season if we have ~40K errors over the course of 7 seasons (Fall 2014 - Spring 2021)
@@ -130,7 +134,7 @@ explore = tuning_sim(data, elo.K_FACTOR, elo.SEASON_CARRY, elo.HOME_ADVANTAGE)
 # sizes = [size for i in range(len(explore.error1)//size)] + [leftover]
 # x_vals = [i for i in range(len(sizes))]
 # fig = go.Figure([go.Bar(x = x_vals, y = y_vals, text = ['n = ' + str(size) for size in sizes], textposition = 'auto')])
-# fig.update_layout(title_text = 'Brier Score Over Time: Fall 2014 - Spring 2021', xaxis_title = 'Bucket of Chronological Games', yaxis_title = 'Brier Score in Bucket')
+# fig.update_layout(title_text = 'Brier Score Over Time: Fall 2014 - Spring 2021', xaxis_title = 'Bucket of Chronological Games', yaxis_title = 'Avg. Brier Score in Bucket')
 # fig.show()
 
 ###################Visualizing Error 2#######################
@@ -145,24 +149,24 @@ explore = tuning_sim(data, elo.K_FACTOR, elo.SEASON_CARRY, elo.HOME_ADVANTAGE)
 # fig.show()
 
 ##############Elo margin vs. Margin of Victory################
-# x_vals = [i for i in explore.elo_margin_tracker]
-# y_vals = [explore.MoV_tracker[i]/explore.elo_margin_tracker[i] for i in x_vals]
-# sizes = [explore.elo_margin_tracker[i] for i in x_vals]
-# fig = go.Figure()
-# fig.add_trace(go.Scatter(x = x_vals, y = y_vals, mode = 'markers', name = 'Results', text = ['n = ' + str(size) for size in sizes], marker=dict(size=[s/120 for s in sizes])))
-# #fit a line to middle 80% of data (Pareto principle)
-# target_points = sum(sizes)*.8*.5 #I want to reach 80% of points on the positive side. They are duplicated on the negative side, so really 40% of total points
-# points_reached = explore.elo_margin_tracker[0]
-# for i in range(1, int(max(x_vals)/25)):
-# 	points_reached += explore.elo_margin_tracker.get(i*25, 0)
-# 	if points_reached > target_points: break
-# x_trimmed = [j*25 for j in range(-i, i+1)]
-# y_trimmed = [explore.MoV_tracker[i]/explore.elo_margin_tracker[i] for i in x_trimmed]
-# slope, intercept, r, p, se = linregress(x_trimmed, y_trimmed)
-# # slope: 0.03922 -> 1/slope: 25.5 elo difference / point difference
-# fig.add_trace(go.Scatter(x = x_trimmed, y = [i*slope + intercept for i in x_trimmed], mode = 'lines', name = 'LSRL for Middle 80% of Games (R^2 = 0.99)'))
-# fig.update_layout(title_text = 'Elo Margin vs. Average Scoring Margin: 1 game point = 25.5 Elo points', xaxis_title = 'Elo Margin', yaxis_title = 'Average Actual Scoring Margin')
-# fig.show()
+x_vals = [i for i in explore.elo_margin_tracker]
+y_vals = [explore.MoV_tracker[i]/explore.elo_margin_tracker[i] for i in x_vals]
+sizes = [explore.elo_margin_tracker[i] for i in x_vals]
+fig = go.Figure()
+fig.add_trace(go.Scatter(x = x_vals, y = y_vals, mode = 'markers', name = 'Results', text = ['n = ' + str(size) for size in sizes], marker=dict(size=[s/120 for s in sizes])))
+#fit a line to middle 80% of data (Pareto principle)
+target_points = sum(sizes)*.8*.5 #I want to reach 80% of points on the positive side. They are duplicated on the negative side, so really 40% of total points
+points_reached = explore.elo_margin_tracker[0]
+for i in range(1, int(max(x_vals)/25)):
+	points_reached += explore.elo_margin_tracker.get(i*25, 0)
+	if points_reached > target_points: break
+x_trimmed = [j*25 for j in range(-i, i+1)]
+y_trimmed = [explore.MoV_tracker[i]/explore.elo_margin_tracker[i] for i in x_trimmed]
+slope, intercept, r, p, se = linregress(x_trimmed, y_trimmed)
+# slope: 0.03812 -> 1/slope: 26.2 elo difference / point difference
+fig.add_trace(go.Scatter(x = x_trimmed, y = [i*slope + intercept for i in x_trimmed], mode = 'lines', name = 'LSRL for Middle 80% of Games (R^2 > 0.99)'))
+fig.update_layout(title_text = 'Elo Margin vs. Average Scoring Margin: 1 game point = 26.2 Elo points', xaxis_title = 'Elo Margin', yaxis_title = 'Average Actual Scoring Margin')
+fig.show()
 
 #################Elo Season-over-Season########################
 # season_totals = {}

@@ -6,11 +6,11 @@ import argparse
 import pandas as pd
 
 ELO_BASE = 1500
-NEW_ELO = 1050
-K_FACTOR = 47
-SEASON_CARRY = 1.0
-HOME_ADVANTAGE = 83
-ELO_TO_POINTS_FACTOR = -25.5 #divide an elo margin by this to get the predicted point spread
+NEW_ELO = 900
+K_FACTOR = 45
+SEASON_CARRY = 0.9
+HOME_ADVANTAGE = 80
+ELO_TO_POINTS_FACTOR = -26.2 #divide an elo margin by this to get the predicted point spread
 DATA_FOLDER = utils.DATA_FOLDER
 
 class Team():
@@ -22,9 +22,14 @@ class Team():
 		self.elo = starting_elo
 		self.snapshots = [(date, starting_elo)] #list of ('date', elo)
 		self.seven_days_ago = starting_elo
+		self.season_game_count = 0
 
 	def update_elo(self, change):
 		self.elo = max(0, self.elo + change)
+		self.season_game_count += 1
+
+	def reset_game_count(self):
+		self.season_game_count = 0
 
 class ELO_Sim():
 	'''
@@ -44,8 +49,14 @@ class ELO_Sim():
 
 	def season_reset(self, new_season_carry):
 		self.snapshot()
+		to_remove = []
 		for team in self.teams:
+			if self.teams[team].season_game_count < 5:
+				to_remove.append(team)
 			self.teams[team].elo = (self.get_elo(team) * new_season_carry) + ((1 - new_season_carry) * ELO_BASE)
+			self.teams[team].reset_game_count()
+		for team in to_remove:
+			del self.teams[team]
 
 	def add_team(self, name):
 		self.teams[name] = Team(name, self.date, ELO_BASE if self.season_count == 0 else NEW_ELO)
