@@ -41,6 +41,8 @@ class ELO_Sim():
 		self.date = ''
 
 	def get_elo(self, name):
+		if name not in self.teams:
+			self.add_team(name)
 		return self.teams[name].elo
 
 	def snapshot(self):

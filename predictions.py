@@ -91,7 +91,7 @@ def predict_next_day(elo_state, forecast_date):
 	checks Sports Reference for games on the specified date object date and uses the elo state to predict each game's outcome 
 	outputs a Plotly table summarizing predictions and saves a csv
 	'''
-	games = scraper.scrape_scores(forecast_date, scraper.new_driver())
+	games = scraper.scrape_scores(forecast_date)
 	if games == []:
 		print("No games scheduled on Sports Reference at this time for " + forecast_date.strftime('%Y%m%d'))
 		return
