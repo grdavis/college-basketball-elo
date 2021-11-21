@@ -61,7 +61,7 @@ def tuning_sim(data, k_factor, new_season_carry, home_elo, new_team_elo):
 
 	for row in data:
 		row_month = int(row[-1][4:6])
-		if this_month == 4 and row_month == 11:
+		if this_month in [3, 4] and row_month == 11:
 			this_sim.season_count += 1
 			this_sim.season_reset(new_season_carry)
 		this_sim.date = row[-1]
@@ -96,10 +96,10 @@ def brute_tune(data):
 	Use this function to cycle through all possible combinations of the 4 variables within the defined ranges and find the optimal solution
 	Since brute force can take some time to run, random_tune first to help narrow possible ranges
 	'''
-	k_range = [44, 45, 46]#[64, 65, 66]
-	carry_range = [.89, .9, .91]#np.arange(.7, 1.00, .05)
-	home_range = [78, 79, 80, 81]#[110, 111, 112]
-	new_team_range = [875, 900, 925] #np.arange(750, 1250, 50)
+	k_range = [42, 43, 44, 45]#[64, 65, 66]
+	carry_range = [.9, .91, .92, .93]#np.arange(.7, 1.00, .05)
+	home_range = [80, 81, 82, 83]#[110, 111, 112]
+	new_team_range = [925, 950, 975, 1000] #np.arange(750, 1250, 50)
 	errors = []
 
 	for k in tqdm(k_range):
@@ -121,11 +121,12 @@ def tune(data):
 filepath = utils.get_latest_data_filepath()
 data = utils.read_csv(filepath)
 explore = tuning_sim(data, elo.K_FACTOR, elo.SEASON_CARRY, elo.HOME_ADVANTAGE, elo.NEW_ELO)
+# print(explore.get_errors())
 
 ###########################TUNING############################
 # tune(data)
 # # start measuring after season 3 (start fall 2014), errors as of games through 11/8/2021
-# # best: (error1 = 6810, error2 = 0.0107, k_factor = 45, carryover = .9, home_elo = 80, new_team = 900)
+# # best: (error1 = 6887, error2 = 0.0097, k_factor = 43, carryover = .9, home_elo = 81, new_team = 925)
 
 ################Brier (Error 1) Over Time####################
 # size = 5700 #roughly the number of games per season if we have ~40K errors over the course of 7 seasons (Fall 2014 - Spring 2021)
@@ -134,44 +135,45 @@ explore = tuning_sim(data, elo.K_FACTOR, elo.SEASON_CARRY, elo.HOME_ADVANTAGE, e
 # sizes = [size for i in range(len(explore.error1)//size)] + [leftover]
 # x_vals = [i for i in range(len(sizes))]
 # fig = go.Figure([go.Bar(x = x_vals, y = y_vals, text = ['n = ' + str(size) for size in sizes], textposition = 'auto')])
-# fig.update_layout(title_text = 'Brier Score Over Time: Fall 2014 - Spring 2021', xaxis_title = 'Bucket of Chronological Games', yaxis_title = 'Avg. Brier Score in Bucket')
+# fig.update_layout(title_text = 'Brier Score Over Time: Fall 2014 - Fall 2021', xaxis_title = 'Bucket of Chronological Games', yaxis_title = 'Avg. Brier Score in Bucket')
 # fig.show()
 
 ###################Visualizing Error 2#######################
-# x_vals = [i for i in explore.predict_tracker]
-# y_vals = [explore.win_tracker[i]/explore.predict_tracker[i] for i in x_vals]
-# sizes = [explore.predict_tracker[i] for i in x_vals]
-# fig = go.Figure()
-# fig.add_trace(go.Scatter(x = x_vals, y = y_vals, mode = 'markers', name = 'Predictions', text = ['n = ' + str(size) for size in sizes]))
-# fig.add_trace(go.Scatter(x = [0, 1], y = [0, 1], mode = 'lines', name = 'Perfect Line'))
-# r2 = r2_score(x_vals, y_vals)
-# fig.update_layout(title_text = 'Predicted vs. Actual Win Probability (R^2 = 0.99)', xaxis_title = 'Predicted Win Probability', yaxis_title = 'Actual Win Probability')
-# fig.show()
+x_vals = [i for i in explore.predict_tracker]
+y_vals = [explore.win_tracker[i]/explore.predict_tracker[i] for i in x_vals]
+sizes = [explore.predict_tracker[i] for i in x_vals]
+fig = go.Figure()
+fig.add_trace(go.Scatter(x = x_vals, y = y_vals, mode = 'markers', name = 'Predictions', text = ['n = ' + str(size) for size in sizes]))
+fig.add_trace(go.Scatter(x = [0, 1], y = [0, 1], mode = 'lines', name = 'Perfect Line'))
+r2 = r2_score(x_vals, y_vals)
+fig.update_layout(title_text = 'Predicted vs. Actual Win Probability (R^2 = 0.99)', xaxis_title = 'Predicted Win Probability', yaxis_title = 'Actual Win Probability')
+fig.show()
 
 ##############Elo margin vs. Margin of Victory################
-x_vals = [i for i in explore.elo_margin_tracker]
-y_vals = [explore.MoV_tracker[i]/explore.elo_margin_tracker[i] for i in x_vals]
-sizes = [explore.elo_margin_tracker[i] for i in x_vals]
-fig = go.Figure()
-fig.add_trace(go.Scatter(x = x_vals, y = y_vals, mode = 'markers', name = 'Results', text = ['n = ' + str(size) for size in sizes], marker=dict(size=[s/120 for s in sizes])))
-#fit a line to middle 80% of data (Pareto principle)
-target_points = sum(sizes)*.8*.5 #I want to reach 80% of points on the positive side. They are duplicated on the negative side, so really 40% of total points
-points_reached = explore.elo_margin_tracker[0]
-for i in range(1, int(max(x_vals)/25)):
-	points_reached += explore.elo_margin_tracker.get(i*25, 0)
-	if points_reached > target_points: break
-x_trimmed = [j*25 for j in range(-i, i+1)]
-y_trimmed = [explore.MoV_tracker[i]/explore.elo_margin_tracker[i] for i in x_trimmed]
-slope, intercept, r, p, se = linregress(x_trimmed, y_trimmed)
-# slope: 0.03812 -> 1/slope: 26.2 elo difference / point difference
-fig.add_trace(go.Scatter(x = x_trimmed, y = [i*slope + intercept for i in x_trimmed], mode = 'lines', name = 'LSRL for Middle 80% of Games (R^2 > 0.99)'))
-fig.update_layout(title_text = 'Elo Margin vs. Average Scoring Margin: 1 game point = 26.2 Elo points', xaxis_title = 'Elo Margin', yaxis_title = 'Average Actual Scoring Margin')
-fig.show()
+# x_vals = [i for i in explore.elo_margin_tracker]
+# y_vals = [explore.MoV_tracker[i]/explore.elo_margin_tracker[i] for i in x_vals]
+# sizes = [explore.elo_margin_tracker[i] for i in x_vals]
+# fig = go.Figure()
+# fig.add_trace(go.Scatter(x = x_vals, y = y_vals, mode = 'markers', name = 'Results', text = ['n = ' + str(size) for size in sizes], marker=dict(size=[s/120 for s in sizes])))
+# #fit a line to middle 80% of data (Pareto principle)
+# target_points = sum(sizes)*.8*.5 #I want to reach 80% of points on the positive side. They are duplicated on the negative side, so really 40% of total points
+# points_reached = explore.elo_margin_tracker[0]
+# for i in range(1, int(max(x_vals)/25)):
+# 	points_reached += explore.elo_margin_tracker.get(i*25, 0)
+# 	if points_reached > target_points: break
+# x_trimmed = [j*25 for j in range(-i, i+1)]
+# y_trimmed = [explore.MoV_tracker[i]/explore.elo_margin_tracker[i] for i in x_trimmed]
+# slope, intercept, r, p, se = linregress(x_trimmed, y_trimmed)
+# # print(slope, r)
+# # slope: 0.03914846 -> 1/slope: 25.5 elo difference / point difference
+# fig.add_trace(go.Scatter(x = x_trimmed, y = [i*slope + intercept for i in x_trimmed], mode = 'lines', name = 'LSRL for Middle 80% of Games (R^2 > 0.99)'))
+# fig.update_layout(title_text = 'Elo Margin vs. Average Scoring Margin: 1 game point = 25.5 Elo points', xaxis_title = 'Elo Margin', yaxis_title = 'Average Actual Scoring Margin')
+# fig.show()
 
 #################Elo Season-over-Season########################
 # season_totals = {}
 # season_teams = {}
-# years = ['20110404', '20120402', '20130408', '20140407', '20150406', '20160404', '20170403', '20180402', '20190408']
+# years = ['20110404', '20120402', '20130408', '20140407', '20150406', '20160404', '20170403', '20180402', '20190408', '20200311', '20210405']
 # for team in explore.teams:
 # 	for year in years:
 # 		for date, snap in explore.teams[team].snapshots:
@@ -182,7 +184,7 @@ fig.show()
 # x_vals = [i[:4] for i in season_teams]
 # sizes = ['teams = ' + str(season_teams[i]) for i in season_teams]
 # fig = go.Figure([go.Bar(x = x_vals, y = y_vals, text = sizes, textposition = 'auto')])
-# fig.update_layout(title_text = 'Average End-of-Season Elo over Time: Spring 2011 - Spring 2019', xaxis_title = 'Year', yaxis_title = 'End of Season Elo')
+# fig.update_layout(title_text = 'Average End-of-Season Elo over Time: Spring 2011 - Spring 2021', xaxis_title = 'Year', yaxis_title = 'End of Season Elo')
 # fig.show()
 
 ##################LATEST DISTRIBUTION##########################

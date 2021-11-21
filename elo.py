@@ -6,11 +6,12 @@ import argparse
 import pandas as pd
 
 ELO_BASE = 1500
-NEW_ELO = 900
-K_FACTOR = 45
+NEW_ELO = 925
+K_FACTOR = 43
 SEASON_CARRY = 0.9
-HOME_ADVANTAGE = 80
-ELO_TO_POINTS_FACTOR = -26.2 #divide an elo margin by this to get the predicted point spread
+HOME_ADVANTAGE = 81
+ELO_TO_POINTS_FACTOR = -25.5 #divide an elo margin by this to get the predicted point spread
+GAMES_REQUIRED = 5
 DATA_FOLDER = utils.DATA_FOLDER
 
 class Team():
@@ -53,7 +54,7 @@ class ELO_Sim():
 		self.snapshot()
 		to_remove = []
 		for team in self.teams:
-			if self.teams[team].season_game_count < 5:
+			if self.teams[team].season_game_count < GAMES_REQUIRED:
 				to_remove.append(team)
 			self.teams[team].elo = (self.get_elo(team) * new_season_carry) + ((1 - new_season_carry) * ELO_BASE)
 			self.teams[team].reset_game_count()
@@ -136,7 +137,7 @@ def sim(data, k_factor, new_season_carry, home_elo, stop_short, last_snap):
 			set_early = True
 		if row[-1] > stop_short: break
 		row_month = int(row[-1][4:6])
-		if this_month == 4 and row_month == 11: #when the data jumps from April to November, it's the start of a new season
+		if this_month in [3, 4] and row_month == 11: #when the data jumps from March/April to November, it's the start of a new season
 			this_sim.season_count += 1
 			this_sim.season_reset(new_season_carry)
 		this_sim.date = row[-1]
