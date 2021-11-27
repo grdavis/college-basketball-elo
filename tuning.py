@@ -121,7 +121,7 @@ def tune(data):
 filepath = utils.get_latest_data_filepath()
 data = utils.read_csv(filepath)
 explore = tuning_sim(data, elo.K_FACTOR, elo.SEASON_CARRY, elo.HOME_ADVANTAGE, elo.NEW_ELO)
-# print(explore.get_errors())
+print(explore.get_errors())
 
 ###########################TUNING############################
 # tune(data)
@@ -139,15 +139,15 @@ explore = tuning_sim(data, elo.K_FACTOR, elo.SEASON_CARRY, elo.HOME_ADVANTAGE, e
 # fig.show()
 
 ###################Visualizing Error 2#######################
-x_vals = [i for i in explore.predict_tracker]
-y_vals = [explore.win_tracker[i]/explore.predict_tracker[i] for i in x_vals]
-sizes = [explore.predict_tracker[i] for i in x_vals]
-fig = go.Figure()
-fig.add_trace(go.Scatter(x = x_vals, y = y_vals, mode = 'markers', name = 'Predictions', text = ['n = ' + str(size) for size in sizes]))
-fig.add_trace(go.Scatter(x = [0, 1], y = [0, 1], mode = 'lines', name = 'Perfect Line'))
-r2 = r2_score(x_vals, y_vals)
-fig.update_layout(title_text = 'Predicted vs. Actual Win Probability (R^2 = 0.99)', xaxis_title = 'Predicted Win Probability', yaxis_title = 'Actual Win Probability')
-fig.show()
+# x_vals = [i for i in explore.predict_tracker]
+# y_vals = [explore.win_tracker[i]/explore.predict_tracker[i] for i in x_vals]
+# sizes = [explore.predict_tracker[i] for i in x_vals]
+# fig = go.Figure()
+# fig.add_trace(go.Scatter(x = x_vals, y = y_vals, mode = 'markers', name = 'Predictions', text = ['n = ' + str(size) for size in sizes]))
+# fig.add_trace(go.Scatter(x = [0, 1], y = [0, 1], mode = 'lines', name = 'Perfect Line'))
+# r2 = r2_score(x_vals, y_vals)
+# fig.update_layout(title_text = 'Predicted vs. Actual Win Probability (R^2 = 0.99)', xaxis_title = 'Predicted Win Probability', yaxis_title = 'Actual Win Probability')
+# fig.show()
 
 ##############Elo margin vs. Margin of Victory################
 # x_vals = [i for i in explore.elo_margin_tracker]

@@ -98,12 +98,12 @@ def predict_next_day(elo_state, forecast_date):
 	predictions = []
 	for game in games:
 		is_neutral = True if game[0] == 1 else False
-		winner, prob, home_spread = predict_game(elo_state, game[1], game[3], neutral = is_neutral)
+		winner, prob, home_spread = predict_game(elo_state, game[3], game[1], pick_mode = 1, neutral = is_neutral)
 		if game[1] == winner:
-			predictions.append([game[0], game[1], prob, home_spread, game[3], "{0:.0%}".format(1 - (float(prob[:-1])/100)), -home_spread])
+			predictions.append([game[0], game[1], prob, -home_spread, game[3], "{0:.0%}".format(1 - (float(prob[:-1])/100)), home_spread])
 		else:
-			predictions.append([game[0], game[1], "{0:.0%}".format(1 - (float(prob[:-1])/100)), home_spread, game[3], prob, -home_spread])
-	output = pd.DataFrame(predictions, columns = ['Neutral', 'Home', 'Home Win Prob.', 'Home Pred. Spread', 'Away', 'Away Win Prob.', 'Away Pred. Spread'])
+			predictions.append([game[0], game[1], "{0:.0%}".format(1 - (float(prob[:-1])/100)), -home_spread, game[3], prob, home_spread])
+	output = pd.DataFrame(predictions, columns = ['Neutral', 'Away', 'Away Win Prob.', 'Away Pred. Spread', 'Home', 'Home Win Prob.', 'Home Pred. Spread'])
 	utils.table_output(output, forecast_date.strftime('%Y%m%d') + ' Game Predictions Based on Ratings through ' + elo_state.date)
 
 def main(forecast_date = False, matchup = False, neutral = False, sim_mode = False, stop_short = '99999999', bracket = False, pick_mode = 0):
