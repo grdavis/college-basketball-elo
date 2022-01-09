@@ -28,6 +28,15 @@ def scrape_scores(date_obj):
 		day_stats.append(stats + [this_day_string])
 	return day_stats
 
+def check_for_cancellations(new):
+	modified = []
+	for i in range(len(new)):
+		row = new[i]
+		if row[1] != '' and row[2] != '' and row[3] != '' and row[4] != '':
+			modified.append(row)
+
+	return modified
+
 def scrape_by_day(file_start, scrape_start, scrape_end, all_data):
 	'''
 	scrape data from scrape_start to end, append it to all_data, and save this new file as a csv
@@ -43,7 +52,7 @@ def scrape_by_day(file_start, scrape_start, scrape_end, all_data):
 		if i.month in [5, 6, 7, 8, 9, 10]: 
 			i += datetime.timedelta(days = 1)
 			continue
-		new_data.extend(scrape_scores(i))
+		new_data.extend(check_for_cancellations(scrape_scores(i)))
 		i += datetime.timedelta(days = 1)
 		if i.month != this_month:
 			this_month = i.month

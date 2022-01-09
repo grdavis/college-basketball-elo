@@ -121,7 +121,7 @@ def tune(data):
 filepath = utils.get_latest_data_filepath()
 data = utils.read_csv(filepath)
 explore = tuning_sim(data, elo.K_FACTOR, elo.SEASON_CARRY, elo.HOME_ADVANTAGE, elo.NEW_ELO)
-print(explore.get_errors())
+# print(explore.get_errors())
 
 ###########################TUNING############################
 # tune(data)
@@ -189,13 +189,14 @@ print(explore.get_errors())
 
 ##################LATEST DISTRIBUTION##########################
 # bucketing = {}
+# bucket_size = 20
 # for team in explore.teams:
-# 	rounded = round(explore.get_elo(team) / 50) * 50
-# 	bucketing[rounded] = bucketing.get(rounded, 0) + 1
+# 	rounded = round(explore.get_elo(team) / bucket_size) * bucket_size
+# 	bucketing[rounded] = bucketing.get(rounded, []) + [team]
 # x_vals = [i for i in range(min(bucketing), max(bucketing) + 1, 10)]
-# y_vals = [bucketing.get(i, 0) for i in x_vals]
-# fig = go.Figure([go.Bar(x = x_vals, y = y_vals)])
-# fig.update_layout(title_text = 'Elo Distribution through ' + explore.date, xaxis_title = 'Elo Rating', yaxis_title = 'Number of Teams')
+# y_vals = [len(bucketing.get(i, [])) for i in x_vals]
+# fig = go.Figure([go.Bar(x = x_vals, y = y_vals, text = [bucketing.get(i, []) for i in x_vals])])
+# fig.update_layout(title_text = 'Elo Distribution through ' + explore.date, xaxis_title = 'Elo Rating', yaxis_title = 'Number of Teams', xaxis_range = [1000, x_vals[-1]+1], yaxis_range = [0, 20])
 # fig.show()
 
 ###############HISTORICAL BRACKET PERFORMANCE##################
