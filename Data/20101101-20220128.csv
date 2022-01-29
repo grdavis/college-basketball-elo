@@ -65987,3 +65987,915 @@
 0,Washington State,77,Utah,61,20220108
 0,Western Carolina,60,Samford,85,20220108
 0,Wofford,68,ETSU,57,20220108
+0,Northwestern,87,Ohio State,95,20220109
+0,Wisconsin,70,Maryland,69,20220109
+0,Cincinnati,80,Memphis,87,20220109
+0,Cleveland State,86,Youngstown State,80,20220109
+0,Elon,61,College of Charleston,65,20220109
+0,Fairfield,62,Siena,69,20220109
+0,Hofstra,87,James Madison,80,20220109
+0,Purdue-Fort Wayne,76,Robert Morris,70,20220109
+0,Lipscomb,88,Central Arkansas,93,20220109
+0,Milwaukee,65,Oakland,86,20220109
+0,Minnesota,60,Indiana,73,20220109
+0,Montana,59,Montana State,66,20220109
+0,Northeastern,67,Towson,70,20220109
+0,Quinnipiac,66,Niagara,76,20220109
+0,Rider,79,Marist,75,20220109
+0,Washington,64,Colorado,78,20220109
+0,Alcorn State,70,Alabama State,60,20220110
+0,Arkansas-Pine Bluff,58,Prairie View,75,20220110
+0,Army,57,Colgate,76,20220110
+0,Boston University,79,American,53,20220110
+0,Bucknell,67,Loyola (MD),71,20220110
+0,Campbell,72,Winthrop,74,20220110
+0,Grambling,66,Florida A&M,75,20220110
+0,Holy Cross,69,Lehigh,77,20220110
+0,UIC,67,IUPUI,65,20220110
+0,Jackson State,58,Alabama A&M,60,20220110
+0,Mississippi Valley State,58,Texas Southern,95,20220110
+0,Morgan State,88,South Carolina State,81,20220110
+0,Navy,69,Lafayette,55,20220110
+0,Omaha,61,Kansas City,64,20220110
+0,North Dakota State,87,Denver,69,20220110
+0,Oregon,78,Oregon State,76,20220110
+0,San Diego,72,Pepperdine,62,20220110
+0,South Dakota,75,North Dakota,68,20220110
+0,Southern,69,Bethune-Cookman,59,20220110
+0,Western Carolina,69,ETSU,87,20220110
+0,Wofford,54,UNC Greensboro,58,20220110
+0,Texas Tech,65,Baylor,62,20220111
+0,Auburn,81,Alabama,77,20220111
+0,USC,69,Stanford,75,20220111
+0,Iowa State,61,Kansas,62,20220111
+0,Kentucky,78,Vanderbilt,66,20220111
+0,Oklahoma,52,Texas,66,20220111
+0,South Carolina,46,Tennessee,66,20220111
+0,Illinois,81,Nebraska,71,20220111
+0,Ball State,74,Akron,84,20220111
+0,Baptist Bible (MO),57,Kansas City,98,20220111
+0,Bowling Green State,78,Ohio,85,20220111
+0,Buffalo,78,Western Michigan,64,20220111
+0,Central Arkansas,63,Bellarmine,85,20220111
+0,Central Michigan,68,Eastern Michigan,99,20220111
+0,Delaware,81,Drexel,77,20220111
+0,DePaul,76,Marquette,87,20220111
+0,Dillard,66,New Orleans,93,20220111
+0,Eastern Kentucky,75,North Alabama,76,20220111
+0,George Washington,57,VCU,84,20220111
+0,Hofstra,66,Towson,78,20220111
+0,Indiana State,74,Northern Iowa,80,20220111
+0,Iona,80,Fairfield,76,20220111
+0,Lipscomb,83,Jacksonville State,88,20220111
+0,UMass,67,Davidson,77,20220111
+0,Miami (FL),64,Florida State,65,20220111
+0,Ole Miss,51,Texas A&M,67,20220111
+0,New Mexico,56,UNLV,85,20220111
+0,North Florida,56,Liberty,71,20220111
+0,Northeastern,66,James Madison,89,20220111
+0,Northern Illinois,65,Kent State,63,20220111
+0,Oklahoma State,60,West Virginia,70,20220111
+0,Pitt,61,Syracuse,77,20220111
+0,Quinnipiac,67,Canisius,79,20220111
+0,Rutgers,49,Penn State,66,20220111
+0,Saint Louis,63,Dayton,68,20220111
+0,San Jose State,59,Fresno State,79,20220111
+0,St. Bonaventure,80,La Salle,76,20220111
+0,Stetson,50,Jacksonville,57,20220111
+0,Texas-Rio Grande Valley,75,Stephen F. Austin,86,20220111
+0,Toledo,75,Miami (OH),72,20220111
+0,Valparaiso,74,Loyola (IL),81,20220111
+0,Duke,76,Wake Forest,64,20220112
+0,Minnesota,69,Michigan State,71,20220112
+0,LSU,64,Florida,58,20220112
+0,Villanova,64,Xavier,60,20220112
+0,Arlington Baptist,44,McNeese State,120,20220112
+0,Boise State,85,Nevada,70,20220112
+0,California,55,Washington,64,20220112
+0,Charleston Southern,52,Campbell,67,20220112
+0,Chattanooga,59,Western Carolina,70,20220112
+0,Clemson,56,Notre Dame,72,20220112
+0,Delaware State,51,Norfolk State,80,20220112
+0,Dixie State,79,California Baptist,76,20220112
+0,Duquesne,71,Fordham,72,20220112
+0,East Carolina,71,Cincinnati,79,20220112
+0,ETSU,69,Furman,78,20220112
+0,Elon,66,UNC Wilmington,73,20220112
+0,Evansville,47,Bradley,79,20220112
+0,Georgia,72,Mississippi State,88,20220112
+0,Georgia Tech,81,Boston College,76,20220112
+0,Hampton,58,North Carolina A&T,67,20220112
+0,High Point,65,USC Upstate,66,20220112
+0,Illinois State,75,Drake,86,20220112
+0,Longwood,83,Radford,75,20220112
+0,Maryland,94,Northwestern,87,20220112
+0,UMBC,76,NJIT,56,20220112
+0,UMass-Lowell,47,Albany (NY),57,20220112
+0,Memphis,64,UCF,74,20220112
+0,Missouri,43,Arkansas,87,20220112
+0,NC State,79,Louisville,63,20220112
+0,Presbyterian,61,Gardner-Webb,64,20220112
+0,St. Joseph's,64,Rhode Island,75,20220112
+0,Samford,64,Wofford,87,20220112
+0,Santa Clara,84,Pacific,70,20220112
+0,South Florida,65,SMU,77,20220112
+0,Southern Illinois,76,Missouri State,81,20220112
+0,St. John's (NY),78,UConn,86,20220112
+0,Stony Brook,65,Vermont,98,20220112
+0,Temple,69,Tulsa,64,20220112
+0,UT-Martin,62,Morehead State,76,20220112
+0,TCU,60,Kansas State,57,20220112
+0,Tougaloo,72,Southeastern Louisiana,77,20220112
+0,Tulane,68,Wichita State,67,20220112
+0,Utah State,72,Colorado State,77,20220112
+0,Utah Valley,65,Seattle,71,20220112
+0,Virginia Tech,52,Virginia,54,20220112
+0,BYU,84,Gonzaga,110,20220113
+0,Oregon,84,UCLA,81,20220113
+0,Oregon State,71,USC,81,20220113
+0,Colorado,55,Arizona,76,20220113
+0,Ohio State,68,Wisconsin,78,20220113
+0,Oklahoma State,57,Texas Tech,78,20220113
+0,Seton Hall,92,DePaul,96,20220113
+0,Abilene Christian,68,Grand Canyon,95,20220113
+0,Boston University,63,Army,73,20220113
+0,Butler,72,Georgetown,58,20220113
+0,Cal State Northridge,64,Cal State Fullerton,79,20220113
+0,UC-Irvine,56,Hawaii,72,20220113
+0,UC-Riverside,57,Cal Poly,46,20220113
+0,UCSB,58,Long Beach State,65,20220113
+0,Canisius,58,Niagara,68,20220113
+0,Chicago State,63,Texas-Rio Grande Valley,85,20220113
+0,Coastal Carolina,60,Appalachian State,61,20220113
+0,Colgate,69,Navy,50,20220113
+0,Denver,71,South Dakota,80,20220113
+0,Detroit,60,Purdue-Fort Wayne,62,20220113
+0,Florida Atlantic,57,Middle Tennessee,70,20220113
+0,Florida Gulf Coast,53,Kennesaw State,77,20220113
+0,Florida International,56,Alabama-Birmingham,84,20220113
+0,Georgia State,65,South Alabama,74,20220113
+0,Idaho,74,Weber State,84,20220113
+0,UIC,81,Milwaukee,77,20220113
+0,Indiana,74,Iowa,83,20220113
+0,IUPUI,54,Green Bay,69,20220113
+0,Lafayette,60,Loyola (MD),74,20220113
+0,Lehigh,97,Bucknell,64,20220113
+0,Louisiana,73,Texas-Arlington,83,20220113
+0,Louisiana-Monroe,56,Texas State,80,20220113
+0,Loyola Marymount,73,San Francisco,97,20220113
+0,UNC Asheville,80,Winthrop,86,20220113
+0,UNC Greensboro,69,The Citadel,74,20220113
+0,North Texas,69,Marshall,65,20220113
+0,Northern Kentucky,68,Youngstown State,67,20220113
+0,Oakland,70,Cleveland State,65,20220113
+0,Portland,63,San Diego,68,20220113
+0,Rice,66,Western Kentucky,80,20220113
+0,Saint Mary's,77,Pepperdine,62,20220113
+0,Sam Houston State,73,Lamar,56,20220113
+0,South Dakota State,95,Omaha,86,20220113
+0,SIU-Edwardsville,66,Eastern Illinois,53,20220113
+0,Southern Miss,57,Louisiana Tech,80,20220113
+0,Stanford,62,Washington State,57,20220113
+0,Tarleton State,57,New Mexico State,73,20220113
+0,Tennessee State,44,Murray State,67,20220113
+0,Tennessee Tech,77,Belmont,92,20220113
+0,UTEP,53,Charlotte,66,20220113
+0,UTSA,51,Old Dominion,83,20220113
+0,VMI,91,Mercer,97,20220113
+0,Western Illinois,73,North Dakota,68,20220113
+0,Wright State,75,Robert Morris,73,20220113
+0,Nebraska,65,Purdue,92,20220114
+0,Michigan,53,Illinois,68,20220114
+0,Akron,55,Kent State,67,20220114
+0,Buffalo,74,Ball State,68,20220114
+0,Davidson,87,Richmond,84,20220114
+0,Fresno State,73,UNLV,68,20220114
+0,Manhattan,76,Iona,88,20220114
+0,Monmouth,62,St. Peter's,67,20220114
+0,Quinnipiac,77,Rider,70,20220114
+0,Siena,67,Marist,60,20220114
+0,VCU,53,St. Bonaventure,73,20220114
+0,Oklahoma State,61,Baylor,54,20220115
+0,Gonzaga,115,Santa Clara,83,20220115
+0,Oregon State,65,UCLA,81,20220115
+0,Auburn,80,Ole Miss,71,20220115
+0,Oregon,79,USC,69,20220115
+0,Utah,64,Arizona,82,20220115
+0,NC State,73,Duke,88,20220115
+0,West Virginia,59,Kansas,85,20220115
+0,Northwestern,64,Michigan State,62,20220115
+0,Houston,66,Tulsa,64,20220115
+0,Arkansas,65,LSU,58,20220115
+0,Texas,70,Iowa State,79,20220115
+0,Creighton,73,Xavier,80,20220115
+0,Tennessee,79,Kentucky,107,20220115
+0,Texas Tech,51,Kansas State,62,20220115
+0,Seton Hall,72,Marquette,73,20220115
+0,Alabama,76,Mississippi State,78,20220115
+0,Abilene Christian,63,New Mexico State,77,20220115
+0,Alabama A&M,55,Alabama State,59,20220115
+0,Appalachian State,84,Coastal Carolina,76,20220115
+0,Bellarmine,77,Lipscomb,71,20220115
+0,Bethune-Cookman,62,Mississippi Valley State,60,20220115
+0,Boise State,71,New Mexico,63,20220115
+0,Boston College,70,Clemson,68,20220115
+0,BYU,71,San Francisco,69,20220115
+0,Brown,74,Princeton,76,20220115
+0,Cal State Northridge,55,Long Beach State,71,20220115
+0,California,57,Washington State,65,20220115
+0,UC-Davis,74,Cal Poly,82,20220115
+0,UC-Riverside,65,Cal State Bakersfield,64,20220115
+0,UC-San Diego,56,Hawaii,79,20220115
+0,UCSB,73,Cal State Fullerton,79,20220115
+0,Central Connecticut,61,LIU,83,20220115
+0,UCF,51,South Florida,75,20220115
+0,Chicago State,67,Lamar,56,20220115
+0,Colorado,75,Arizona State,57,20220115
+0,Colorado State,78,San Jose State,42,20220115
+0,Coppin State,79,Morgan State,76,20220115
+0,Cornell,69,Yale,96,20220115
+0,Dartmouth,68,Penn,78,20220115
+0,Dayton,72,Duquesne,52,20220115
+0,Delaware,77,Hofstra,82,20220115
+0,Denver,62,South Dakota State,80,20220115
+0,Detroit,70,Cleveland State,72,20220115
+0,Dixie State,68,Seattle,79,20220115
+0,Drexel,76,Northeastern,68,20220115
+0,ETSU,88,Samford,85,20220115
+0,Eastern Michigan,70,Northern Illinois,77,20220115
+0,Fairleigh Dickinson,71,Sacred Heart,77,20220115
+0,Florida,71,South Carolina,63,20220115
+0,Florida A&M,71,Arkansas-Pine Bluff,66,20220115
+0,Florida Atlantic,65,Alabama-Birmingham,76,20220115
+0,Florida International,39,Middle Tennessee,50,20220115
+0,Florida State,76,Syracuse,71,20220115
+0,Fordham,45,Saint Louis,63,20220115
+0,Furman,69,Chattanooga,71,20220115
+0,Gardner-Webb,60,Longwood,66,20220115
+0,Georgia Southern,67,South Alabama,73,20220115
+0,Georgia Tech,65,UNC,88,20220115
+0,Harvard,91,Columbia,82,20220115
+0,Houston Baptist,75,McNeese State,78,20220115
+0,Idaho,74,Idaho State,81,20220115
+0,UIC,80,Green Bay,63,20220115
+0,Incarnate Word,64,Texas A&M-Corpus Christi,80,20220115
+0,IUPUI,54,Milwaukee,89,20220115
+0,Jacksonville,54,North Florida,51,20220115
+0,Jacksonville State,76,Eastern Kentucky,65,20220115
+0,James Madison,95,William & Mary,91,20220115
+0,Kennesaw State,77,Stetson,49,20220115
+0,Liberty,78,Florida Gulf Coast,75,20220115
+0,Louisiana,68,Texas State,72,20220115
+0,Louisiana-Monroe,62,Texas-Arlington,55,20220115
+0,Louisville,53,Pitt,65,20220115
+0,Loyola (IL),64,Indiana State,56,20220115
+0,Loyola Marymount,65,San Diego,70,20220115
+0,Memphis,71,East Carolina,72,20220115
+0,Miami (OH),70,Western Michigan,62,20220115
+0,Missouri State,74,Valparaiso,57,20220115
+0,Morehead State,71,Tennessee State,64,20220115
+0,Mount St. Mary's,66,Bryant,73,20220115
+0,Murray State,82,Belmont,60,20220115
+0,Omaha,70,South Dakota,105,20220115
+0,Nevada,75,Air Force,68,20220115
+0,Nicholls State,66,New Orleans,78,20220115
+0,NJIT,56,Albany (NY),71,20220115
+0,Norfolk State,77,Howard,74,20220115
+0,North Alabama,88,Central Arkansas,89,20220115
+0,North Carolina A&T,71,High Point,78,20220115
+0,UNC Greensboro,49,Mercer,58,20220115
+0,North Texas,65,Western Kentucky,60,20220115
+0,Northern Iowa,69,Southern Illinois,68,20220115
+0,Northern Kentucky,64,Robert Morris,74,20220115
+0,Northwestern State,74,Southeastern Louisiana,79,20220115
+0,Notre Dame,73,Virginia Tech,79,20220115
+0,Oakland,76,Purdue-Fort Wayne,68,20220115
+0,Oklahoma,58,TCU,59,20220115
+0,Oral Roberts,84,Kansas City,72,20220115
+0,Portland,82,Pepperdine,63,20220115
+0,Portland State,67,Sacramento State,62,20220115
+0,Prairie View,64,Jackson State,75,20220115
+0,Radford,58,Campbell,70,20220115
+0,Rhode Island,81,UMass,68,20220115
+0,Rice,87,Marshall,77,20220115
+0,Rutgers,70,Maryland,59,20220115
+0,Saint Francis (PA),62,Merrimack,46,20220115
+0,USC Upstate,76,UNC Asheville,73,20220115
+0,Southern,77,Grambling,83,20220115
+0,SMU,75,Tulane,66,20220115
+0,St. Francis (NY),76,Wagner,81,20220115
+0,Stanford,64,Washington,67,20220115
+0,Stephen F. Austin,41,Sam Houston State,49,20220115
+0,Tarleton State,59,Grand Canyon,80,20220115
+0,Tennessee Tech,76,UT-Martin,70,20220115
+0,Texas A&M,67,Missouri,64,20220115
+0,UTEP,78,Old Dominion,70,20220115
+0,UTSA,53,Charlotte,62,20220115
+0,Texas Southern,72,Alcorn State,73,20220115
+0,Toledo,91,Bowling Green State,78,20220115
+0,Towson,59,Elon,54,20220115
+0,Utah Valley,73,California Baptist,75,20220115
+0,Vanderbilt,73,Georgia,66,20220115
+0,Vermont,86,UMBC,69,20220115
+0,VMI,90,The Citadel,85,20220115
+0,Wake Forest,63,Virginia,55,20220115
+0,Western Illinois,90,North Dakota State,79,20220115
+0,Winthrop,70,Charleston Southern,65,20220115
+0,Wofford,84,Western Carolina,64,20220115
+0,Wright State,87,Youngstown State,90,20220115
+0,Wyoming,71,Utah State,69,20220115
+0,Butler,42,Villanova,82,20220116
+0,Penn State,56,Ohio State,61,20220116
+0,Army,54,Lafayette,68,20220116
+0,Binghamton,73,Maine,65,20220116
+0,Bradley,65,Illinois State,74,20220116
+0,Bucknell,55,American,63,20220116
+0,Canisius,75,Manhattan,80,20220116
+0,Cincinnati,61,Wichita State,57,20220116
+0,Fairfield,66,Quinnipiac,72,20220116
+0,Georgetown,69,St. John's (NY),88,20220116
+0,Iowa,81,Minnesota,71,20220116
+0,Louisiana Tech,76,Southern Miss,62,20220116
+0,Loyola (MD),69,Lehigh,57,20220116
+0,Monmouth,48,Marist,84,20220116
+0,Navy,72,Boston University,65,20220116
+0,Niagara,55,Iona,78,20220116
+0,St. Peter's,58,Rider,51,20220116
+0,Purdue,96,Illinois,88,20220117
+0,Belmont,80,SIU-Edwardsville,64,20220117
+0,Bethune-Cookman,63,Arkansas-Pine Bluff,69,20220117
+0,Central Connecticut,66,Sacred Heart,74,20220117
+0,Charlotte,67,Florida Atlantic,96,20220117
+0,Delaware,82,Northeastern,76,20220117
+0,Denver,63,Kansas City,55,20220117
+0,Drake,60,Southern Illinois,59,20220117
+0,Drexel,68,Hofstra,71,20220117
+0,Fairleigh Dickinson,64,Wagner,95,20220117
+0,Florida A&M,78,Mississippi Valley State,70,20220117
+0,George Mason,76,George Washington,77,20220117
+0,Harvard,60,Dartmouth,59,20220117
+0,Idaho,72,Northern Arizona,74,20220117
+0,Indiana,78,Nebraska,71,20220117
+0,James Madison,67,Elon,90,20220117
+0,Kennesaw State,62,North Florida,60,20220117
+0,La Salle,75,St. Joseph's,64,20220117
+0,Lamar,78,Stephen F. Austin,86,20220117
+0,LIU,80,St. Francis (NY),65,20220117
+0,UMBC,51,Stony Brook,65,20220117
+0,Mercer,71,The Citadel,64,20220117
+0,Michigan-Dearborn,59,Purdue-Fort Wayne,102,20220117
+0,Mount St. Mary's,57,Merrimack,50,20220117
+0,Murray State,72,Eastern Illinois,46,20220117
+0,UNLV,81,San Jose State,56,20220117
+0,Norfolk State,72,Maryland-Eastern Shore,58,20220117
+0,UNC Wilmington,86,College of Charleston,78,20220117
+0,Notre Dame,71,Howard,68,20220117
+0,Penn,64,Princeton,74,20220117
+0,Portland,58,Loyola Marymount,70,20220117
+0,Portland State,76,Southern Utah,86,20220117
+0,Prairie View,74,Alcorn State,73,20220117
+0,Saint Francis (PA),52,Bryant,82,20220117
+0,Seattle,92,California Baptist,85,20220117
+0,Tennessee Tech,64,Tennessee State,80,20220117
+0,Texas Southern,58,Jackson State,61,20220117
+0,Towson,91,William & Mary,69,20220117
+0,Utah,62,Arizona State,64,20220117
+0,Weber State,78,Idaho State,61,20220117
+0,Wyoming,77,Nevada,67,20220117
+0,Yale,66,Brown,63,20220117
+0,Baylor,77,West Virginia,68,20220118
+0,Duke,78,Florida State,79,20220118
+0,Kansas,67,Oklahoma,64,20220118
+0,Wisconsin,82,Northwestern,76,20220118
+0,South Florida,55,Houston,74,20220118
+0,Iowa State,60,Texas Tech,72,20220118
+0,IUPUI,37,Ohio State,83,20220118
+0,Loyola (IL),77,Evansville,48,20220118
+0,Kansas State,66,Texas,65,20220118
+0,Tennessee,68,Vanderbilt,60,20220118
+0,Butler,59,UConn,76,20220118
+0,Air Force,56,Boise State,62,20220118
+0,Ball State,70,Toledo,83,20220118
+0,Bowling Green State,92,Northern Illinois,83,20220118
+0,Cal Poly,60,Cal State Bakersfield,73,20220118
+0,Canisius,57,St. Peter's,65,20220118
+0,UCF,92,East Carolina,85,20220118
+0,Clemson,78,Syracuse,91,20220118
+0,Davidson,63,VCU,61,20220118
+0,Florida Gulf Coast,93,Stetson,91,20220118
+0,Iona,86,Monmouth,85,20220118
+0,Jacksonville,49,Liberty,88,20220118
+0,Jacksonville State,86,Central Arkansas,81,20220118
+0,Kent State,56,Eastern Michigan,47,20220118
+0,Lipscomb,72,Eastern Kentucky,86,20220118
+0,Maryland,64,Michigan,83,20220118
+0,Missouri,78,Ole Miss,53,20220118
+0,Morris College,67,South Carolina State,102,20220118
+0,Niagara,72,Manhattan,63,20220118
+0,North Alabama,60,Bellarmine,68,20220118
+0,UNC,57,Miami (FL),85,20220118
+0,Ohio,86,Miami (OH),63,20220118
+0,Richmond,83,Fordham,70,20220118
+0,South Carolina,59,Arkansas,75,20220118
+0,St. Bonaventure,50,Dayton,68,20220118
+0,Utah State,54,Fresno State,61,20220118
+0,Western Michigan,73,Akron,74,20220118
+0,Georgia,60,Auburn,83,20220119
+0,Marquette,57,Villanova,54,20220119
+0,Kentucky,64,Texas A&M,58,20220119
+0,LSU,67,Alabama,70,20220119
+0,Xavier,68,DePaul,67,20220119
+0,Albany (NY),66,UMBC,54,20220119
+0,American,66,Army,76,20220119
+0,Boston College,54,Louisville,67,20220119
+0,Boston University,67,Loyola (MD),50,20220119
+0,Bradley,83,Drake,71,20220119
+0,Campbell,64,Longwood,72,20220119
+0,The Citadel,77,Wofford,89,20220119
+0,Colgate,75,Bucknell,56,20220119
+0,George Washington,61,St. Joseph's,72,20220119
+0,Hampton,51,Radford,54,20220119
+0,High Point,66,Charleston Southern,70,20220119
+0,Illinois State,63,Missouri State,88,20220119
+0,Indiana State,55,Southern Illinois,63,20220119
+0,Iowa,46,Rutgers,48,20220119
+0,La Salle,54,Rhode Island,56,20220119
+0,Lehigh,69,Navy,61,20220119
+0,Maine,62,UMass-Lowell,71,20220119
+0,Mercer,64,ETSU,72,20220119
+0,Mississippi State,72,Florida,80,20220119
+0,New Hampshire,57,Hartford,69,20220119
+0,New Mexico,74,Colorado State,80,20220119
+0,North Carolina A&T,73,UNC Asheville,71,20220119
+0,Northern Iowa,80,Valparaiso,83,20220119
+0,Rider,67,Quinnipiac,73,20220119
+0,San Jose State,69,Wyoming,84,20220119
+0,Southeastern Baptist,50,Southern Miss,100,20220119
+0,USC Upstate,74,Gardner-Webb,61,20220119
+0,St. John's (NY),64,Creighton,87,20220119
+0,Stony Brook,74,Binghamton,71,20220119
+0,TCU,56,Oklahoma State,57,20220119
+0,Vermont,83,NJIT,57,20220119
+0,Virginia,66,Pitt,61,20220119
+0,Virginia Tech,62,NC State,59,20220119
+0,Wake Forest,80,Georgia Tech,64,20220119
+0,Western Carolina,50,Furman,88,20220119
+0,San Francisco,62,Gonzaga,78,20220120
+0,Arizona,85,Stanford,57,20220120
+0,Purdue,65,Indiana,68,20220120
+0,UCLA,63,Utah,58,20220120
+0,USC,61,Colorado,58,20220120
+0,Georgetown,75,Providence,83,20220120
+0,UConn,75,Butler,56,20220120
+0,Akron,91,Bowling Green State,66,20220120
+0,Appalachian State,61,Georgia State,60,20220120
+0,Austin Peay,72,UT-Martin,57,20220120
+0,Belmont,74,Morehead State,83,20220120
+0,Boise State,62,Utah State,59,20220120
+0,Cal State Fullerton,65,UC-Irvine,63,20220120
+0,California Baptist,88,Tarleton State,84,20220120
+0,UC-Davis,64,Cal State Northridge,47,20220120
+0,Charlotte,51,North Texas,65,20220120
+0,Chattanooga,72,UNC Greensboro,64,20220120
+0,Coastal Carolina,76,Georgia Southern,72,20220120
+0,College of Charleston,67,Towson,74,20220120
+0,Detroit,63,Green Bay,70,20220120
+0,Eastern Illinois,51,Murray State,91,20220120
+0,Elon,49,Drexel,77,20220120
+0,Grand Canyon,46,Stephen F. Austin,71,20220120
+0,Hawaii,63,Cal State Bakersfield,59,20220120
+0,Houston Baptist,68,Incarnate Word,65,20220120
+0,Idaho State,63,Weber State,95,20220120
+0,Lamar,55,Dixie State,71,20220120
+0,Long Beach State,87,UC-San Diego,69,20220120
+0,Marshall,66,Florida International,70,20220120
+0,McNeese State,56,Texas A&M-Corpus Christi,60,20220120
+0,Monmouth,61,Fairfield,58,20220120
+0,Montana,66,Portland State,64,20220120
+0,Montana State,89,Northern Arizona,84,20220120
+0,UNLV,62,Air Force,69,20220120
+0,New Mexico State,46,Sam Houston State,71,20220120
+0,UNC Wilmington,71,James Madison,70,20220120
+0,North Dakota,76,Oral Roberts,80,20220120
+0,North Dakota State,77,Kansas City,80,20220120
+0,North Florida,73,Florida State,86,20220120
+0,Northern Colorado,87,Idaho,70,20220120
+0,Northern Kentucky,74,UIC,70,20220120
+0,Northwestern State,58,Nicholls State,69,20220120
+0,Oakland,78,Milwaukee,88,20220120
+0,Old Dominion,69,Rice,77,20220120
+0,Pepperdine,80,Loyola Marymount,85,20220120
+0,Sacramento State,62,Eastern Washington,75,20220120
+0,Saint Louis,85,UMass,91,20220120
+0,Samford,80,VMI,99,20220120
+0,San Diego,71,BYU,79,20220120
+0,Santa Clara,65,Saint Mary's,73,20220120
+0,Seattle,72,Abilene Christian,62,20220120
+0,South Alabama,77,Louisiana,70,20220120
+0,South Dakota State,92,St. Thomas (MN),77,20220120
+0,Southeastern Louisiana,72,New Orleans,78,20220120
+0,SIU-Edwardsville,76,Tennessee Tech,94,20220120
+0,SMU,70,Memphis,62,20220120
+0,Tennessee State,63,Southeast Missouri State,85,20220120
+0,Texas-Arlington,70,Arkansas State,75,20220120
+0,Texas-Rio Grande Valley,56,Utah Valley,66,20220120
+0,UTSA,64,UTEP,69,20220120
+0,Texas State,69,Little Rock,59,20220120
+0,Troy,73,Louisiana-Monroe,65,20220120
+0,Tulsa,69,Cincinnati,90,20220120
+0,Washington,82,Oregon State,72,20220120
+0,Western Kentucky,69,Florida Atlantic,78,20220120
+0,William & Mary,74,Delaware,84,20220120
+0,Winthrop,60,Presbyterian,58,20220120
+0,Wright State,73,IUPUI,45,20220120
+0,Michigan State,86,Wisconsin,74,20220121
+0,Illinois,65,Maryland,81,20220121
+0,Bryant,79,Merrimack,63,20220121
+0,Central Connecticut,67,Saint Francis (PA),68,20220121
+0,Evansville,56,Illinois State,94,20220121
+0,Fresno State,73,Nevada,77,20220121
+0,Kent State,51,Buffalo,64,20220121
+0,Rider,69,Canisius,70,20220121
+0,Robert Morris,62,Purdue-Fort Wayne,86,20220121
+0,Sacred Heart,59,Mount St. Mary's,98,20220121
+0,St. Peter's,74,Niagara,68,20220121
+0,Siena,68,Manhattan,75,20220121
+0,St. Bonaventure,64,Duquesne,56,20220121
+0,St. Francis (NY),80,Fairleigh Dickinson,78,20220121
+0,Toledo,87,Ohio,69,20220121
+0,Wagner,92,LIU,85,20220121
+0,Youngstown State,61,Cleveland State,64,20220121
+0,Kentucky,71,Auburn,80,20220122
+0,Baylor,65,Oklahoma,51,20220122
+0,Syracuse,59,Duke,79,20220122
+0,Kansas,78,Kansas State,75,20220122
+0,UCLA,71,Colorado,65,20220122
+0,East Carolina,36,Houston,79,20220122
+0,Villanova,85,Georgetown,74,20220122
+0,LSU,50,Tennessee,64,20220122
+0,TCU,59,Iowa State,44,20220122
+0,USC,79,Utah,67,20220122
+0,West Virginia,65,Texas Tech,78,20220122
+0,Missouri State,79,Loyola (IL),69,20220122
+0,Oklahoma State,51,Texas,56,20220122
+0,Alabama A&M,44,Texas Southern,78,20220122
+0,Alabama-Birmingham,83,Louisiana Tech,76,20220122
+0,Alabama State,67,Prairie View,70,20220122
+0,Alcorn State,68,Florida A&M,70,20220122
+0,American,73,Loyola (MD),78,20220122
+0,Appalachian State,70,Georgia Southern,62,20220122
+0,Arizona State,76,Stanford,79,20220122
+0,Arkansas-Pine Bluff,51,Southern,99,20220122
+0,Army,74,Navy,73,20220122
+0,Austin Peay,61,Tennessee State,65,20220122
+0,Binghamton,68,NJIT,57,20220122
+0,Boise State,42,San Diego State,37,20220122
+0,Bowling Green State,82,Western Michigan,75,20220122
+0,Brown,93,Columbia,74,20220122
+0,Bucknell,68,Holy Cross,65,20220122
+0,California Baptist,68,Abilene Christian,77,20220122
+0,UC-Irvine,67,Long Beach State,73,20220122
+0,UC-Riverside,77,Cal State Northridge,67,20220122
+0,UC-San Diego,80,Cal State Fullerton,83,20220122
+0,Campbell,73,North Carolina A&T,72,20220122
+0,Charleston Southern,57,USC Upstate,70,20220122
+0,Charlotte,67,Rice,64,20220122
+0,Chattanooga,78,VMI,74,20220122
+0,The Citadel,75,ETSU,73,20220122
+0,Coastal Carolina,72,Georgia State,68,20220122
+0,College of Charleston,94,James Madison,95,20220122
+0,Colorado State,73,Air Force,53,20220122
+0,Coppin State,77,Norfolk State,84,20220122
+0,Davidson,69,Fordham,66,20220122
+0,Dayton,49,George Mason,50,20220122
+0,DePaul,47,Creighton,60,20220122
+0,Detroit,71,Milwaukee,58,20220122
+0,Drake,82,Northern Iowa,74,20220122
+0,Eastern Michigan,44,Akron,46,20220122
+0,Elon,77,Delaware,80,20220122
+0,Florida Gulf Coast,71,Jacksonville State,79,20220122
+0,Florida State,61,Miami (FL),60,20220122
+0,Furman,75,Wofford,50,20220122
+0,Gardner-Webb,62,Winthrop,64,20220122
+0,George Washington,63,Rhode Island,61,20220122
+0,Georgia,66,South Carolina,83,20220122
+0,Grand Canyon,56,Sam Houston State,58,20220122
+0,Hartford,72,Vermont,82,20220122
+0,Harvard,61,Cornell,76,20220122
+0,Hawaii,69,Cal Poly,56,20220122
+0,High Point,64,Hampton,68,20220122
+0,Hofstra,72,Northeastern,50,20220122
+0,Houston Baptist,77,Texas A&M-Corpus Christi,71,20220122
+0,Howard,91,Morgan State,82,20220122
+0,Idaho State,74,Southern Utah,86,20220122
+0,Jackson State,50,Bethune-Cookman,55,20220122
+0,Jacksonville,73,Bellarmine,76,20220122
+0,Kennesaw State,73,Lipscomb,77,20220122
+0,Lamar,41,Utah Valley,58,20220122
+0,Lehigh,74,Boston University,80,20220122
+0,Longwood,71,Presbyterian,70,20220122
+0,Marshall,60,Florida Atlantic,71,20220122
+0,UMBC,88,Maine,46,20220122
+0,UMass-Lowell,61,New Hampshire,67,20220122
+0,McNeese State,82,Incarnate Word,72,20220122
+0,Ole Miss,60,Mississippi State,78,20220122
+0,Mississippi Valley State,64,Grambling,68,20220122
+0,Missouri,76,Alabama,86,20220122
+0,Montana,58,Northern Arizona,48,20220122
+0,Montana State,73,Portland State,60,20220122
+0,Omaha,63,Denver,94,20220122
+0,New Mexico,91,Wyoming,93,20220122
+0,New Mexico State,72,Stephen F. Austin,58,20220122
+0,UNC,76,Wake Forest,98,20220122
+0,UNC Asheville,78,Radford,74,20220122
+0,North Carolina Central,73,Delaware State,49,20220122
+0,UNC Wilmington,81,Towson,77,20220122
+0,North Dakota,74,Kansas City,79,20220122
+0,North Dakota State,72,Oral Roberts,71,20220122
+0,North Florida,58,Eastern Kentucky,67,20220122
+0,Northern Colorado,87,Eastern Washington,83,20220122
+0,Northern Illinois,82,Miami (OH),85,20220122
+0,Northern Kentucky,60,IUPUI,41,20220122
+0,Northwestern State,77,New Orleans,85,20220122
+0,Notre Dame,82,Louisville,70,20220122
+0,Oakland,68,Green Bay,61,20220122
+0,Old Dominion,56,North Texas,69,20220122
+0,Penn State,51,Iowa,68,20220122
+0,Pitt,48,Clemson,75,20220122
+0,Portland,65,BYU,78,20220122
+0,Princeton,84,Dartmouth,80,20220122
+0,Richmond,64,La Salle,56,20220122
+0,Rutgers,65,Minnesota,68,20220122
+0,Sacramento State,72,Idaho,73,20220122
+0,St. Joseph's,54,VCU,70,20220122
+0,Saint Mary's,83,Loyola Marymount,51,20220122
+0,Samford,58,UNC Greensboro,61,20220122
+0,San Diego,73,Pacific,65,20220122
+0,San Francisco,71,Pepperdine,45,20220122
+0,San Jose State,62,UNLV,70,20220122
+0,Seattle,76,Tarleton State,68,20220122
+0,Seton Hall,66,St. John's (NY),60,20220122
+0,South Alabama,68,Louisiana-Monroe,56,20220122
+0,South Carolina State,69,Maryland-Eastern Shore,60,20220122
+0,South Dakota,90,St. Thomas (MN),79,20220122
+0,South Dakota State,93,Western Illinois,75,20220122
+0,Southeast Missouri State,87,Eastern Illinois,58,20220122
+0,Southeastern Louisiana,101,Nicholls State,93,20220122
+0,Southern Illinois,62,Bradley,70,20220122
+0,SIU-Edwardsville,74,Morehead State,77,20220122
+0,Southern Miss,60,Middle Tennessee,74,20220122
+0,Stetson,67,North Alabama,65,20220122
+0,Stony Brook,86,Albany (NY),75,20220122
+0,UT-Martin,66,Murray State,74,20220122
+0,Texas A&M,73,Arkansas,76,20220122
+0,Texas-Arlington,96,Little Rock,98,20220122
+0,Texas-Rio Grande Valley,74,Dixie State,85,20220122
+0,Texas State,60,Arkansas State,67,20220122
+0,Troy,59,Louisiana,69,20220122
+0,Tulane,66,UCF,68,20220122
+0,Valparaiso,75,Indiana State,73,20220122
+0,Vanderbilt,42,Florida,61,20220122
+0,Virginia,63,NC State,77,20220122
+0,Virginia Tech,63,Boston College,68,20220122
+0,Western Carolina,64,Mercer,72,20220122
+0,Western Kentucky,83,Florida International,86,20220122
+0,William & Mary,83,Drexel,75,20220122
+0,Wright State,97,UIC,81,20220122
+0,Yale,68,Penn,76,20220122
+0,Arizona,96,California,71,20220123
+0,Northwestern,60,Purdue,80,20220123
+0,Xavier,64,Marquette,75,20220123
+0,Butler,62,Providence,69,20220123
+0,Central Connecticut,50,Mount St. Mary's,65,20220123
+0,Clayton State,53,Georgia Tech,103,20220123
+0,Fairfield,69,Marist,66,20220123
+0,Illinois State,53,Evansville,56,20220123
+0,Iona,76,Quinnipiac,61,20220123
+0,LIU,79,Fairleigh Dickinson,75,20220123
+0,Manhattan,62,Monmouth,78,20220123
+0,UMass,59,Saint Louis,90,20220123
+0,Memphis,83,Tulsa,81,20220123
+0,Michigan,80,Indiana,62,20220123
+0,Rider,70,Niagara,67,20220123
+0,Robert Morris,68,Cleveland State,75,20220123
+0,Sacred Heart,74,Saint Francis (PA),85,20220123
+0,St. Peter's,60,Canisius,63,20220123
+0,St. Francis (NY),68,Bryant,85,20220123
+0,UTEP,59,UTSA,54,20220123
+0,Wagner,71,Merrimack,57,20220123
+0,Washington,56,Oregon,84,20220123
+0,Youngstown State,71,Purdue-Fort Wayne,82,20220123
+0,Texas Tech,91,Kansas,94,20220124
+0,Arizona State,56,USC,78,20220124
+0,Alabama A&M,48,Prairie View,72,20220124
+0,Alabama State,66,Texas Southern,73,20220124
+0,Alcorn State,70,Bethune-Cookman,67,20220124
+0,Arkansas-Pine Bluff,65,Grambling,76,20220124
+0,Bellarmine,60,Jacksonville State,65,20220124
+0,Belmont,90,Eastern Illinois,56,20220124
+0,Boston College,57,Wake Forest,87,20220124
+0,Eastern Washington,89,Idaho State,63,20220124
+0,Florida,54,Ole Miss,70,20220124
+0,Hartford,64,Binghamton,74,20220124
+0,Howard,81,Coppin State,83,20220124
+0,Idaho,84,Portland State,79,20220124
+0,Jackson State,64,Florida A&M,67,20220124
+0,Jacksonville,68,Kennesaw State,76,20220124
+0,Lafayette,69,American,56,20220124
+0,Longwood,73,Hampton,49,20220124
+0,Louisville,52,Virginia,64,20220124
+0,Loyola (MD),52,Colgate,65,20220124
+0,Michigan-Dearborn,61,Oakland,104,20220124
+0,Mississippi Valley State,72,Southern,100,20220124
+0,Morgan State,62,Norfolk State,82,20220124
+0,UNLV,55,San Diego State,80,20220124
+0,New Hampshire,64,Maine,71,20220124
+0,North Carolina Central,75,Maryland-Eastern Shore,63,20220124
+0,UNC Wilmington,74,Northeastern,68,20220124
+0,Sacramento State,65,Northern Arizona,70,20220124
+0,St. Joseph's,71,George Mason,77,20220124
+0,San Diego,74,Santa Clara,78,20220124
+0,South Carolina State,64,Delaware State,62,20220124
+0,South Dakota,75,Western Illinois,72,20220124
+0,SIU-Edwardsville,70,UT-Martin,76,20220124
+0,St. John's (NY),84,Seton Hall,63,20220124
+0,Tennessee State,54,Morehead State,67,20220124
+0,Tennessee Tech,53,Murray State,79,20220124
+0,Towson,69,Delaware,62,20220124
+0,Virginia Tech,68,UNC,78,20220124
+0,Weber State,92,Southern Utah,84,20220124
+0,Winthrop,56,High Point,65,20220124
+0,Auburn,55,Missouri,54,20220125
+0,Arizona,59,UCLA,75,20220125
+0,Kansas State,49,Baylor,74,20220125
+0,Clemson,69,Duke,71,20220125
+0,Michigan State,55,Illinois,56,20220125
+0,Mississippi State,74,Kentucky,82,20220125
+0,DePaul,43,Villanova,67,20220125
+0,Georgetown,73,UConn,96,20220125
+0,Air Force,63,San Jose State,53,20220125
+0,Akron,60,Central Michigan,56,20220125
+0,Alabama,76,Georgia,82,20220125
+0,Buffalo,75,Toledo,86,20220125
+0,UCSB,72,Cal State Northridge,45,20220125
+0,Cincinnati,58,Temple,61,20220125
+0,Colorado,82,Oregon,78,20220125
+0,Columbia,72,Yale,83,20220125
+0,Eastern Michigan,71,Bowling Green State,85,20220125
+0,Fordham,61,Dayton,68,20220125
+0,Fresno State,65,New Mexico,60,20220125
+0,Maryland,68,Rutgers,60,20220125
+0,Miami (OH),64,Ball State,81,20220125
+0,Missouri State,72,Indiana State,76,20220125
+0,Nevada,66,Colorado State,77,20220125
+0,Northern Illinois,62,Ohio,74,20220125
+0,Richmond,70,Rhode Island,63,20220125
+0,Siena,57,Iona,74,20220125
+0,Southern Illinois,47,Loyola (IL),59,20220125
+0,St. Thomas (MN),56,North Dakota State,77,20220125
+0,Syracuse,53,Pitt,64,20220125
+0,Texas,73,TCU,50,20220125
+0,Western Michigan,64,Kent State,75,20220125
+0,William & Mary,73,College of Charleston,74,20220125
+0,Wright State,63,Northern Kentucky,73,20220125
+0,Wyoming,62,Boise State,65,20220125
+0,Providence,65,Xavier,62,20220126
+0,Florida,71,Tennessee,78,20220126
+0,Texas A&M,64,LSU,70,20220126
+0,Marquette,73,Seton Hall,63,20220126
+0,Iowa State,84,Oklahoma State,81,20220126
+0,VCU,70,Davidson,68,20220126
+0,Abilene Christian,87,Texas-Rio Grande Valley,85,20220126
+0,Albany (NY),64,UMass-Lowell,62,20220126
+0,Arkansas,64,Ole Miss,55,20220126
+0,Army,71,Lehigh,84,20220126
+0,Binghamton,60,Hartford,72,20220126
+0,Boston College,47,UNC,58,20220126
+0,Boston University,81,Lafayette,62,20220126
+0,Bradley,71,Valparaiso,56,20220126
+0,UCF,79,Wichita State,84,20220126
+0,Creighton,55,Butler,72,20220126
+0,Drake,89,Illinois State,88,20220126
+0,Duquesne,61,St. Joseph's,72,20220126
+0,Florida State,61,Georgia Tech,75,20220126
+0,George Washington,67,Saint Louis,80,20220126
+0,Hampton,60,Campbell,75,20220126
+0,Holy Cross,49,American,67,20220126
+0,Maine,61,New Hampshire,73,20220126
+0,UMass,77,La Salle,71,20220126
+0,Mercer,61,Samford,75,20220126
+0,Miami (FL),78,Virginia Tech,75,20220126
+0,Navy,81,Bucknell,63,20220126
+0,NJIT,69,UMBC,73,20220126
+0,North Carolina A&T,71,Longwood,79,20220126
+0,UNC Greensboro,80,ETSU,76,20220126
+0,NC State,65,Notre Dame,73,20220126
+0,Northern Iowa,64,Evansville,59,20220126
+0,Northwestern,70,Michigan,72,20220126
+0,Oklahoma,72,West Virginia,62,20220126
+0,Old Dominion,67,Charlotte,71,20220126
+0,Penn State,57,Indiana,74,20220126
+0,Presbyterian,62,Charleston Southern,61,20220126
+0,Radford,58,High Point,63,20220126
+0,St. Peter's,69,Marist,62,20220126
+0,Sam Houston State,73,California Baptist,68,20220126
+0,San Diego State,57,Utah State,75,20220126
+0,SMU,74,South Florida,54,20220126
+0,St. Bonaventure,66,George Mason,75,20220126
+0,Stephen F. Austin,62,Seattle,70,20220126
+0,Tarleton State,62,Lamar,57,20220126
+0,Tulsa,63,Tulane,97,20220126
+0,Utah,54,Washington State,71,20220126
+0,Vanderbilt,61,South Carolina,70,20220126
+0,Vermont,80,Stony Brook,67,20220126
+0,VMI,64,Furman,79,20220126
+0,Western Carolina,66,The Citadel,68,20220126
+0,Winthrop,95,USC Upstate,91,20220126
+0,Wofford,60,Chattanooga,71,20220126
+0,Loyola Marymount,55,Gonzaga,89,20220127
+0,Purdue,83,Iowa,73,20220127
+0,California,57,UCLA,81,20220127
+0,Wisconsin,73,Nebraska,65,20220127
+0,Stanford,64,USC,61,20220127
+0,Ohio State,75,Minnesota,64,20220127
+0,UAB,68,Western Kentucky,65,20220127
+0,Little Rock,49,Coastal Carolina,65,20220127
+0,Arkansas State,54,Appalachian State,61,20220127
+0,Ball State,74,Northern Illinois,67,20220127
+0,Bellarmine,72,Stetson,47,20220127
+0,Belmont,75,Austin Peay,67,20220127
+0,BYU,76,Santa Clara,77,20220127
+0,Cal Poly,59,UC-San Diego,55,20220127
+0,Cal State Bakersfield,52,UC-Irvine,57,20220127
+0,Cal State Fullerton,74,UC-Davis,58,20220127
+0,Cal State Northridge,65,Hawaii,72,20220127
+0,Central Arkansas,74,North Florida,93,20220127
+0,Colorado,58,Washington,60,20220127
+0,Drexel,88,James Madison,82,20220127
+0,East Carolina,54,Memphis,71,20220127
+0,Eastern Illinois,58,UT-Martin,53,20220127
+0,Eastern Kentucky,73,Florida Gulf Coast,77,20220127
+0,Eastern Washington,65,Montana State,69,20220127
+0,Florida Atlantic,68,UTEP,70,20220127
+0,Florida International,66,UTSA,73,20220127
+0,Gardner-Webb,61,UNC Asheville,55,20220127
+0,Georgia Southern,50,Louisiana-Monroe,45,20220127
+0,Georgia State,68,Louisiana,64,20220127
+0,Green Bay,50,Youngstown State,63,20220127
+0,Hofstra,76,College of Charleston,73,20220127
+0,Idaho,62,Montana,81,20220127
+0,Idaho State,60,Sacramento State,61,20220127
+0,UIC,67,Detroit,80,20220127
+0,Incarnate Word,70,Northwestern State,79,20220127
+0,Jacksonville State,70,Kennesaw State,64,20220127
+0,Lipscomb,59,Jacksonville,66,20220127
+0,Long Beach State,68,UC-Riverside,62,20220127
+0,LIU,62,Central Connecticut,65,20220127
+0,Loyola (IL),44,Southern Illinois,39,20220127
+0,Merrimack,67,Bryant,76,20220127
+0,Middle Tennessee,81,Marshall,79,20220127
+0,Milwaukee,53,Robert Morris,77,20220127
+0,Kansas City,72,Denver,61,20220127
+0,Morehead State,74,Southeast Missouri State,73,20220127
+0,Mount St. Mary's,67,Fairleigh Dickinson,56,20220127
+0,Murray State,80,Tennessee Tech,75,20220127
+0,New Orleans,77,Houston Baptist,66,20220127
+0,Nicholls State,81,McNeese State,71,20220127
+0,North Alabama,53,Liberty,72,20220127
+0,North Dakota,61,South Dakota State,96,20220127
+0,North Dakota State,74,South Dakota,62,20220127
+0,North Texas,63,Southern Miss,54,20220127
+0,Northeastern,62,UNC Wilmington,67,20220127
+0,Oral Roberts,100,Omaha,88,20220127
+0,Pacific,56,Portland,64,20220127
+0,Pepperdine,56,San Diego,64,20220127
+0,Rice,63,Louisiana Tech,80,20220127
+0,Saint Francis (PA),54,Wagner,69,20220127
+0,Saint Mary's,72,San Francisco,70,20220127
+0,Southern Utah,85,Portland State,82,20220127
+0,St. Francis (NY),71,Sacred Heart,66,20220127
+0,Tennessee State,75,SIU-Edwardsville,70,20220127
+0,Texas A&M-Corpus Christi,86,Southeastern Louisiana,71,20220127
+0,Texas State,58,Texas-Arlington,70,20220127
+0,Troy,63,South Alabama,82,20220127
+0,Utah Valley,101,Chicago State,87,20220127
+0,Weber State,85,Northern Colorado,76,20220127
+0,William & Mary,54,Elon,61,20220127
+0,Akron,76,Toledo,84,20220128
+0,Boise State,68,Fresno State,63,20220128
+0,Canisius,67,Monmouth,72,20220128
+0,Cleveland State,71,Wright State,67,20220128
+0,Colgate,72,Boston University,76,20220128
+0,Fairfield,76,Rider,65,20220128
+0,Purdue-Fort Wayne,49,Northern Kentucky,59,20220128
+0,Lehigh,65,Holy Cross,67,20220128
+0,Manhattan,51,St. Peter's,77,20220128
+0,Marist,87,Quinnipiac,94,20220128
+0,UNLV,88,Colorado State,74,20220128
+0,Niagara,56,Siena,60,20220128
+0,Ohio,74,Buffalo,53,20220128
+0,Penn,78,Harvard,74,20220128
+0,Rhode Island,51,Dayton,53,20220128
+0,San Jose State,70,New Mexico,86,20220128
+0,Stony Brook,76,New Hampshire,69,20220128
+0,Wyoming,63,Air Force,61,20220128
