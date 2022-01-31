@@ -126,21 +126,21 @@ def sim(data, k_factor, new_season_carry, home_elo, stop_short, last_snap):
 	last_snap: when taking a final snapshot of a team's elo before the end of the simulation, specify an integer number of days back to take the snapshot
 	'''
 	this_sim = ELO_Sim()
-	this_month = data[0][-1][4:6]
-	last_day = data[-1][-1] if stop_short > data[-1][-1] else stop_short
+	this_month = data[0][5][4:6]
+	last_day = data[-1][5] if stop_short > data[-1][5] else stop_short
 	early = (datetime.datetime.strptime(last_day, '%Y%m%d') - datetime.timedelta(days = last_snap)).strftime('%Y%m%d')
 	set_early = False
 
 	for row in data:
-		if row[-1] > early and not set_early: 
+		if row[5] > early and not set_early: 
 			this_sim.snapshot() #save each team's elo here so we can calculate change in the last 7 days at the end
 			set_early = True
-		if row[-1] > stop_short: break
-		row_month = int(row[-1][4:6])
+		if row[5] > stop_short: break
+		row_month = int(row[5][4:6])
 		if this_month in [3, 4] and row_month == 11: #when the data jumps from March/April to November, it's the start of a new season
 			this_sim.season_count += 1
 			this_sim.season_reset(new_season_carry)
-		this_sim.date = row[-1]
+		this_sim.date = row[5]
 		this_month = row_month
 		step_elo(this_sim, row, k_factor, home_elo)
 	

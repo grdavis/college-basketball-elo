@@ -7,9 +7,10 @@ import plotly.graph_objects as go
 from sklearn.metrics import r2_score
 from scipy.stats import linregress
 import pandas as pd
-from predictions import predict_tournament, ROUNDS
+from predictions import predict_tournament, ROUNDS, predict_game
 
-ERRORS_START = 4 #after 4 seasons (starts counting errors 20141114)
+ERRORS_START = 4.25 #after 4 seasons (starts counting errors 20141114)
+BET_TRIGGER = 9 #bet on elo spread when it differs from vegas spread by BET_TRIGGER or more
 
 class Tuning_ELO_Sim(elo.ELO_Sim):
 	'''
@@ -17,6 +18,8 @@ class Tuning_ELO_Sim(elo.ELO_Sim):
 	simulation process which are useful for tuning. Errors tracked are...
 	error1: calculated (1 - predicted win probability)^2 for each game and add them up. More commonly known as Brier score (https://en.wikipedia.org/wiki/Brier_score). This is the primary error of interest
 	error2: calculated at the end of a simulation as the average absolute difference between predicted win probability and actual win probability for teams who were given that prediction
+	error3: for each game where we have a historical spread, tracks absolute difference between (away score + away spread) and home score 
+	error4: for each game, tracks absolute difference between (away score + predicted away spread) and home score 
 	'''
 	def __init__(self):
 		super().__init__()
@@ -25,11 +28,15 @@ class Tuning_ELO_Sim(elo.ELO_Sim):
 		self.elo_margin_tracker = {}
 		self.MoV_tracker = {}
 		self.error1 = []
+		self.error3 = []
+		self.error4 = []
 
-	def update_errors(self, w_winp):
+	def update_errors(self, w_winp, elo_error, veg_error):
 		if self.season_count >= ERRORS_START:
 			rounded, roundedL = round(w_winp, 2), round(1 - w_winp, 2)
 			self.error1.append((1 - w_winp)**2)
+			self.error3.append(veg_error)
+			self.error4.append(elo_error)
 			self.win_tracker[rounded] = self.win_tracker.get(rounded, 0) + 1
 			self.predict_tracker[rounded] = self.predict_tracker.get(rounded, 0) + 1
 			self.predict_tracker[roundedL] = self.predict_tracker.get(roundedL, 0) + 1
@@ -56,18 +63,32 @@ def tuning_sim(data, k_factor, new_season_carry, home_elo, new_team_elo):
 	It is a simplified version of the official sim function used in elo.py
 	'''
 	this_sim = Tuning_ELO_Sim()
-	this_month = data[0][-1][4:6]
+	this_month = data[0][5][4:6]
 	elo.NEW_ELO = new_team_elo
 
 	for row in data:
-		row_month = int(row[-1][4:6])
+		row_month = int(row[5][4:6])
 		if this_month in [3, 4] and row_month == 11:
 			this_sim.season_count += 1
 			this_sim.season_reset(new_season_carry)
-		this_sim.date = row[-1]
+		this_sim.date = row[5]
 		this_month = row_month
+
+		#make predictions for row
+		is_neutral = True if row[0] == 1 else False
+		winner, prob, home_spread = predict_game(this_sim, row[3], row[1], pick_mode = 1, neutral = is_neutral)
+		if row[6] != 'NL':
+			if abs(float(row[6]) + home_spread) >= BET_TRIGGER:
+				abs_error_elo = abs((int(row[2]) - home_spread) - int(row[4]))
+				abs_error_veg = abs((int(row[2]) + float(row[6])) - int(row[4]))
+			else:
+				abs_error_elo, abs_error_veg = 'NB', 'NB'
+		else:
+			abs_error_elo, abs_error_veg = 'NL', 'NL'
+
+		#elo and error updates
 		elo_margin, MoV = elo.step_elo(this_sim, row, k_factor, home_elo)
-		this_sim.update_errors(elo.winp(elo_margin))
+		this_sim.update_errors(elo.winp(elo_margin), abs_error_elo, abs_error_veg)
 		this_sim.update_MoVs(elo_margin, MoV)
 	
 	return this_sim
@@ -198,6 +219,26 @@ explore = tuning_sim(data, elo.K_FACTOR, elo.SEASON_CARRY, elo.HOME_ADVANTAGE, e
 # fig = go.Figure([go.Bar(x = x_vals, y = y_vals, text = [bucketing.get(i, []) for i in x_vals])])
 # fig.update_layout(title_text = 'Elo Distribution through ' + explore.date, xaxis_title = 'Elo Rating', yaxis_title = 'Number of Teams', xaxis_range = [1000, x_vals[-1]+1], yaxis_range = [0, 20])
 # fig.show()
+
+##################SPREAD EVALUATION############################
+# veg_errors = []
+# elo_errors = []
+# count = 0
+# for v, e in zip(explore.error3, explore.error4):
+# 	if v not in ['NL', 'NB']:
+# 		veg_errors.append(v)
+# 		elo_errors.append(e)
+# 		count += 1
+# avg_vegas_error = sum(veg_errors)/len(veg_errors)
+# avg_elo_error = sum(elo_errors)/len(elo_errors)
+# print(count/len(explore.error3), avg_vegas_error, avg_elo_error)
+
+#BET_TRIGGER: 4,	veg: 10.27,	elo: 10.34, 18% of games
+#BET_TRIGGER: 4.25,	veg: 10.55,	elo: 10.55, 16% of games  <-- Look for betting opportunities when vegas and elo differ by more than 4.25
+#BET_TRIGGER: 4.5,	veg: 10.73,	elo: 10.68, 15% of games
+#BET_TRIGGER: 5,	veg: 11.20,	elo: 10.95, 12% of games
+#BET_TRIGGER: 7,	veg: 14.19,	elo: 12.04, 5% of games
+#BET_TRIGGER: 9,	veg: 19.93,	elo: 12.99, 2% of games
 
 ###############HISTORICAL BRACKET PERFORMANCE##################
 # scores = [10, 20, 40, 80, 160, 320] #ESPN scoring system for correct game in round
