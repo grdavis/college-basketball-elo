@@ -5,6 +5,7 @@ import utils
 import argparse
 import scraper
 import datetime
+import spread_enricher
 
 DATA_FOLDER = utils.DATA_FOLDER
 ROUNDS = ['second', 'sixteen', 'eight', 'four', 'final', 'champion']
@@ -103,8 +104,10 @@ def predict_next_day(elo_state, forecast_date):
 			predictions.append([game[0], game[1], prob, -home_spread, game[3], "{0:.0%}".format(1 - (float(prob[:-1])/100)), home_spread])
 		else:
 			predictions.append([game[0], game[1], "{0:.0%}".format(1 - (float(prob[:-1])/100)), -home_spread, game[3], prob, home_spread])
-	output = pd.DataFrame(predictions, columns = ['Neutral', 'Away', 'Away Win Prob.', 'Away Pred. Spread', 'Home', 'Home Win Prob.', 'Home Pred. Spread'])
-	utils.table_output(output, forecast_date.strftime('%Y%m%d') + ' Game Predictions Based on Ratings through ' + elo_state.date)
+	predictions, timestamp = spread_enricher.add_spreads_to_todays_preds(predictions, forecast_date)
+	output = pd.DataFrame(predictions, columns = ['Neutral', 'Away', 'Away Win Prob.', 'Away Pred. Spread', 'Live Away Spread', 'Home', 'Home Win Prob.', 'Home Pred. Spread'])
+	spreads_string = ' with Spreads as of ' + timestamp.strftime('%Y%m%d at %H%M')
+	utils.table_output(output, forecast_date.strftime('%Y%m%d') + ' Game Predictions Based on Ratings through ' + elo_state.date + spreads_string)
 
 def main(forecast_date = False, matchup = False, neutral = False, sim_mode = False, stop_short = '99999999', bracket = False, pick_mode = 0):
 	'''
@@ -138,6 +141,7 @@ def main(forecast_date = False, matchup = False, neutral = False, sim_mode = Fal
 	else:
 		forecast_date = datetime.date.today() if forecast_date == False else datetime.datetime.strptime(forecast_date, "%Y%m%d")
 		predict_next_day(elo_state, forecast_date)
+	clean_up_old_outputs_and_data()
 
 def parseArguments():
 	parser = argparse.ArgumentParser(description = 'This script allows the user to predict results of individual games, create a bracket prediction for a tournament, or simulate most likely outcomes for a bracket')

@@ -25,7 +25,9 @@ def scrape_scores(date_obj):
 			datapts = row.find_all('td')[:2]
 			stats.append(datapts[0].find('a').text)
 			stats.append(datapts[1].text)
-		day_stats.append(stats + [this_day_string])
+
+		#Add 'NL' for spread - to be updated later with spread_enricher.add_historical_spreads()
+		day_stats.append(stats + [this_day_string, 'NL'])
 	return day_stats
 
 def check_for_cancellations(new):
@@ -77,7 +79,7 @@ def main(file_start, scrape_start, scrape_end, data_filepath = False):
 	end = datetime.datetime.strptime(scrape_end, "%Y%m%d")
 	if data_filepath != False:
 		all_data = utils.read_csv(data_filepath)
-		if all_data[-1][-1] >= scrape_end:
+		if all_data[-1][5] >= scrape_end:
 			print('data already updated')
 			return
 	else:

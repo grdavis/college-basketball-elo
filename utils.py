@@ -1,11 +1,12 @@
 import csv
 import re
-from os import listdir
+import os
 import plotly.graph_objects as go
 from datetime import datetime, timedelta
 
 DATA_FOLDER = 'Data/'
 OUTPUTS_FOLDER = 'Outputs/'
+SPREAD_FOLDER = 'New_Spreads/'
 
 def save_data(filepath, data):
 	with open(filepath, "w") as f:
@@ -28,8 +29,40 @@ def get_latest_data_filepath():
 	searches the data folder and returns the most recent data
 	'''
 	r = re.compile("[0-9]{8}-[0-9]{8}.csv")
-	elligible_data = list(filter(r.match, listdir(DATA_FOLDER)))
+	elligible_data = list(filter(r.match, os.listdir(DATA_FOLDER)))
 	return DATA_FOLDER + sorted(elligible_data, key = lambda x: x[9:17], reverse = True)[0]
+
+def remove_files(to_remove, k):
+	'''
+	Deletes all but the first k files provided in to_remove. Assuming to_remove is sorted chronologically,
+	this removes all but the most recent k files
+	'''
+	if len(to_remove) > k:
+		for f in to_remove[k:]:
+			os.remove(f)
+
+def clean_up_old_outputs_and_data():
+	'''
+	Goes through the outputs, data, and spreads folders to remove all but the 3 latest files. The files are
+	really only saved for debugging purposes anyways, so no need to have so much extra data.
+	'''
+	#DATA
+	r = re.compile("[0-9]{8}-[0-9]{8}.csv")
+	elligible_data = list(filter(r.match, os.listdir(DATA_FOLDER)))
+	sorted_files = sorted(elligible_data, key = lambda x: x[9:17], reverse = True)
+	remove_files([DATA_FOLDER + f for f in sorted_files], 3)
+
+	#SPREADS
+	r = re.compile(".*.csv")
+	elligible_data = list(filter(r.match, os.listdir(SPREAD_FOLDER)))
+	sorted_files = sorted(elligible_data, key = lambda x: x[11:19] + x[20:26], reverse = True)
+	remove_files([SPREAD_FOLDER + f for f in sorted_files], 3)
+
+	#OUTPUTS
+	r = re.compile(".*.csv")
+	elligible_data = list(filter(r.match, os.listdir(OUTPUTS_FOLDER)))
+	sorted_files = sorted(elligible_data, key = lambda x: os.path.getmtime(os.path.join(OUTPUTS_FOLDER, x)), reverse = True)
+	remove_files([OUTPUTS_FOLDER + f for f in sorted_files], 3)
 
 def table_output(df, table_title, order = None):
 	'''

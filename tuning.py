@@ -10,7 +10,6 @@ import pandas as pd
 from predictions import predict_tournament, ROUNDS, predict_game
 
 ERRORS_START = 4.25 #after 4 seasons (starts counting errors 20141114)
-BET_TRIGGER = 9 #bet on elo spread when it differs from vegas spread by BET_TRIGGER or more
 
 class Tuning_ELO_Sim(elo.ELO_Sim):
 	'''
@@ -18,28 +17,25 @@ class Tuning_ELO_Sim(elo.ELO_Sim):
 	simulation process which are useful for tuning. Errors tracked are...
 	error1: calculated (1 - predicted win probability)^2 for each game and add them up. More commonly known as Brier score (https://en.wikipedia.org/wiki/Brier_score). This is the primary error of interest
 	error2: calculated at the end of a simulation as the average absolute difference between predicted win probability and actual win probability for teams who were given that prediction
-	error3: for each game where we have a historical spread, tracks absolute difference between (away score + away spread) and home score 
-	error4: for each game, tracks absolute difference between (away score + predicted away spread) and home score 
 	'''
 	def __init__(self):
 		super().__init__()
 		self.predict_tracker = {}
+		self.spread_tracker = []
 		self.win_tracker = {0.0: 0}
 		self.elo_margin_tracker = {}
 		self.MoV_tracker = {}
 		self.error1 = []
-		self.error3 = []
-		self.error4 = []
 
-	def update_errors(self, w_winp, elo_error, veg_error):
+	def update_errors(self, w_winp, for_spread_tracker):
 		if self.season_count >= ERRORS_START:
 			rounded, roundedL = round(w_winp, 2), round(1 - w_winp, 2)
 			self.error1.append((1 - w_winp)**2)
-			self.error3.append(veg_error)
-			self.error4.append(elo_error)
 			self.win_tracker[rounded] = self.win_tracker.get(rounded, 0) + 1
 			self.predict_tracker[rounded] = self.predict_tracker.get(rounded, 0) + 1
 			self.predict_tracker[roundedL] = self.predict_tracker.get(roundedL, 0) + 1
+			self.spread_tracker.append((for_spread_tracker['away_score'], for_spread_tracker['home_score'],
+				for_spread_tracker['veg_away_spread'], for_spread_tracker['away_elo_spread']))
 
 	def update_MoVs(self, elo_margin, MoV):
 		if self.season_count >= ERRORS_START:
@@ -77,18 +73,11 @@ def tuning_sim(data, k_factor, new_season_carry, home_elo, new_team_elo):
 		#make predictions for row
 		is_neutral = True if row[0] == 1 else False
 		winner, prob, home_spread = predict_game(this_sim, row[3], row[1], pick_mode = 1, neutral = is_neutral)
-		if row[6] != 'NL':
-			if abs(float(row[6]) + home_spread) >= BET_TRIGGER:
-				abs_error_elo = abs((int(row[2]) - home_spread) - int(row[4]))
-				abs_error_veg = abs((int(row[2]) + float(row[6])) - int(row[4]))
-			else:
-				abs_error_elo, abs_error_veg = 'NB', 'NB'
-		else:
-			abs_error_elo, abs_error_veg = 'NL', 'NL'
+		for_spread_tracker = {'away_score': row[2], 'home_score': row[4], 'veg_away_spread': row[6], 'away_elo_spread': -home_spread}
 
 		#elo and error updates
 		elo_margin, MoV = elo.step_elo(this_sim, row, k_factor, home_elo)
-		this_sim.update_errors(elo.winp(elo_margin), abs_error_elo, abs_error_veg)
+		this_sim.update_errors(elo.winp(elo_margin), for_spread_tracker)
 		this_sim.update_MoVs(elo_margin, MoV)
 	
 	return this_sim
@@ -233,12 +222,77 @@ explore = tuning_sim(data, elo.K_FACTOR, elo.SEASON_CARRY, elo.HOME_ADVANTAGE, e
 # avg_elo_error = sum(elo_errors)/len(elo_errors)
 # print(count/len(explore.error3), avg_vegas_error, avg_elo_error)
 
-#BET_TRIGGER: 4,	veg: 10.27,	elo: 10.34, 18% of games
-#BET_TRIGGER: 4.25,	veg: 10.55,	elo: 10.55, 16% of games  <-- Look for betting opportunities when vegas and elo differ by more than 4.25
-#BET_TRIGGER: 4.5,	veg: 10.73,	elo: 10.68, 15% of games
-#BET_TRIGGER: 5,	veg: 11.20,	elo: 10.95, 12% of games
-#BET_TRIGGER: 7,	veg: 14.19,	elo: 12.04, 5% of games
-#BET_TRIGGER: 9,	veg: 19.93,	elo: 12.99, 2% of games
+# BET_TRIGGER: 4,	veg: 10.27,	elo: 10.34, 18% of games
+# BET_TRIGGER: 4.25,	veg: 10.55,	elo: 10.55, 16% of games  <-- Look for betting opportunities when vegas and elo differ by more than 4.25
+# BET_TRIGGER: 4.5,	veg: 10.73,	elo: 10.68, 15% of games
+# BET_TRIGGER: 5,	veg: 11.20,	elo: 10.95, 12% of games
+# BET_TRIGGER: 7,	veg: 14.19,	elo: 12.04, 5% of games
+# BET_TRIGGER: 9,	veg: 19.93,	elo: 12.99, 2% of games
+
+##################SPREAD EVALUATION-2############################
+# x_vals = list(set([i[0] for i in explore.error5_tracker]))
+# # veg_y = [sum(explore.error5_tracker[(x, 'veg')])/len(explore.error5_tracker[(x, 'veg')]) for x in x_vals]
+# # elo_y = [sum(explore.error5_tracker[(x, 'elo')])/len(explore.error5_tracker[(x, 'elo')]) for x in x_vals]
+
+# y_vals_veg = []
+# y_vals_elo = []
+# sizes = []
+# for x_val in x_vals:
+# 	veg_y = []
+# 	elo_y = []
+# 	for x in x_vals:
+# 		if x < x_val: continue
+# 		veg_y.extend(explore.error5_tracker[(x, 'veg')])
+# 		elo_y.extend(explore.error5_tracker[(x, 'elo')])
+
+# 	sizes.append(len(veg_y))
+# 	y_vals_veg.append(sum(veg_y)/len(veg_y))
+# 	y_vals_elo.append(sum(elo_y)/len(elo_y))
+
+# fig = go.Figure()
+# fig.add_trace(go.Scatter(x = x_vals, y = y_vals_veg, mode = 'markers', name = 'Vegas Errors', text = ['n = ' + str(size) for size in sizes]))
+# fig.add_trace(go.Scatter(x = x_vals, y = y_vals_elo, mode = 'markers', name = 'Elo Errors', text = ['n = ' + str(size) for size in sizes]))
+# # fig.update_layout(title_text = 'Predicted vs. Actual Win Probability (R^2 = 0.99)', xaxis_title = 'Predicted Win Probability', yaxis_title = 'Actual Win Probability')
+# fig.show()
+
+##################SPREAD EVALUATION-3############################
+x_vals = []
+y_vals_win = []
+y_vals_pick = []
+for k in np.arange(0, 10, .25):
+	take_a_side = 0
+	correct_side = 0
+	tied_side = 0
+	agreed = 0
+	for row in explore.spread_tracker:
+		if row[2] == 'NL': continue
+		away_score, home_score, away_veg_spread, away_elo_spread = map(float, row)
+		adjusted_score_away = away_score + away_veg_spread
+		if away_veg_spread - away_elo_spread > k: #elo says take the away team
+			if adjusted_score_away > home_score: 
+				correct_side += 1
+			elif adjusted_score_away == home_score:
+				tied_side += 1
+			take_a_side += 1
+		elif away_elo_spread - away_veg_spread > k: #elo says take the home team
+			if adjusted_score_away < home_score: 
+				correct_side += 1
+			elif adjusted_score_away == home_score:
+				tied_side += 1
+			take_a_side += 1
+		else: #elo agrees with vegas
+			agreed += 1
+	x_vals.append(k)
+	y_vals_win.append(correct_side/(take_a_side - tied_side))
+	y_vals_pick.append(take_a_side/(take_a_side + agreed))
+
+fig = go.Figure()
+fig.add_trace(go.Scatter(x = x_vals, y = y_vals_win, mode = 'lines', name = 'Elo Pick Win'))
+fig.add_trace(go.Scatter(x = x_vals, y = y_vals_pick, mode = 'lines', name = 'Games Meeting Criteria'))
+fig.add_trace(go.Scatter(x = x_vals, y = [.52381 for _ in x_vals], mode = 'lines', name = 'Breakeven with -110 Odds'))
+fig.update_layout(title_text = 'Win Percentage of Elo-Informed Picks', xaxis_title = 'Difference between Elo and Vegas Required for Pick', yaxis_title = 'Percent')
+fig.show()
+
 
 ###############HISTORICAL BRACKET PERFORMANCE##################
 # scores = [10, 20, 40, 80, 160, 320] #ESPN scoring system for correct game in round
