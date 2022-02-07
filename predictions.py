@@ -141,7 +141,7 @@ def main(forecast_date = False, matchup = False, neutral = False, sim_mode = Fal
 	else:
 		forecast_date = datetime.date.today() if forecast_date == False else datetime.datetime.strptime(forecast_date, "%Y%m%d")
 		predict_next_day(elo_state, forecast_date)
-	clean_up_old_outputs_and_data()
+	utils.clean_up_old_outputs_and_data()
 
 def parseArguments():
 	parser = argparse.ArgumentParser(description = 'This script allows the user to predict results of individual games, create a bracket prediction for a tournament, or simulate most likely outcomes for a bracket')
