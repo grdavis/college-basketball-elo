@@ -2,6 +2,9 @@ name: daily-predictions
 on:
   schedule: # daily at 11 AM ET, 16 GMT
     - cron: '0 16 * * *' 
+  push:
+    branches:
+      - main
 jobs:
   job1:
     name: predict
