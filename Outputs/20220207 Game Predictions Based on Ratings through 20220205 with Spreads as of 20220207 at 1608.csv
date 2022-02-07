@@ -11,14 +11,15 @@ Neutral,Away,Away Win Prob.,Away Pred. Spread,Live Away Spread,Home,Home Win Pro
 0,Eastern Illinois,29%,6.3,NL,Tennessee Tech,71%,-6.3
 0,Furman,72%,-6.3,NL,ETSU,28%,6.3
 0,George Mason,27%,6.7,NL,Richmond,73%,-6.7
-0,Hartford,35%,4.3,NL,UMass-Lowell,65%,-4.3
-0,Holy Cross,9%,16.2,NL,Colgate,91%,-16.2
+0,Hartford,35%,4.3,4,UMass-Lowell,65%,-4.3
+0,Holy Cross,9%,16.2,16.5,Colgate,91%,-16.2
 0,Howard,77%,-8.3,NL,Delaware State,23%,8.3
 0,Jackson State,64%,-3.9,NL,Arkansas-Pine Bluff,36%,3.9
 0,James Madison,31%,5.5,NL,Drexel,69%,-5.5
 0,Lafayette,15%,11.9,NL,Navy,85%,-11.9
 0,Montana State,78%,-8.6,NL,Idaho State,22%,8.6
 0,New Hampshire,31%,5.4,NL,Stony Brook,69%,-5.4
+0,North Carolina Central,51%,-0.2,NL,South Carolina State,49%,0.2
 0,UNC Greensboro,66%,-4.4,NL,Western Carolina,34%,4.4
 0,UNC Wilmington,29%,6.2,NL,Hofstra,71%,-6.2
 0,Northern Arizona,22%,8.8,NL,Northern Colorado,78%,-8.8
