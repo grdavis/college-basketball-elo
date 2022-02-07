@@ -13,8 +13,10 @@ def scrape_live_odds():
 	'''
 	url = "https://sportsbook.draftkings.com/leagues/basketball/88670771"
 	data = requests.get(url).content
-	table = BeautifulSoup(data, 'html.parser').find('tbody', {'class': 'sportsbook-table__body'})
-	rows = table.find_all('tr')
+	table = BeautifulSoup(data, 'html.parser').find_all('tbody', {'class': 'sportsbook-table__body'})
+	rows = []
+	for t in table:
+		rows.extend(t.find_all('tr'))
 	home = False
 	all_data = []
 	today = datetime.now()
@@ -47,18 +49,18 @@ def add_spreads_to_todays_preds(predictions, forecast_date):
 
 	spreads_map = {}
 	for t in todays_spreads:
-		spreads_map[t[0] + t[2]] = t
+		spreads_map[t[0] + " " + t[2]] = t
 
 	new_data = []
 	for row in predictions:
-		teamindex = row[1] + row[4]
+		teamindex = row[1] + " " + row[4]
 		best_match = process.extractOne(teamindex, spreads_map.keys(), scorer = fuzz.token_set_ratio)
 		spread = (spreads_map[best_match[0]][1]).replace('+', '')
 		score = best_match[1]
 		if score >= 80:
 			new_data.append(row[:4] + [spread] + row[4:])
 		else:
-			# print(row[1], row[4], best_match)
+			# print(teamindex, best_match)
 			new_data.append(row[:4] + ['NL'] + row[4:])
 
 	return new_data, timestamp
