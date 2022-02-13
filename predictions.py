@@ -109,7 +109,7 @@ def predict_next_day(elo_state, forecast_date):
 	spreads_string = ' with Spreads as of ' + timestamp.strftime('%Y%m%d at %H%M')
 	utils.table_output(output, forecast_date.strftime('%Y%m%d') + ' Game Predictions Based on Ratings through ' + elo_state.date + spreads_string)
 
-def main(forecast_date = False, matchup = False, neutral = False, sim_mode = False, stop_short = '99999999', bracket = False, pick_mode = 0):
+def main(auto = False, forecast_date = False, matchup = False, neutral = False, sim_mode = False, stop_short = '99999999', bracket = False, pick_mode = 0):
 	'''
 	Retrieves an elo simulation through the specified 'stop_short' date then cascades through options:
 	1. if a 'matchup' of two teams is provided, print out predictions for that matchup - factoring in 
@@ -118,7 +118,7 @@ def main(forecast_date = False, matchup = False, neutral = False, sim_mode = Fal
 	number of bracket simulations on the specified bracket
 	3. if just 'bracket', which is a filepath to a bracket, is specified, deliver a one-time prediction for that 
 	bracket based on the starting teams. 'pick_mode' chooses probabilistically (0), the better team (1), or randomly (2)
-	4. if nothing is specified, print out an explanation
+	4. if nothing is specified, make predictions for today's games
 	'''
 	elo_state = elo.main(stop_short = stop_short)
 	if matchup != False:
@@ -140,6 +140,7 @@ def main(forecast_date = False, matchup = False, neutral = False, sim_mode = Fal
 		predict_tournament(elo_state, tournamant_teams, pick_mode = pick_mode, verbose = True, rounds = rounds)
 	else:
 		forecast_date = datetime.date.today() if forecast_date == False else datetime.datetime.strptime(forecast_date, "%Y%m%d")
+		forecast_date = forecast_date - timedelta(hours = 5) if auto else forecast_date
 		predict_next_day(elo_state, forecast_date)
 	utils.clean_up_old_outputs_and_data()
 
@@ -152,8 +153,9 @@ def parseArguments():
 	parser.add_argument('-d', '--dateSim', type = str, default = '99999999', help = 'Use if predicting games or tournament as of a date in the past. Enter date as YYYYMMDD (e.g. 20190315). Can be specified in any mode to get outputs as of the specified date')
 	parser.add_argument('-P', '--PredictBracket', default = False, type = str, help = "Use to predict results of a tournament (i.e. generate a single bracket). Enter the filename storing the tournament participants in the first column. Use the -m flag to specify how each matchup should be decided. Don't forget to use -d if predicting this tournament as of a date in the past")
 	parser.add_argument('-m', '--mode', default = 0, choices = [0, 1, 2], type = int, help = "By default, the winner for each matchup in a tournament prediction is selected probabilistically (mode 0). Use 1 to have the model always pick the 'better' team according to Elo ratings. Use 2 to decide each matchup with a coinflip (random selection)")
+	parser.add_argument('-A', '--auto', action = 'store_true', help = 'Used only by github actions to account for the time difference on the virtual machine')
 	return parser.parse_args()
 
 if __name__ == '__main__':
 	args = parseArguments()
-	main(forecast_date = args.ForecastDate, matchup = args.GamePredictor, neutral = args.neutral, sim_mode = args.SimMode, stop_short = args.dateSim, bracket = args.PredictBracket, pick_mode = args.mode)
+	main(auto = args.auto, forecast_date = args.ForecastDate, matchup = args.GamePredictor, neutral = args.neutral, sim_mode = args.SimMode, stop_short = args.dateSim, bracket = args.PredictBracket, pick_mode = args.mode)
