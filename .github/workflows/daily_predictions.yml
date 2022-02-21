@@ -22,7 +22,7 @@ jobs:
           pip install -r requirements.txt
           
       - name: execute py script # run predictions.py
-        run: python predictions.py
+        run: python predictions.py -A
           
       - name: commit files
         run: |

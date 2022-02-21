@@ -87,7 +87,7 @@ def sim_tournaments(elo_state, tournamant_teams, n, verbose = False, rounds = RO
 		output = pd.DataFrame(formatted, columns = ['team'] + rounds[1:]).sort_values(rounds[-1], ascending = False)
 		utils.table_output(output, 'Tournament Predictions Based on Ratings through ' + elo_state.date + ' and ' + str(n) + ' Simulations')
 
-def predict_next_day(elo_state, forecast_date):
+def predict_next_day(elo_state, forecast_date, auto):
 	'''
 	checks Sports Reference for games on the specified date object date and uses the elo state to predict each game's outcome 
 	outputs a Plotly table summarizing predictions and saves a csv
@@ -106,7 +106,10 @@ def predict_next_day(elo_state, forecast_date):
 			predictions.append([game[0], game[1], "{0:.0%}".format(1 - (float(prob[:-1])/100)), -home_spread, game[3], prob, home_spread])
 	predictions, timestamp = spread_enricher.add_spreads_to_todays_preds(predictions, forecast_date)
 	output = pd.DataFrame(predictions, columns = ['Neutral', 'Away', 'Away Win Prob.', 'Away Pred. Spread', 'Live Away Spread', 'Home', 'Home Win Prob.', 'Home Pred. Spread'])
-	spreads_string = ' with Spreads as of ' + timestamp.strftime('%Y%m%d at %H%M')
+	spreads_string = ''
+	if timestamp != 'N/A':
+		spreads_string = ' with Spreads as of '
+		spreads_string +=  (timestamp - datetime.timedelta(hours = 5)).strftime('%Y%m%d at %H%M') if auto else timestamp.strftime('%Y%m%d at %H%M')
 	utils.table_output(output, forecast_date.strftime('%Y%m%d') + ' Game Predictions Based on Ratings through ' + elo_state.date + spreads_string)
 
 def main(auto = False, forecast_date = False, matchup = False, neutral = False, sim_mode = False, stop_short = '99999999', bracket = False, pick_mode = 0):
@@ -140,8 +143,8 @@ def main(auto = False, forecast_date = False, matchup = False, neutral = False, 
 		predict_tournament(elo_state, tournamant_teams, pick_mode = pick_mode, verbose = True, rounds = rounds)
 	else:
 		forecast_date = datetime.date.today() if forecast_date == False else datetime.datetime.strptime(forecast_date, "%Y%m%d")
-		forecast_date = forecast_date - timedelta(hours = 5) if auto else forecast_date
-		predict_next_day(elo_state, forecast_date)
+		forecast_date = forecast_date - datetime.timedelta(hours = 5) if auto else forecast_date
+		predict_next_day(elo_state, forecast_date, auto)
 	utils.clean_up_old_outputs_and_data()
 
 def parseArguments():
