@@ -25,8 +25,8 @@ def scrape_live_odds():
 		if home:
 			all_data.append(new_data + [team, today.date().strftime('%Y%m%d'), today.time().strftime('%H%M%S')])
 		else:
-			spread = row.find('span', {'class': 'sportsbook-outcome-cell__line'}).text
-			new_data = [team, spread]
+			spread = row.find('span', {'class': 'sportsbook-outcome-cell__line'})
+			new_data = [team, spread.text if spread != None else 'NL']
 		home = not home
 	utils.save_data('New_Spreads/DK_spreads_%s_%s.csv' % (today.date().strftime('%Y%m%d'), today.time().strftime('%H%M%S')), all_data)
 	return all_data, today
@@ -42,11 +42,11 @@ def add_spreads_to_todays_preds(predictions, forecast_date):
 	This function is only meant to enrich a specific day's predictions. Actual spreads get incorporated into the
 	master data with the function add_historical_spreads() in an ad-hoc fashion.
 	'''
-	todays_spreads, timestamp = scrape_live_odds()
-	if forecast_date != timestamp.date():
+	if forecast_date != datetime.today().date():
 		print('Live spreads only available when making predictions on the day of the event')
 		return [row[:4] + ['NL'] + row[4:] for row in predictions], "N/A"
 
+	todays_spreads, timestamp = scrape_live_odds()
 	spreads_map = {}
 	for t in todays_spreads:
 		spreads_map[t[0] + " " + t[2]] = t
@@ -74,6 +74,9 @@ def add_historical_spreads():
 	Requires downloading xlsx files from the site, moving it to the spreads folder, and saving it as a .csv. If running in the middle of the 
 	latest season, note that the xlsx files will not have all the latest data ready (e.g. running on 1/30, this season's xlsx file doesn't have 
 	spreads for 1/24-1/30 yet).
+
+	Requires a manual check at the end. Saves the enriched data with a "t" prefix. Manually confirm it worked as expected before removing the "t"
+	and overwriting the latest data file
 	'''
 	SPREAD_FOLDER = 'Old_Spreads/'
 	filepath = utils.get_latest_data_filepath() 

@@ -171,11 +171,11 @@ def elo_vs_MoV(explore):
 	x_trimmed = [j*25 for j in range(-i, i+1)]
 	y_trimmed = [explore.MoV_tracker[i]/explore.elo_margin_tracker[i] for i in x_trimmed]
 	slope, intercept, r, p, se = linregress(x_trimmed, y_trimmed)
-	# print(slope, r)
-	# slope: 0.03914846 -> 1/slope: 25.5 elo difference / point difference
+	print(slope, r)
+	# slope: 0.03891611 -> 1/slope: 25.7 elo difference / point difference
 	fig.add_trace(go.Scatter(x = x_trimmed, y = [i*slope + intercept for i in x_trimmed], mode = 'lines', 
 		name = 'LSRL for Middle 80% of Games (R^2 > 0.99)'))
-	fig.update_layout(title_text = 'Elo Margin vs. Average Scoring Margin: 1 game point = 25.5 Elo points', 
+	fig.update_layout(title_text = f'Elo Margin vs. Average Scoring Margin: 1 game point = {-elo.ELO_TO_POINTS_FACTOR} Elo points', 
 		xaxis_title = 'Elo Margin', yaxis_title = 'Average Actual Scoring Margin')
 	fig.show()
 
@@ -291,7 +291,7 @@ def historical_brackets(explore):
 ###########################GRAPHING##########################
 def graphing(data):
 	explore = tuning_sim(data, elo.K_FACTOR, elo.SEASON_CARRY, elo.HOME_ADVANTAGE, elo.NEW_ELO)
-	# print(explore.get_errors())
+	print(explore.get_errors())
 	error1_viz(explore)
 	error2_viz(explore)
 	elo_vs_MoV(explore)

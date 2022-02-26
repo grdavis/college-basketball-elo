@@ -10,7 +10,7 @@ NEW_ELO = 925
 K_FACTOR = 43
 SEASON_CARRY = 0.9
 HOME_ADVANTAGE = 81
-ELO_TO_POINTS_FACTOR = -25.5 #divide an elo margin by this to get the predicted point spread
+ELO_TO_POINTS_FACTOR = -25.7 #divide an elo margin by this to get the predicted point spread
 GAMES_REQUIRED = 5
 DATA_FOLDER = utils.DATA_FOLDER
 
