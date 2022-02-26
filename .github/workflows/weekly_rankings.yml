@@ -1,4 +1,4 @@
-name: daily-predictions
+name: weekly-rankings
 on:
   workflow_dispatch:
   schedule: # weekly on Sunday at 12PM EST
