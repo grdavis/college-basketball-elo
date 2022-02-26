@@ -142,5 +142,5 @@ Hypothetically, if one was to use this Elo model for gambling, you would want to
 Lastly, to visualize the accuracy of the Elo model's predictions, I plotted predicted win probability versus actual win percentage. For example, there have been 883 games in the dataset (Fall 2010 - Fall 2021) where the model predicted a team's win probability was ~53% (rounded to the nearest 1%). In reality, 460 of those teams won their games. That is a win percentage of 52.1% `(460/855)` - which means the model's prediction was about right. Over time, teams given an X% chance of winning should win about X% of their games. This plot shows that relationship to be mostly true. Plotted with a linear line of best fit, the R-Squared value is ~0.99.
 ![alt text](https://github.com/grdavis/college-basketball-elo/blob/main/Images/prediction_accuracy.png?raw=true)
 
-##Other Functionality
+## Other Functionality
 To recreate any of these visualizations or re-tune the model, refer to the `tuning.py` file. To add in more spreads on an ad-hoc basis from [SportsBookReviewsOnline](https://www.sportsbookreviewsonline.com/scoresoddsarchives/ncaabasketball/ncaabasketballoddsarchives.htm), refer to comments on functions in `spread_enricher.py`.
