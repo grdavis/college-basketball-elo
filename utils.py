@@ -59,7 +59,7 @@ def clean_up_old_outputs_and_data():
 	remove_files([SPREAD_FOLDER + f for f in sorted_files], 3)
 
 	#OUTPUTS
-	r = re.compile(".*.csv")
+	r = re.compile(".*Predictions.*.csv")
 	elligible_data = list(filter(r.match, os.listdir(OUTPUTS_FOLDER)))
 	sorted_files = sorted(elligible_data, key = lambda x: os.path.getmtime(os.path.join(OUTPUTS_FOLDER, x)), reverse = True)
 	remove_files([OUTPUTS_FOLDER + f for f in sorted_files], 3)
