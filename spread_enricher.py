@@ -117,9 +117,10 @@ def add_historical_spreads():
 					if new_ratio > best[0]:
 						best = (new_ratio, poss[1])
 				if best[0] < 50:
-					#manually check over the games where the match was uncertain
-					print(numindex, spread_data[numindex])
-					print(teamindex, best)
+					# manually check over the games where the match was uncertain
+					print(teamindex, best) # <- game we are trying to match to a spread
+					print(numindex, spread_data[numindex]) # <- list of possible games/spread to match it with
+					# make sure the game we are trying to match is actually in the list of possible games/spreads, otherwise manually replace with NL in the output
 				sp = best[1]
 			sp = sp if sp < 1000 else 'NL'
 			new_data.append(row[:6] + [sp])

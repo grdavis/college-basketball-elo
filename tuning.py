@@ -219,31 +219,31 @@ def spread_evaluation(explore):
 	y_vals_pick = []
 	ns = []
 	for k in np.arange(0, 10, .25):
-		take_a_side = 0
-		correct_side = 0
-		tied_side = 0
-		agreed = 0
+		take_a_side = 0 #made a "bet"
+		correct_side = 0 #"bet" was correct
+		tied_side = 0 #"bet" was a push
+		agreed = 0 #the elo vs. vegas spread difference was not great enough to trigger "bet"
 		for row in explore.spread_tracker:
-			if row[2] == 'NL': continue
+			if row[2] == 'NL': continue #we don't have a historical spread, so ignore
 			away_score, home_score, away_veg_spread, away_elo_spread = map(float, row)
 			adjusted_score_away = away_score + away_veg_spread
 			if away_veg_spread - away_elo_spread > k: #elo says take the away team
 				if adjusted_score_away > home_score: 
-					correct_side += 1
-				elif adjusted_score_away == home_score:
-					tied_side += 1
-				take_a_side += 1
+					correct_side += 1 #elo-informed "bet" was correct
+				if adjusted_score_away == home_score:
+					tied_side += 1 #elo-informed "bet" was a push
+				take_a_side += 1 #either way, elo suggested making a "bet"
 			elif away_elo_spread - away_veg_spread > k: #elo says take the home team
 				if adjusted_score_away < home_score: 
-					correct_side += 1
-				elif adjusted_score_away == home_score:
-					tied_side += 1
-				take_a_side += 1
+					correct_side += 1 #elo-informed "bet" was correct
+				if adjusted_score_away == home_score:
+					tied_side += 1 #elo-informed "bet" was a push
+				take_a_side += 1 #either way, elo suggested making a "bet"
 			else: #elo agrees with vegas
 				agreed += 1
 		x_vals.append(k)
-		y_vals_win.append(correct_side/(take_a_side - tied_side))
-		y_vals_pick.append(take_a_side/(take_a_side + agreed))
+		y_vals_win.append(correct_side/(take_a_side - tied_side)) #track win percentage
+		y_vals_pick.append(take_a_side/(take_a_side + agreed)) #track % of games with spread data for which a pick was made
 		ns.append(take_a_side)
 
 	fig = make_subplots(specs=[[{"secondary_y": True}]])
