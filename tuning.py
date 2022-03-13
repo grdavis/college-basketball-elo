@@ -260,17 +260,16 @@ def spread_evaluation(explore):
 					plot_bgcolor='rgba(0,0,0,0)', yaxis_tickformat = ',.2%', yaxis2_tickformat = ',.2%')
 	fig.show()
 
-
 ###############HISTORICAL BRACKET PERFORMANCE##################
 def historical_brackets(explore):
 	scores = [10, 20, 40, 80, 160, 320] #ESPN scoring system for correct game in round
 	def evaluate_brackets(predictions, real_results):
 		predictions_score = 0
-		for index in range(len(ROUNDS)):
-			predictions_score += sum([scores[index] if predictions[ROUNDS[index]][i] == real_results[ROUNDS[index]][i] else 0 for i in range(len(predictions[ROUNDS[index]]))])
+		for index in range(len(ROUNDS)-1):
+			predictions_score += sum([scores[index] if predictions[ROUNDS[index+1]][i][0] == real_results[ROUNDS[index+1]][i] else 0 for i in range(len(predictions[ROUNDS[index+1]]))])
 		return predictions_score
 
-	for stop_date, tourney_filepath in [('20190320', 'tournament_results_2019.csv'), ('20180314', 'tournament_results_2018.csv'), ('20170315', 'tournament_results_2017.csv')]:
+	for stop_date, tourney_filepath in [('20210317', 'tournament_results_2021.csv'), ('20190320', 'tournament_results_2019.csv'), ('20180314', 'tournament_results_2018.csv'), ('20170315', 'tournament_results_2017.csv')]:
 		elo_state = elo.main(stop_short = stop_date)
 		df = pd.read_csv(utils.DATA_FOLDER + tourney_filepath)
 		tournamant_teams = list(df['first'].dropna())
@@ -283,9 +282,10 @@ def historical_brackets(explore):
 	remaining = [32, 16, 8, 4, 2, 1]
 	print(sum([remaining[index]*scores[index]*(.5**(index + 1)) for index in range(6)]))
 
-	#2019: 1260
-	#2018: 830
-	#2017: 720
+	#2021: 860
+	#2019: 1250
+	#2018: 840
+	#2017: 740
 	#Random: 315
 
 ###########################GRAPHING##########################
@@ -298,6 +298,7 @@ def graphing(data):
 	elo_season_over_season(explore)
 	latest_dist(explore)
 	spread_evaluation(explore)
+	historical_brackets(explore)
 
 ###########################TUNING############################
 def tuning(data):

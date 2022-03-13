@@ -8,7 +8,7 @@ import datetime
 import spread_enricher
 
 DATA_FOLDER = utils.DATA_FOLDER
-ROUNDS = ['second', 'sixteen', 'eight', 'four', 'final', 'champion']
+ROUNDS = ['first', 'second', 'sixteen', 'eight', 'four', 'final', 'champion']
 
 def matchups_from_list(team_list):
 	'''
@@ -51,6 +51,7 @@ def predict_tournament(elo_state, tournamant_teams, pick_mode = 0, verbose = Fal
 	outputs a Plotly table summarizing predictions and saves a csv
 	'''
 	results = {rounds[0]: tournamant_teams}
+
 	remaining = tournamant_teams
 
 	for r in rounds[1:]:
