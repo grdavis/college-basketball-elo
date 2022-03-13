@@ -1,8 +1,8 @@
 name: daily-predictions
 on:
   workflow_dispatch:
-  schedule: # daily at 11 AM ET, 16 GMT
-    - cron: '0 16 * * *' 
+  schedule: # daily at 11 AM ET, 15 GMT
+    - cron: '0 15 * * *' 
 jobs:
   job1:
     name: predict

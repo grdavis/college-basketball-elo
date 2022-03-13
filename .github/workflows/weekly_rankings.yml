@@ -1,8 +1,8 @@
 name: weekly-rankings
 on:
   workflow_dispatch:
-  schedule: # weekly on Sunday at 12PM EST
-    - cron: '0 17 * * 0' 
+  schedule: # weekly on Sunday at 12PM ET, 16 GMT
+    - cron: '0 16 * * 0' 
 jobs:
   job1:
     name: rankings
