@@ -135,13 +135,13 @@ def main(auto = False, forecast_date = False, matchup = False, neutral = False, 
 		predict_game(elo_state, home, away, neutral = neutral, verbose = True)
 	elif sim_mode != False:
 		file, simulations = sim_mode
-		tournamant_teams = list(pd.read_csv(file).iloc[:,0].dropna())
+		tournamant_teams = list(pd.read_csv(file).iloc[:,0].dropna()) #switch 0 to index of round of interest
 		rounds = list(pd.read_csv(file).columns)
-		sim_tournaments(elo_state, tournamant_teams, n = int(simulations), verbose = True, rounds = rounds)
+		sim_tournaments(elo_state, tournamant_teams, n = int(simulations), verbose = True, rounds = rounds[0:]) #switch 0 to index of round of interest
 	elif bracket != False:
-		tournamant_teams = list(pd.read_csv(bracket).iloc[:,0].dropna())
+		tournamant_teams = list(pd.read_csv(bracket).iloc[:,0].dropna()) #switch 0 to index of round of interest
 		rounds = list(pd.read_csv(bracket).columns)
-		predict_tournament(elo_state, tournamant_teams, pick_mode = pick_mode, verbose = True, rounds = rounds)
+		predict_tournament(elo_state, tournamant_teams, pick_mode = pick_mode, verbose = True, rounds = rounds[0:]) #switch 0 to index of round of interest
 	else:
 		forecast_date = datetime.date.today() if forecast_date == False else datetime.datetime.strptime(forecast_date, "%Y%m%d")
 		forecast_date = forecast_date - datetime.timedelta(hours = 5) if auto else forecast_date
