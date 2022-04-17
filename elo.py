@@ -121,7 +121,7 @@ def step_elo(this_sim, row, k_factor, home_elo):
 
 def sim(data, k_factor, new_season_carry, home_elo, stop_short, last_snap):
 	'''
-	creates a new ELO_Sim objectm, steps it through each row in the provided data up until stop_short, and returns the object
+	creates a new ELO_Sim object, steps it through each row in the provided data up until stop_short, and returns the object
 	stop_short: a date string ('YYYYMMDD') that indicates whether or not to stop the simulation before the end of the data on the provided date
 	last_snap: when taking a final snapshot of a team's elo before the end of the simulation, specify an integer number of days back to take the snapshot
 	'''

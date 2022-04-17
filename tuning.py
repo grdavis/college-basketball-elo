@@ -132,13 +132,13 @@ def tune(data):
 
 ################Brier (Error 1) Over Time####################
 def error1_viz(explore):
-	size = 5700 #roughly the number of games per season if we have ~40K errors over the course of 7 seasons (Fall 2014 - Spring 2021)
+	size = 5750 #roughly the number of games per season if we have ~40K errors over the course of 7 seasons (Fall 2014 - Spring 2021)
 	leftover = len(explore.error1) % size
 	y_vals = [sum(explore.error1[i*size:(i*size)+size])/size for i in range(len(explore.error1)//size)] + [sum(explore.error1[-leftover:])/leftover]
 	sizes = [size for i in range(len(explore.error1)//size)] + [leftover]
 	x_vals = [i for i in range(len(sizes))]
 	fig = go.Figure([go.Bar(x = x_vals, y = y_vals, text = ['n = ' + str(size) for size in sizes], textposition = 'auto')])
-	fig.update_layout(title_text = 'Brier Score Over Time: Fall 2014 - Fall 2021', 
+	fig.update_layout(title_text = 'Brier Score Over Time: Fall 2014 - Fall 2022', 
 		xaxis_title = 'Bucket of Chronological Games', yaxis_title = 'Avg. Brier Score in Bucket')
 	fig.show()
 
@@ -183,7 +183,10 @@ def elo_vs_MoV(explore):
 def elo_season_over_season(explore):
 	season_totals = {}
 	season_teams = {}
-	years = ['20110404', '20120402', '20130408', '20140407', '20150406', '20160404', '20170403', '20180402', '20190408', '20200311', '20210405']
+	years = ['20110404', '20120402', '20130408', '20140407', 
+			'20150406', '20160404', '20170403', '20180402', 
+			'20190408', '20200311', '20210405', '20220404']
+	if years[-1] == explore.date: explore.season_reset(elo.SEASON_CARRY)
 	for team in explore.teams:
 		for year in years:
 			for date, snap in explore.teams[team].snapshots:
@@ -194,7 +197,7 @@ def elo_season_over_season(explore):
 	x_vals = [i[:4] for i in season_teams]
 	sizes = ['teams = ' + str(season_teams[i]) for i in season_teams]
 	fig = go.Figure([go.Bar(x = x_vals, y = y_vals, text = sizes, textposition = 'auto')])
-	fig.update_layout(title_text = 'Average End-of-Season Elo over Time: Spring 2011 - Spring 2021', 
+	fig.update_layout(title_text = 'Average End-of-Season Elo over Time: Spring 2011 - Spring 2022', 
 		xaxis_title = 'Year', yaxis_title = 'End of Season Elo')
 	fig.show()
 
@@ -269,7 +272,11 @@ def historical_brackets(explore):
 			predictions_score += sum([scores[index] if predictions[ROUNDS[index+1]][i][0] == real_results[ROUNDS[index+1]][i] else 0 for i in range(len(predictions[ROUNDS[index+1]]))])
 		return predictions_score
 
-	for stop_date, tourney_filepath in [('20210317', 'tournament_results_2021.csv'), ('20190320', 'tournament_results_2019.csv'), ('20180314', 'tournament_results_2018.csv'), ('20170315', 'tournament_results_2017.csv')]:
+	for stop_date, tourney_filepath in [('20210316', 'tournament_results_2022.csv'),
+										('20210317', 'tournament_results_2021.csv'), 
+										('20190320', 'tournament_results_2019.csv'), 
+										('20180314', 'tournament_results_2018.csv'), 
+										('20170315', 'tournament_results_2017.csv')]:
 		elo_state = elo.main(stop_short = stop_date)
 		df = pd.read_csv(utils.DATA_FOLDER + tourney_filepath)
 		tournamant_teams = list(df['first'].dropna())
@@ -282,6 +289,7 @@ def historical_brackets(explore):
 	remaining = [32, 16, 8, 4, 2, 1]
 	print(sum([remaining[index]*scores[index]*(.5**(index + 1)) for index in range(6)]))
 
+	#2022: 350
 	#2021: 860
 	#2019: 1250
 	#2018: 840
@@ -291,14 +299,14 @@ def historical_brackets(explore):
 ###########################GRAPHING##########################
 def graphing(data):
 	explore = tuning_sim(data, elo.K_FACTOR, elo.SEASON_CARRY, elo.HOME_ADVANTAGE, elo.NEW_ELO)
-	print(explore.get_errors())
-	error1_viz(explore)
-	error2_viz(explore)
-	elo_vs_MoV(explore)
+	# print(explore.get_errors())
+	# error1_viz(explore)
+	# error2_viz(explore)
+	# elo_vs_MoV(explore)
 	elo_season_over_season(explore)
-	latest_dist(explore)
-	spread_evaluation(explore)
-	historical_brackets(explore)
+	# latest_dist(explore)
+	# spread_evaluation(explore)
+	# historical_brackets(explore)
 
 ###########################TUNING############################
 def tuning(data):
