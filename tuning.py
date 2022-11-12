@@ -89,10 +89,10 @@ def random_tune(data, number):
 	Start with wide ranges, then use the outputs (which are sorted by their errors) to inform a tighter range for the next iteration
 	Once windows are small enough, switch to brute_tune
 	'''
-	k_range = [45, 46]
-	carry_range = np.arange(.89, .91, .01)
-	home_range = np.arange(74, 86, 2)
-	new_team_range = [925, 950, 975]
+	k_range = [40, 42, 44, 46]
+	carry_range = [.88, .90, .92]
+	home_range = [74, 76, 78, 80]
+	new_team_range = [875, 900]
 	errors = []
 	
 	for i in tqdm(range(number)):
@@ -107,10 +107,10 @@ def brute_tune(data):
 	Use this function to cycle through all possible combinations of the 4 variables within the defined ranges and find the optimal solution
 	Since brute force can take some time to run, random_tune first to help narrow possible ranges
 	'''
-	k_range = [43, 44, 45]
-	carry_range = [.89, .9, .91]
-	home_range = [80, 81, 82, 83, 84]
-	new_team_range = [850, 875, 900] 
+	k_range = [43]
+	carry_range = [.9]
+	home_range = [81]
+	new_team_range = [925] 
 	errors = []
 
 	for k in tqdm(k_range):
@@ -122,10 +122,12 @@ def brute_tune(data):
 
 	return errors
 
-def tune(data):
-	#start with random_tune, then switch to brute_tune when the ranges for values are tight enough so as not to take too long to run
-	# errors = random_tune(data, 50)
-	errors = brute_tune(data)
+def tune(data, tune_style_random = False, random_iterations = 50):
+	if tune_style_random:
+		errors = random_tune(data, random_iterations)
+	else:
+		errors = brute_tune(data)
+
 	se1 = sorted(errors, key = lambda x: x[0])
 	se2 = sorted(errors, key = lambda x: x[1])
 	return se1, se2
@@ -172,7 +174,7 @@ def elo_vs_MoV(explore):
 	y_trimmed = [explore.MoV_tracker[i]/explore.elo_margin_tracker[i] for i in x_trimmed]
 	slope, intercept, r, p, se = linregress(x_trimmed, y_trimmed)
 	print(slope, r)
-	# slope: 0.03891611 -> 1/slope: 25.7 elo difference / point difference
+	# 1/slope tells us what elo difference is equivalent to 1 point difference
 	fig.add_trace(go.Scatter(x = x_trimmed, y = [i*slope + intercept for i in x_trimmed], mode = 'lines', 
 		name = 'LSRL for Middle 80% of Games (R^2 > 0.99)'))
 	fig.update_layout(title_text = f'Elo Margin vs. Average Scoring Margin: 1 game point = {-elo.ELO_TO_POINTS_FACTOR} Elo points', 
@@ -216,12 +218,17 @@ def latest_dist(explore):
 	fig.show()
 
 ##################SPREAD EVALUATION##############################
-def spread_evaluation(explore):
+def spread_evaluation(explore, exclusion_threshold = 25):
+	'''
+	The exclusion_threshold does not count games where the difference between the elo and vegas spreads is greater than
+	this threshold. These games are likely errors in either the spread predicted or in the vegas spread read in from the
+	historical data file
+	'''
 	x_vals = []
 	y_vals_win = []
 	y_vals_pick = []
 	ns = []
-	for k in np.arange(0, 10, .25):
+	for k in np.arange(0, min(exclusion_threshold, 20), .25):
 		take_a_side = 0 #made a "bet"
 		correct_side = 0 #"bet" was correct
 		tied_side = 0 #"bet" was a push
@@ -229,6 +236,8 @@ def spread_evaluation(explore):
 		for row in explore.spread_tracker:
 			if row[2] == 'NL': continue #we don't have a historical spread, so ignore
 			away_score, home_score, away_veg_spread, away_elo_spread = map(float, row)
+			if abs(away_veg_spread - away_elo_spread) > exclusion_threshold: continue #skip those where the difference is too big to trust
+
 			adjusted_score_away = away_score + away_veg_spread
 			if away_veg_spread - away_elo_spread > k: #elo says take the away team
 				if adjusted_score_away > home_score: 
@@ -303,23 +312,24 @@ def graphing(data):
 	# error1_viz(explore)
 	# error2_viz(explore)
 	# elo_vs_MoV(explore)
-	elo_season_over_season(explore)
+	# elo_season_over_season(explore)
 	# latest_dist(explore)
-	# spread_evaluation(explore)
+	spread_evaluation(explore, exclusion_threshold = 25)
 	# historical_brackets(explore)
 
 ###########################TUNING############################
-def tuning(data):
-	se1, se2 = tune(data)
+def tuning(data, target = 'error1', graphs = True, verbose = False, tune_style_random = False, random_iterations = 50):
+	se1, se2 = tune(data, tune_style_random, random_iterations)
+	if verbose: print(se1, se2)
+	if not graphs: return
 	
-	# start measuring after season 3 (start fall 2014), errors as of games through 11/8/2021
-	# current (keep):		(error1 = 7502.49, error2 = 0.0095, k_factor = 43, carryover = .9, home_elo = 81, new_team = 925)
-	# best e1 optimized:	(error1 = 7500.86, error2 = 0.0128, k_factor = 46, carryover = .9, home_elo = 79, new_team = 950)
-	# best e2 optimized:	(error1 = 7506.19, error2 = 0.0090, k_factor = 44, carryover = .9, home_elo = 82, new_team = 875)
-	# hybrid:				(error1 = 7502.01, error2 = 0.0109, k_factor = 45, carryover = .9, home_elo = 81, new_team = 910)
+	# start measuring after season 3 (start fall 2014), errors as of games through 11/11/2022
+	# current:				(error1 = 7867.77, error2 = 0.0093, k_factor = 43, carryover = .9, home_elo = 81, new_team = 925), 25.6
+	# best e1 optimized:	(error1 = 7866.11, error2 = 0.0117, k_factor = 45, carryover = .91, home_elo = 79, new_team = 940)
+	# best e2 optimized:	(error1 = 7868.55, error2 = 0.0090, k_factor = 46, carryover = .9, home_elo = 74, new_team = 910)
+	# hybrid (active):		(error1 = 7866.37, error2 = 0.0096, k_factor = 45, carryover = .9, home_elo = 79, new_team = 925), 25.8
 
 	# take the output of tuning and plot the errors over each of the variables
-	target = 'error2'
 	mapping = {'error1': 0, 'error2': 1}
 	for i in [2, 3, 4, 5]:
 		fig = go.Figure()
@@ -333,6 +343,10 @@ if __name__ == '__main__':
 	filepath = utils.get_latest_data_filepath()
 	data = utils.read_csv(filepath)
 
-	#uncomment the function below depending on use case
+	### UNCOMMENT A FUNCTION BELOW DEPENDING ON USE CASE ###
+
+	#go into the graphing() function above to comment/uncomment which figures are desired
 	graphing(data)
-	# tuning(data)
+
+	#start with random_tune, then switch to brute_tune when the ranges for values are tight enough so as not to take too long to run
+	# tuning(data, target = 'error2', graphs = False, verbose = True, tune_style_random = False, random_iterations = 50)
