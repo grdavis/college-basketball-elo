@@ -6,11 +6,11 @@ import argparse
 import pandas as pd
 
 ELO_BASE = 1500
-NEW_ELO = 925
-K_FACTOR = 45
-SEASON_CARRY = 0.9
-HOME_ADVANTAGE = 79
-ELO_TO_POINTS_FACTOR = -25.8 #divide an elo margin by this to get the predicted point spread
+NEW_ELO = 950
+K_FACTOR = 46
+SEASON_CARRY = 0.91
+HOME_ADVANTAGE = 80
+ELO_TO_POINTS_FACTOR = -25.6 #divide an elo margin by this to get the predicted point spread
 GAMES_REQUIRED = 5
 DATA_FOLDER = utils.DATA_FOLDER
 

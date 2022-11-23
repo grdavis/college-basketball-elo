@@ -89,10 +89,10 @@ def random_tune(data, number):
 	Start with wide ranges, then use the outputs (which are sorted by their errors) to inform a tighter range for the next iteration
 	Once windows are small enough, switch to brute_tune
 	'''
-	k_range = [40, 42, 44, 46]
-	carry_range = [.88, .90, .92]
-	home_range = [74, 76, 78, 80]
-	new_team_range = [875, 900]
+	k_range = [47, 48, 49]
+	carry_range = [.92, .93, .94]
+	home_range = [74, 75, 76, 78]
+	new_team_range = [850, 875, 900]
 	errors = []
 	
 	for i in tqdm(range(number)):
@@ -107,10 +107,10 @@ def brute_tune(data):
 	Use this function to cycle through all possible combinations of the 4 variables within the defined ranges and find the optimal solution
 	Since brute force can take some time to run, random_tune first to help narrow possible ranges
 	'''
-	k_range = [43]
-	carry_range = [.9]
-	home_range = [81]
-	new_team_range = [925] 
+	k_range = [46]
+	carry_range = [.9, .91]
+	home_range = [75, 78, 79, 80, 82]
+	new_team_range = [915, 925, 940, 950] 
 	errors = []
 
 	for k in tqdm(k_range):
@@ -323,11 +323,10 @@ def tuning(data, target = 'error1', graphs = True, verbose = False, tune_style_r
 	if verbose: print(se1, se2)
 	if not graphs: return
 	
-	# start measuring after season 3 (start fall 2014), errors as of games through 11/11/2022
-	# current:				(error1 = 7867.77, error2 = 0.0093, k_factor = 43, carryover = .9, home_elo = 81, new_team = 925), 25.6
-	# best e1 optimized:	(error1 = 7866.11, error2 = 0.0117, k_factor = 45, carryover = .91, home_elo = 79, new_team = 940)
-	# best e2 optimized:	(error1 = 7868.55, error2 = 0.0090, k_factor = 46, carryover = .9, home_elo = 74, new_team = 910)
-	# hybrid (active):		(error1 = 7866.37, error2 = 0.0096, k_factor = 45, carryover = .9, home_elo = 79, new_team = 925), 25.8
+	# start measuring after season 3 (start fall 2014), errors as of games through 11/22/2022
+	# best e1 optimized:	(error1 = 7958.22, error2 = 0.0135, k_factor = 46, carryover = .9, home_elo = 82, new_team = 950)
+	# best e2 optimized:	(error1 = 7961.10, error2 = 0.0085, k_factor = 46, carryover = .91, home_elo = 75, new_team = 925)
+	# hybrid (active):		(error1 = 7958.51, error2 = 0.0099, k_factor = 46, carryover = .91, home_elo = 80, new_team = 950), 25.6
 
 	# take the output of tuning and plot the errors over each of the variables
 	mapping = {'error1': 0, 'error2': 1}
@@ -349,4 +348,4 @@ if __name__ == '__main__':
 	graphing(data)
 
 	#start with random_tune, then switch to brute_tune when the ranges for values are tight enough so as not to take too long to run
-	# tuning(data, target = 'error2', graphs = False, verbose = True, tune_style_random = False, random_iterations = 50)
+	# tuning(data, target = 'error2', graphs = True, verbose = True, tune_style_random = False, random_iterations = 50)

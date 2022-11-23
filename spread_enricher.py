@@ -84,7 +84,7 @@ def add_historical_spreads():
 	filenames = listdir(SPREAD_FOLDER)
 
 	spread_data = {}
-	for f in ['ncaa basketball 2021-22.csv']: #in filenames: #comment out filenames and provide a subset list of filenames if needed
+	for f in ['ncaa basketball 2022-23.csv']: #in filenames: #comment out filenames and provide a subset list of filenames if needed
 		if f == '.DS_Store': continue
 		print(f)
 		raw = utils.read_csv(SPREAD_FOLDER + f)
@@ -99,7 +99,10 @@ def add_historical_spreads():
 			year = f[-11:-7] if int(date[:2]) > 6 else '20' + f[-6:-4]
 			numindex = year + date + raw[r_index][6] + raw[r_index+1][6]
 			teamindex = raw[r_index][3] + raw[r_index+1][3]
-			spread_data[numindex] = spread_data.get(numindex, []) + [(teamindex, sp)]
+			
+			#the existing data from sportsreference does not reliably grab the neutral flag, so override it if we can from these old spreads
+			neutral_flag = 1 if raw[r_index][2] == 'N' else 0
+			spread_data[numindex] = spread_data.get(numindex, []) + [(teamindex, sp, neutral_flag)]
 
 	new_data = []
 	for row in data:
@@ -109,21 +112,24 @@ def add_historical_spreads():
 		else:
 			if len(spread_data[numindex]) == 1:
 				sp = spread_data[numindex][0][1]
+				neutral_flag = spread_data[numindex][0][2]
 			else:
 				teamindex = (row[1] + row[3]).replace(' ', '')
-				best = (fuzz.ratio(spread_data[numindex][0][0], teamindex), spread_data[numindex][0][1])
+				best = (fuzz.ratio(spread_data[numindex][0][0], teamindex), spread_data[numindex][0][1], spread_data[numindex][0][2])
 				for poss in spread_data[numindex][1:]:
 					new_ratio = fuzz.ratio(poss[0], teamindex)
 					if new_ratio > best[0]:
-						best = (new_ratio, poss[1])
+						best = (new_ratio, poss[1], poss[2])
 				if best[0] < 50:
-					# manually check over the games where the match was uncertain
+					#manually check over the games where even the best match was uncertain
+					#confirm that the selected spread aligned with the spread in the correct game in the list
 					print(teamindex, best) # <- game we are trying to match to a spread
-					print(numindex, spread_data[numindex]) # <- list of possible games/spread to match it with
-					# make sure the game we are trying to match is actually in the list of possible games/spreads, otherwise manually replace with NL in the output
+					print(numindex, spread_data[numindex]) # <- list of possible games/spread to match it with (not necessarily ordered)
 				sp = best[1]
+				neutral_flag = best[2]
 			sp = sp if sp < 1000 else 'NL'
-			new_data.append(row[:6] + [sp])
+			neutral_flag = max(neutral_flag, int(row[0])) #err on the side of calling a game neutral if either source says it is
+			new_data.append([neutral_flag] + row[1:6] + [sp])
 
 	#doesn't overwrite the latest data, requires a manual check and overwrite afterwards
 	utils.save_data(filepath.replace('/', '/t'), new_data)
