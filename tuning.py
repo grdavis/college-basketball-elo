@@ -36,7 +36,7 @@ class Tuning_ELO_Sim(elo.ELO_Sim):
 			self.predict_tracker[rounded] = self.predict_tracker.get(rounded, 0) + 1
 			self.predict_tracker[roundedL] = self.predict_tracker.get(roundedL, 0) + 1
 			self.spread_tracker.append((for_spread_tracker['away_score'], for_spread_tracker['home_score'],
-				for_spread_tracker['veg_away_spread'], for_spread_tracker['away_elo_spread']))
+				for_spread_tracker['veg_away_spread'], for_spread_tracker['away_elo_spread'], self.date))
 
 	def update_MoVs(self, elo_margin, MoV):
 		if self.season_count >= ERRORS_START:
@@ -218,11 +218,14 @@ def latest_dist(explore):
 	fig.show()
 
 ##################SPREAD EVALUATION##############################
-def spread_evaluation(explore, exclusion_threshold = 25):
+def spread_evaluation(explore, exclusion_threshold = 25, month_day_start = '1201'):
 	'''
 	The exclusion_threshold does not count games where the difference between the elo and vegas spreads is greater than
 	this threshold. These games are likely errors in either the spread predicted or in the vegas spread read in from the
-	historical data file
+	historical data file. 
+	In addition, games occurring before month_day_start within a season are not tracked. The theory is that the model
+	needs some time each season to tune itself. We need to wait until it has seen a few games from each season before we
+	would consider acting on its predictions.
 	'''
 	x_vals = []
 	y_vals_win = []
@@ -235,7 +238,10 @@ def spread_evaluation(explore, exclusion_threshold = 25):
 		agreed = 0 #the elo vs. vegas spread difference was not great enough to trigger "bet"
 		for row in explore.spread_tracker:
 			if row[2] == 'NL': continue #we don't have a historical spread, so ignore
-			away_score, home_score, away_veg_spread, away_elo_spread = map(float, row)
+			away_score, home_score, away_veg_spread, away_elo_spread = map(float, row[:4])
+			
+			game_month_day = row[-1][4:]
+			if game_month_day >= '0501' and game_month_day < month_day_start: continue #skip those too early in the season
 			if abs(away_veg_spread - away_elo_spread) > exclusion_threshold: continue #skip those where the difference is too big to trust
 
 			adjusted_score_away = away_score + away_veg_spread
@@ -314,7 +320,7 @@ def graphing(data):
 	# elo_vs_MoV(explore)
 	# elo_season_over_season(explore)
 	# latest_dist(explore)
-	spread_evaluation(explore, exclusion_threshold = 25)
+	spread_evaluation(explore, exclusion_threshold = 25, month_day_start = '1201')
 	# historical_brackets(explore)
 
 ###########################TUNING############################
