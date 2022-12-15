@@ -218,7 +218,7 @@ def latest_dist(explore):
 	fig.show()
 
 ##################SPREAD EVALUATION##############################
-def spread_evaluation(explore, exclusion_threshold = 25, month_day_start = '1201'):
+def spread_evaluation(explore, exclusion_threshold = 25, month_day_start = None):
 	'''
 	The exclusion_threshold does not count games where the difference between the elo and vegas spreads is greater than
 	this threshold. These games are likely errors in either the spread predicted or in the vegas spread read in from the
@@ -241,7 +241,7 @@ def spread_evaluation(explore, exclusion_threshold = 25, month_day_start = '1201
 			away_score, home_score, away_veg_spread, away_elo_spread = map(float, row[:4])
 			
 			game_month_day = row[-1][4:]
-			if game_month_day >= '0501' and game_month_day < month_day_start: continue #skip those too early in the season
+			if month_day_start != None and game_month_day >= '0501' and game_month_day < month_day_start: continue #skip those too early in the season
 			if abs(away_veg_spread - away_elo_spread) > exclusion_threshold: continue #skip those where the difference is too big to trust
 
 			adjusted_score_away = away_score + away_veg_spread
@@ -320,7 +320,7 @@ def graphing(data):
 	# elo_vs_MoV(explore)
 	# elo_season_over_season(explore)
 	# latest_dist(explore)
-	spread_evaluation(explore, exclusion_threshold = 25, month_day_start = '1201')
+	spread_evaluation(explore, exclusion_threshold = 25,) #month_day_start = '1201')
 	# historical_brackets(explore)
 
 ###########################TUNING############################
