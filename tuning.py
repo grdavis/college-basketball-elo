@@ -89,10 +89,10 @@ def random_tune(data, number):
 	Start with wide ranges, then use the outputs (which are sorted by their errors) to inform a tighter range for the next iteration
 	Once windows are small enough, switch to brute_tune
 	'''
-	k_range = [47, 48, 49]
-	carry_range = [.92, .93, .94]
-	home_range = [74, 75, 76, 78]
-	new_team_range = [850, 875, 900]
+	k_range = np.arange(40, 50, 1)
+	carry_range = np.arange(.65, .75, .02)
+	home_range = np.arange(70, 90, 1)
+	new_team_range = np.arange(1000, 1200, 50)
 	errors = []
 	
 	for i in tqdm(range(number)):
@@ -107,10 +107,10 @@ def brute_tune(data):
 	Use this function to cycle through all possible combinations of the 4 variables within the defined ranges and find the optimal solution
 	Since brute force can take some time to run, random_tune first to help narrow possible ranges
 	'''
-	k_range = [46]
-	carry_range = [.9, .91]
-	home_range = [75, 78, 79, 80, 82]
-	new_team_range = [915, 925, 940, 950] 
+	k_range = [46, 47]
+	carry_range = [.69, .70, .71, .72]
+	home_range = [80, 82, 84, 86, 88, 90]
+	new_team_range = [950, 960, 970, 980, 990] 
 	errors = []
 
 	for k in tqdm(k_range):
@@ -241,7 +241,12 @@ def spread_evaluation(explore, exclusion_threshold = 25, month_day_start = None)
 			away_score, home_score, away_veg_spread, away_elo_spread = map(float, row[:4])
 			
 			game_month_day = row[-1][4:]
-			if month_day_start != None and game_month_day >= '0501' and game_month_day < month_day_start: continue #skip those too early in the season
+			if month_day_start != None: #skip those too early in the season
+				if month_day_start < '0501':
+					if game_month_day >= '0501': continue
+					elif game_month_day < month_day_start: continue 
+				elif game_month_day >= '0501' and game_month_day < month_day_start: continue 
+
 			if abs(away_veg_spread - away_elo_spread) > exclusion_threshold: continue #skip those where the difference is too big to trust
 
 			adjusted_score_away = away_score + away_veg_spread
@@ -304,11 +309,11 @@ def historical_brackets(explore):
 	remaining = [32, 16, 8, 4, 2, 1]
 	print(sum([remaining[index]*scores[index]*(.5**(index + 1)) for index in range(6)]))
 
-	#2022: 350
-	#2021: 860
-	#2019: 1250
-	#2018: 840
-	#2017: 740
+	#2022: 320
+	#2021: 850
+	#2019: 1210
+	#2018: 890
+	#2017: 630
 	#Random: 315
 
 ###########################GRAPHING##########################
@@ -320,7 +325,7 @@ def graphing(data):
 	# elo_vs_MoV(explore)
 	# elo_season_over_season(explore)
 	# latest_dist(explore)
-	spread_evaluation(explore, exclusion_threshold = 25,) #month_day_start = '1201')
+	spread_evaluation(explore, exclusion_threshold = 25, month_day_start = '0110')
 	# historical_brackets(explore)
 
 ###########################TUNING############################
@@ -329,10 +334,11 @@ def tuning(data, target = 'error1', graphs = True, verbose = False, tune_style_r
 	if verbose: print(se1, se2)
 	if not graphs: return
 	
-	# start measuring after season 3 (start fall 2014), errors as of games through 11/22/2022
-	# best e1 optimized:	(error1 = 7958.22, error2 = 0.0135, k_factor = 46, carryover = .9, home_elo = 82, new_team = 950)
-	# best e2 optimized:	(error1 = 7961.10, error2 = 0.0085, k_factor = 46, carryover = .91, home_elo = 75, new_team = 925)
-	# hybrid (active):		(error1 = 7958.51, error2 = 0.0099, k_factor = 46, carryover = .91, home_elo = 80, new_team = 950), 25.6
+	# start measuring after season 3 (start fall 2014), errors as of games through 1/12/2023
+	# current: 				(error1 = 8302.59, error2 = 0.0105, k_factor = 46, carryover = .91, home_elo = 80, new_team = 950)
+	# best e1 optimized:	(error1 = 8245.79, error2 = 0.0129, k_factor = 46, carryover = .69, home_elo = 80, new_team = 985)
+	# best e2 optimized:	(error1 = 8255.49, error2 = 0.0100, k_factor = 47, carryover = .72, home_elo = 90, new_team = 950)
+	# hybrid (active):		(error1 = 8250.67, error2 = 0.0104, k_factor = 47, carryover = .71, home_elo = 90, new_team = 990), 25.6
 
 	# take the output of tuning and plot the errors over each of the variables
 	mapping = {'error1': 0, 'error2': 1}

@@ -6,13 +6,14 @@ import argparse
 import pandas as pd
 
 ELO_BASE = 1500
-NEW_ELO = 950
-K_FACTOR = 46
-SEASON_CARRY = 0.91
-HOME_ADVANTAGE = 80
-ELO_TO_POINTS_FACTOR = -25.6 #divide an elo margin by this to get the predicted point spread
+NEW_ELO = 990
+K_FACTOR = 47
+SEASON_CARRY = 0.71
+HOME_ADVANTAGE = 90
+ELO_TO_POINTS_FACTOR = -25.4 #divide an elo margin by this to get the predicted point spread
 GAMES_REQUIRED = 5
 DATA_FOLDER = utils.DATA_FOLDER
+CONFERENCE_DICT = utils.read_two_column_csv_to_dict('conferences.csv')
 
 class Team():
 	'''
@@ -24,6 +25,7 @@ class Team():
 		self.snapshots = [(date, starting_elo)] #list of ('date', elo)
 		self.seven_days_ago = starting_elo
 		self.season_game_count = 0
+		self.conference = CONFERENCE_DICT.get(name, 'Other')
 
 	def update_elo(self, change):
 		self.elo = max(0, self.elo + change)
@@ -52,14 +54,21 @@ class ELO_Sim():
 
 	def season_reset(self, new_season_carry):
 		self.snapshot()
+		score_dict, count_dict = {}, {}
 		to_remove = []
 		for team in self.teams:
 			if self.teams[team].season_game_count < GAMES_REQUIRED:
 				to_remove.append(team)
-			self.teams[team].elo = (self.get_elo(team) * new_season_carry) + ((1 - new_season_carry) * ELO_BASE)
-			self.teams[team].reset_game_count()
+			else:
+				score_dict[self.teams[team].conference] = score_dict.get(self.teams[team].conference, 0) + self.get_elo(team)
+				count_dict[self.teams[team].conference] = count_dict.get(self.teams[team].conference, 0) + 1
 		for team in to_remove:
 			del self.teams[team]
+
+		for team in self.teams:
+			cavg = score_dict[self.teams[team].conference] / count_dict[self.teams[team].conference]
+			self.teams[team].elo = (self.get_elo(team) * new_season_carry) + ((1 - new_season_carry) * cavg)
+			self.teams[team].reset_game_count()
 
 	def add_team(self, name):
 		self.teams[name] = Team(name, self.date, ELO_BASE if self.season_count == 0 else NEW_ELO)

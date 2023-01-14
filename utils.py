@@ -18,6 +18,13 @@ def read_csv(filepath):
 	with open(filepath, encoding = 'utf-8-sig') as csvfile:
 		return list(csv.reader(csvfile))
 
+def read_two_column_csv_to_dict(filepath):
+	this_dict = {}
+	with open(filepath, 'r', encoding = 'utf-8-sig') as csvfile:
+		for line in csv.reader(csvfile):
+			this_dict[line[0]] = line[1]
+	return this_dict
+
 def shift_dstring(day_string, days):
 	'''
 	take in a string in the format YYYYMMDD and return it shifted the specified number of days (could be positive or negative days)
