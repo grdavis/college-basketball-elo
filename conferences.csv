@@ -86,6 +86,7 @@ Loyola (IL),A10
 Rhode Island,A10
 Richmond,A10
 St. Joseph's,A10
+St. Bonaventure,A10
 Saint Louis,A10
 UMass,A10
 VCU,A10
@@ -179,14 +180,14 @@ Weber State,BigSky
 Alabama,SEC
 Arkansas,SEC
 Auburn,SEC
-Florida State,SEC
-Georgia Tech,SEC
+Florida,SEC
+Georgia,SEC
 Kentucky,SEC
 LSU,SEC
 Mississippi State,SEC
 Missouri,SEC
 Ole Miss,SEC
-South Carolina State,SEC
+South Carolina,SEC
 Tennessee,SEC
 Texas A&M,SEC
 Vanderbilt,SEC
@@ -212,7 +213,7 @@ Western Carolina,Southern
 Wofford,Southern
 Illinois,BIG10
 Indiana,BIG10
-Iowa State,BIG10
+Iowa,BIG10
 Maryland,BIG10
 Michigan State,BIG10
 Michigan,BIG10

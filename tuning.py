@@ -218,7 +218,15 @@ def latest_dist(explore):
 	fig.show()
 
 ##################SPREAD EVALUATION##############################
-def spread_evaluation(explore, exclusion_threshold = 25, month_day_start = None):
+def get_breakeven(x_vals, y_vals):
+	'''
+	Loop through x and y values to find the first instance where the y_val is greater than the 
+	typical vegas breakeven rate (52.381%)
+	'''
+	for x, y in zip(x_vals, y_vals):
+		if y > .52381: return x
+
+def spread_evaluation(explore, exclusion_threshold = 25, month_day_start = None, plot = True):
 	'''
 	The exclusion_threshold does not count games where the difference between the elo and vegas spreads is greater than
 	this threshold. These games are likely errors in either the spread predicted or in the vegas spread read in from the
@@ -265,10 +273,13 @@ def spread_evaluation(explore, exclusion_threshold = 25, month_day_start = None)
 			else: #elo agrees with vegas
 				agreed += 1
 		x_vals.append(k)
-		y_vals_win.append(correct_side/(take_a_side - tied_side)) #track win percentage
+		y_vals_win.append(0 if correct_side == 0 else correct_side/(take_a_side - tied_side)) #track win percentage
 		y_vals_pick.append(take_a_side/(take_a_side + agreed)) #track % of games with spread data for which a pick was made
 		ns.append(take_a_side)
 
+
+	if not plot: return get_breakeven(x_vals, y_vals_win) #if we're not using this function to graph, we're using it to find the first breakeven
+	
 	fig = make_subplots(specs=[[{"secondary_y": True}]])
 	fig.add_trace(go.Scatter(x = x_vals, y = y_vals_win, mode = 'lines', name = 'Elo Pick Win'), secondary_y = False)
 	fig.add_trace(go.Scatter(x = x_vals, y = y_vals_pick, mode = 'lines', name = 'Games Meeting Criteria',
@@ -281,6 +292,26 @@ def spread_evaluation(explore, exclusion_threshold = 25, month_day_start = None)
 	fig.update_layout(title_text = 'Win Percentage of Elo-Informed Picks', 
 					xaxis_title = 'Difference between Elo and Vegas Required for Pick',
 					plot_bgcolor='rgba(0,0,0,0)', yaxis_tickformat = ',.2%', yaxis2_tickformat = ',.2%')
+	fig.show()
+
+###############SPREAD OVER COURSE OF SEASON####################
+def eval_spread_over_season(explore, dates = ['1101', '1201', '0101', '0201', '0301', '0401'], exclusion_threshold = 25):
+	'''
+	The hypothesis is that early in the season, our predictions will be less accurate than they are later in the season.
+	The model needs time (game data) to sort out the kinks and converge on a more accurate Elo rating for each team.
+	When the difference between the model's prediction and the vegas spread is greater than X, we should trust our model
+	to outperform Vegas. To do that, we need to be right more than ~52% of the time. This function loops through possible
+	"dates" on which to start evaluating our performance and calculates that X breakeven value. In theory, we should see
+	the value of X decreases as we get further and futher into the season. Our predictions are more and more accurate.
+	'''
+	print('Finding breakeven for multiple date cutoffs...')
+	y_vals = []
+	for d in tqdm(dates):
+		y_vals.append(spread_evaluation(explore, exclusion_threshold, d, plot = False))
+	fig = go.Figure([go.Bar(x = dates, y = y_vals, name = 'Breakeven Difference for Games After')])
+	fig.update_layout(title_text = 'Difference Between Model Prediction and Vegas Spread Needed to Break Even (52.381%+) Re-Calculated as Season Progresses', 
+		xaxis_title = 'Predictions Made After Date (MMDD)', yaxis_title = 'Breakeven Difference')
+	fig.update_xaxes(type = 'category')
 	fig.show()
 
 ###############HISTORICAL BRACKET PERFORMANCE##################
@@ -325,8 +356,9 @@ def graphing(data):
 	# elo_vs_MoV(explore)
 	# elo_season_over_season(explore)
 	# latest_dist(explore)
-	spread_evaluation(explore, exclusion_threshold = 25, month_day_start = '0110')
+	spread_evaluation(explore, exclusion_threshold = 25, month_day_start = None)
 	# historical_brackets(explore)
+	# eval_spread_over_season(explore, dates = ['1101', '1116', '1201', '1216', '0101', '0116', '0201', '0216'])
 
 ###########################TUNING############################
 def tuning(data, target = 'error1', graphs = True, verbose = False, tune_style_random = False, random_iterations = 50):
