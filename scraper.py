@@ -6,7 +6,7 @@ import requests
 URL = 'https://www.sports-reference.com/cbb/boxscores/index.cgi?month=MONTH&day=DAY&year=YEAR'
 DATA_FOLDER = utils.DATA_FOLDER
 
-def scrape_scores(date_obj):
+def scrape_scores():#date_obj):
 	'''
 	scrape and return stats in the form of a list of lists where each sublist is information from a single game played on the specified day 
 	'''
@@ -16,11 +16,17 @@ def scrape_scores(date_obj):
 	data = requests.get(url).content
 	table_divs = BeautifulSoup(data,'html.parser').find_all("div", {'class': 'game_summary'})
 	this_day_string = date_obj.strftime('%Y%m%d')
-	print(this_day_string)
+	print(this_day_string, len(table_divs))
 	for div in table_divs:
 		tables = div.find('tbody')
 		rows = tables.find_all('tr')
-		stats = [1 if len(rows) == 3 else 0]
+		
+		extra_info = rows[2].text
+		if extra_info != "Men's": continue
+		#NEUTRAL FLAG ON HOLD FOR NOW: https://github.com/grdavis/college-basketball-elo/issues/9
+		# stats = [1 if len(rows) == 3 else 0]
+		stats = [0]
+		
 		for row in rows[:2]:
 			datapts = row.find_all('td')[:2]
 			stats.append(datapts[0].find('a').text)
