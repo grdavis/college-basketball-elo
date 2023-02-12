@@ -6,7 +6,7 @@ import requests
 URL = 'https://www.sports-reference.com/cbb/boxscores/index.cgi?month=MONTH&day=DAY&year=YEAR'
 DATA_FOLDER = utils.DATA_FOLDER
 
-def scrape_scores():#date_obj):
+def scrape_scores(date_obj):
 	'''
 	scrape and return stats in the form of a list of lists where each sublist is information from a single game played on the specified day 
 	'''
@@ -16,7 +16,7 @@ def scrape_scores():#date_obj):
 	data = requests.get(url).content
 	table_divs = BeautifulSoup(data,'html.parser').find_all("div", {'class': 'game_summary'})
 	this_day_string = date_obj.strftime('%Y%m%d')
-	print(this_day_string, len(table_divs))
+	print(this_day_string)
 	for div in table_divs:
 		tables = div.find('tbody')
 		rows = tables.find_all('tr')
