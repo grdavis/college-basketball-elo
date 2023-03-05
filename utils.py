@@ -7,6 +7,9 @@ from datetime import datetime, timedelta
 DATA_FOLDER = 'Data/'
 OUTPUTS_FOLDER = 'Outputs/'
 SPREAD_FOLDER = 'New_Spreads/'
+SEASON_START = 2022 #when scraping https://www.teamrankings.com/ncb/schedules/season/, which season is currently up on the site?
+MO_MAP = {'Nov': '11', 'Dec': '12', 'Jan': '01', 'Feb': '02', 'Mar': '03', 'Apr': '04'}
+YR_MAP = {'Nov': SEASON_START, 'Dec': SEASON_START, 'Jan': SEASON_START+1, 'Feb': SEASON_START+1, 'Mar': SEASON_START+1, 'Apr': SEASON_START+1}
 
 def save_data(filepath, data):
 	with open(filepath, "w") as f:
@@ -24,6 +27,17 @@ def read_two_column_csv_to_dict(filepath):
 		for line in csv.reader(csvfile):
 			this_dict[line[0]] = line[1]
 	return this_dict
+
+def format_tr_dates(date_string):
+	'''
+	takes in a string like 'Mon Nov  7' and converts it to '20221107' format
+	'''
+	ret_string = date_string[4:]
+	day_part = ret_string[4:]
+	day_part = day_part if day_part[0] != ' ' else '0' + day_part[1]
+	month_part = MO_MAP[ret_string[:3]]
+	year_part = str(YR_MAP[ret_string[:3]])
+	return year_part + month_part + day_part
 
 def shift_dstring(day_string, days):
 	'''

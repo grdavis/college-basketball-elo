@@ -5,6 +5,33 @@ import requests
 
 URL = 'https://www.sports-reference.com/cbb/boxscores/index.cgi?month=MONTH&day=DAY&year=YEAR'
 DATA_FOLDER = utils.DATA_FOLDER
+NEUTRAL_MAP = None #will be set if needed. Maps (team1, team2, date) --> 1/0 depending on if the game is at a neutral site
+TR_NAMES_MAP = utils.read_two_column_csv_to_dict('sr_tr_mapping.csv')
+
+def scrape_neutral_data():
+	'''
+	The sports-reference source for all the scores is no longer accurate at providing neutral/not neutral information
+	The site at 'https://www.teamrankings.com/ncb/schedules/season/' provides accurate information
+	The strategy will be to scrape games/scores from sports-reference as usual, but then check the Neutral flag with this new source
+	'''
+	schedule_url = 'https://www.teamrankings.com/ncb/schedules/season/'
+	data = requests.get(schedule_url).content
+	table_games_data = BeautifulSoup(data,'html.parser').find_all("tr")
+	all_rows = [i.text.split('\n') for i in table_games_data]
+
+	global NEUTRAL_MAP
+	NEUTRAL_MAP = {}
+	this_date = utils.format_tr_dates(all_rows[0][1])
+	for r in all_rows[1:]:
+		val = r[1]
+		if '@' in val:
+			teams = val.split('  @  ')
+			NEUTRAL_MAP[(teams[0], teams[1], this_date)] = 0
+		elif 'vs.' in val:
+			teams = val.split('  vs.  ')
+			NEUTRAL_MAP[(teams[0], teams[1], this_date)] = 1
+		else:
+			this_date = utils.format_tr_dates(val)
 
 def scrape_scores(date_obj):
 	'''
@@ -23,17 +50,21 @@ def scrape_scores(date_obj):
 		
 		extra_info = rows[2].text
 		if extra_info != "Men's": continue
-		#NEUTRAL FLAG ON HOLD FOR NOW: https://github.com/grdavis/college-basketball-elo/issues/9
-		# stats = [1 if len(rows) == 3 else 0]
-		stats = [0]
 		
+		stats = []
 		for row in rows[:2]:
 			datapts = row.find_all('td')[:2]
 			stats.append(datapts[0].find('a').text)
 			stats.append(datapts[1].text)
 
+		TR1, TR2 = TR_NAMES_MAP[stats[0]], TR_NAMES_MAP[stats[2]]
+		if (TR1, TR2, this_day_string) in NEUTRAL_MAP:
+			n_flag = NEUTRAL_MAP[(TR1, TR2, this_day_string)]
+		else:
+			n_flag = NEUTRAL_MAP.get((TR2, TR1, this_day_string), 0) #if this other orientation of names isn't there, default to non-neutral (0)
+
 		#Add 'NL' for spread - to be updated later with spread_enricher.add_historical_spreads()
-		day_stats.append(stats + [this_day_string, 'NL'])
+		day_stats.append([n_flag] + stats + [this_day_string, 'NL'])
 	return day_stats
 
 def check_for_cancellations(new):
@@ -53,6 +84,7 @@ def scrape_by_day(file_start, scrape_start, scrape_end, all_data):
 	scrape_end: this is the date object specifying what the last day to scrape should be
 	all_data: this is a list of all the existing data that the new data will be appended to
 	'''
+	scrape_neutral_data() #set the NEUTRAL_MAP variable
 	new_data = []
 	i = scrape_start
 	this_month = scrape_start.month
