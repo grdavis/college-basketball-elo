@@ -49,7 +49,7 @@ def scrape_scores(date_obj):
 		rows = tables.find_all('tr')
 		
 		extra_info = rows[2].text
-		if extra_info != "Men's": continue
+		if "Men's" not in extra_info: continue
 		
 		stats = []
 		for row in rows[:2]:
