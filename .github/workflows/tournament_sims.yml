@@ -27,7 +27,7 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add -A
-          git commit -m "update data and publish weekly rankings" -a
+          git commit -m "run 10000 simulations of latest_tournament.csv" -a
           
       - name: push changes
         uses: ad-m/github-push-action@v0.6.0
