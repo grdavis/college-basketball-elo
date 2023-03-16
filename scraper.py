@@ -48,8 +48,8 @@ def scrape_scores(date_obj):
 		tables = div.find('tbody')
 		rows = tables.find_all('tr')
 		
-		extra_info = rows[2].text
-		if "Men's" not in extra_info: continue
+		extra_info = rows[2].text if len(rows) > 2 else ""
+		if "Men's" not in extra_info and "NIT" not in extra_info: continue
 		
 		stats = []
 		for row in rows[:2]:
