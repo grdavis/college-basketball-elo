@@ -323,7 +323,8 @@ def historical_brackets(explore):
 			predictions_score += sum([scores[index] if predictions[ROUNDS[index+1]][i][0] == real_results[ROUNDS[index+1]][i] else 0 for i in range(len(predictions[ROUNDS[index+1]]))])
 		return predictions_score
 
-	for stop_date, tourney_filepath in [('20210316', 'tournament_results_2022.csv'),
+	for stop_date, tourney_filepath in [('20230315', 'tournament_results_2023.csv'),
+										('20220316', 'tournament_results_2022.csv'),
 										('20210317', 'tournament_results_2021.csv'), 
 										('20190320', 'tournament_results_2019.csv'), 
 										('20180314', 'tournament_results_2018.csv'), 
@@ -340,11 +341,12 @@ def historical_brackets(explore):
 	remaining = [32, 16, 8, 4, 2, 1]
 	print(sum([remaining[index]*scores[index]*(.5**(index + 1)) for index in range(6)]))
 
-	#2022: 320
-	#2021: 850
-	#2019: 1210
+	#2023: 380
+	#2022: 450
+	#2021: 820
+	#2019: 1340
 	#2018: 890
-	#2017: 630
+	#2017: 650
 	#Random: 315
 
 ###########################GRAPHING##########################
@@ -356,7 +358,7 @@ def graphing(data):
 	# elo_vs_MoV(explore)
 	# elo_season_over_season(explore)
 	# latest_dist(explore)
-	spread_evaluation(explore, exclusion_threshold = 25, month_day_start = None)
+	# spread_evaluation(explore, exclusion_threshold = 25, month_day_start = None)
 	# historical_brackets(explore)
 	# eval_spread_over_season(explore, dates = ['1101', '1116', '1201', '1216', '0101', '0116', '0201', '0216'])
 
