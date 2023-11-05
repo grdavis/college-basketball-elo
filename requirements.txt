@@ -1,7 +1,7 @@
 plotly==4.9.0
 tqdm==4.54.1
-scipy==1.5.3
-requests==2.25.1
+scipy>=1.10.0
+requests>=2.31.0
 fuzzywuzzy==0.18.0
 numpy==1.23
 pandas==1.2.4

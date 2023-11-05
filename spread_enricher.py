@@ -1,11 +1,10 @@
 import utils
-from os import listdir
-import csv
 import pandas as pd
 from fuzzywuzzy import fuzz, process
 import requests
 from bs4 import BeautifulSoup
-from datetime import datetime
+from datetime import datetime, timedelta
+from scraper import scrape_scores
 
 def scrape_live_odds():
 	'''
@@ -39,11 +38,11 @@ def add_spreads_to_todays_preds(predictions, forecast_date):
 	predictions, this uses fuzzy matching techniques to match games with their DK spreads. If the match doesn't
 	meet a certain threshold, input 'NL' for "No Line".
 
-	This function is only meant to enrich a specific day's predictions. Actual spreads get incorporated into the
-	master data with the function add_historical_spreads() in an ad-hoc fashion.
+	Since these spreads are scraped directly from DK, they may be more volatile than those scraped from our 
+	official scrape source. Thus, these spreads are only displayed in predictions output and not stored long-term
 	'''
 	if forecast_date != datetime.today().date():
-		print('Live spreads only available when making predictions on the day of the event')
+		print('Accurate spreads only available when making predictions on the day of the event')
 		return [row[:4] + ['NL'] + row[4:] for row in predictions], "N/A"
 
 	todays_spreads, timestamp = scrape_live_odds()
@@ -60,78 +59,83 @@ def add_spreads_to_todays_preds(predictions, forecast_date):
 		if score >= 80:
 			new_data.append(row[:4] + [spread] + row[4:])
 		else:
-			# print(teamindex, best_match)
 			new_data.append(row[:4] + ['NL'] + row[4:])
 
 	return new_data, timestamp
 
-def add_historical_spreads():
+def add_historical_spreads(start_date_str, last_date_str, scrape_needed = True):
 	'''
-	This is a one-off-use function to populate spreads for historical games already in the core data.
-	Using the historical spread data from https://www.sportsbookreviewsonline.com/scoresoddsarchives/ncaabasketball/ncaabasketballoddsarchives.htm,
-	enrich the latest data with a new column representing the closing line spread for the away team. If a spread cannot be found, writes 'NL'
-
-	Requires downloading xlsx files from the site, moving it to the spreads folder, and saving it as a .csv. If running in the middle of the 
-	latest season, note that the xlsx files will not have all the latest data ready (e.g. running on 1/30, this season's xlsx file doesn't have 
-	spreads for 1/24-1/30 yet).
-
-	Requires a manual check at the end. Saves the enriched data with a "t" prefix. Manually confirm it worked as expected before removing the "t"
-	and overwriting the latest data file
+	This is a one-off use function attempting to make up for our previous source for historical 
+	spreads going down (https://github.com/grdavis/college-basketball-elo/issues/10)
+	Takes in start_date_str and last_date_str in format YYYYMMDD (e.g. 20231102)
+	The approach here will be to scrape scores and spreads from our new source (https://www.scoresandodds.com/ncaab)
+	and match them with the existing games in our dataset based on the game date, score, and team name fuzzy match
 	'''
-	SPREAD_FOLDER = 'Old_Spreads/'
-	filepath = utils.get_latest_data_filepath() 
-	data = utils.read_csv(filepath)
-	filenames = listdir(SPREAD_FOLDER)
-
-	spread_data = {}
-	for f in ['ncaa basketball 2022-23.csv']: #in filenames: #comment out filenames and provide a subset list of filenames if needed
-		if f == '.DS_Store': continue
-		print(f)
-		raw = utils.read_csv(SPREAD_FOLDER + f)
-		for r_index in range(1, len(raw), 2):
-			one, two = raw[r_index][8], raw[r_index+1][8]
-			if one == 'pk' or one == 'PK': one = 0
-			if two == 'pk' or two == 'PK': two = 0
-			one = float(one) if one not in ['NL', ''] else 1001
-			two = float(two) if two not in ['NL', ''] else 1000
-			sp = -one if one < two else two
-			date = raw[r_index][0] if len(raw[r_index][0]) == 4 else "0" + raw[r_index][0]
-			year = f[-11:-7] if int(date[:2]) > 6 else '20' + f[-6:-4]
-			numindex = year + date + raw[r_index][6] + raw[r_index+1][6]
-			teamindex = raw[r_index][3] + raw[r_index+1][3]
+	date_obj, last_date_obj = datetime.strptime(start_date_str, "%Y%m%d"), datetime.strptime(last_date_str, "%Y%m%d")
+	filepath = f'{utils.DATA_FOLDER}add_historical_spreads_{start_date_str}_{last_date_str}.csv'
+	
+	#if we haven't already scraped the data for the relevant time period, scrape that now. Otherwise, just load the file
+	if scrape_needed:
+		historical_data = []
+		iterations = 0
+		while date_obj <= last_date_obj:
+			iterations += 1
+			historical_data.extend(scrape_scores(date_obj))
+			date_obj += timedelta(days = 1)
 			
-			#the existing data from sportsreference does not reliably grab the neutral flag, so override it if we can from these old spreads
-			neutral_flag = 1 if raw[r_index][2] == 'N' else 0
-			spread_data[numindex] = spread_data.get(numindex, []) + [(teamindex, sp, neutral_flag)]
+			#save progress every 30 scraped days
+			if iterations == 30:
+				iterations = 0
+				utils.save_data(f"{utils.DATA_FOLDER}add_historical_spreads_{start_date_str}_{date_obj.strftime('%Y%m%d')}.csv", historical_data)
+		
+		#final data save
+		utils.save_data(filepath, historical_data)
 
-	new_data = []
-	for row in data:
-		numindex = row[5] + row[2] + row[4]
-		if numindex not in spread_data:
-			new_data.append(row) # change to new_data.append(row[:6] + ['NL']) if seeding for the first time
-		else:
-			if len(spread_data[numindex]) == 1:
-				sp = spread_data[numindex][0][1]
-				neutral_flag = spread_data[numindex][0][2]
-			else:
-				teamindex = (row[1] + row[3]).replace(' ', '')
-				best = (fuzz.ratio(spread_data[numindex][0][0], teamindex), spread_data[numindex][0][1], spread_data[numindex][0][2])
-				for poss in spread_data[numindex][1:]:
-					new_ratio = fuzz.ratio(poss[0], teamindex)
-					if new_ratio > best[0]:
-						best = (new_ratio, poss[1], poss[2])
-				if best[0] < 50:
-					#manually check over the games where even the best match was uncertain
-					#confirm that the selected spread aligned with the spread in the correct game in the list
-					print(teamindex, best) # <- game we are trying to match to a spread
-					print(numindex, spread_data[numindex]) # <- list of possible games/spread to match it with (not necessarily ordered)
-				sp = best[1]
-				neutral_flag = best[2]
-			sp = sp if sp < 1000 else 'NL'
-			neutral_flag = max(neutral_flag, int(row[0])) #err on the side of calling a game neutral if either source says it is
-			new_data.append([neutral_flag] + row[1:6] + [sp])
+	#for games in the existing game data, find those where the spread is 'NL' and the date is on or after start_date_str
+	latest_filepath = utils.get_latest_data_filepath()
+	full_df = pd.read_csv(latest_filepath, names = ['N', 'AWAY', 'AWAY_SCORE', 'HOME', 'HOME_SCORE', 'DATE', 'AWAY_SPREAD'])
+	latest_df = full_df.loc[(full_df['DATE'] >= int(start_date_str)) & (full_df['AWAY_SPREAD'] == 'NL')]
+	historical_df = pd.read_csv(filepath, names = ['N', 'AWAY', 'AWAY_SCORE', 'HOME', 'HOME_SCORE', 'DATE', 'AWAY_SPREAD'])
+	print(f"Found {latest_df.shape[0]} games without lines on or after {start_date_str}")
+	
+	#for each game (X) in this list of games
+	#trim our historical spreads to just games with the same date, away score, and home score as X
+	#if there is only one match, assign it as the correct spread in the full_df
+	matched_counter = 0
+	for index, row in latest_df.iterrows():
+		thdf = historical_df.loc[(historical_df['DATE'] == row['DATE']) & (historical_df['AWAY_SCORE'] == row['AWAY_SCORE']) & (historical_df['HOME_SCORE'] == row['HOME_SCORE'])].reset_index()
 
-	#doesn't overwrite the latest data, requires a manual check and overwrite afterwards
-	utils.save_data(filepath.replace('/', '/t'), new_data)
+		if thdf.shape[0] == 0: 
+			full_df.loc[index, 'AWAY_SPREAD'] = 'NL'
+			continue
+		
+		if thdf.shape[0] == 1: 
+			full_df.loc[index, 'AWAY_SPREAD'] = thdf.iloc[0]['AWAY_SPREAD'] if thdf.iloc[0]['AWAY_SPREAD'][0] != '+' else thdf.iloc[0]['AWAY_SPREAD'][1:]
+			matched_counter += 1
+			continue
 
-# add_historical_spreads()
+		thdf['hist_index'] = thdf.apply(lambda x: ((x['AWAY'] + x['HOME']).replace(' ', ''), x['AWAY_SPREAD'], x['DATE']), axis = 1)
+		possible_matches = list(thdf['hist_index'])
+
+		#calculate how close the team names match for every game in the historical spread data where the scores match
+		this_index = (row['AWAY'] + row['HOME']).replace(' ', '')
+		best = (fuzz.ratio(possible_matches[0][0], this_index), possible_matches[0][1])
+		for poss in possible_matches[1:]:
+			new_ratio = fuzz.ratio(poss[0], this_index)
+			if new_ratio > best[0]:
+				best = (new_ratio, poss[1])
+
+		#assign the best-scored match
+		full_df.loc[index, 'AWAY_SPREAD'] = best[1] if best[1][0] != '+' else best[1][1:]
+		matched_counter += 1
+
+		#manually check over the games where even the best match was uncertain
+		#confirm that the selected spread aligned with the spread in the correct game in the list
+		if best[0] < 70:
+			print(this_index, row['DATE'], best) # <- game we are trying to match to a spread, (match score, selected spread)
+			print(possible_matches) # <- list of possible games/spread to match it with - NOT IN MATCH SCORE ORDER
+
+	full_df.to_csv(latest_filepath.replace('/', '/temp_'), index = False, header = False)
+	print(f"Matched {matched_counter} games")
+	
+# add_historical_spreads('20230101', '20230403', scrape_needed = False)

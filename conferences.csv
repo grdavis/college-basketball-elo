@@ -1,12 +1,10 @@
-﻿Austin Peay,ASUN
+Austin Peay,ASUN
 Bellarmine,ASUN
 Central Arkansas,ASUN
 Eastern Kentucky,ASUN
 Florida Gulf Coast,ASUN
 Jacksonville,ASUN
-Jacksonville State,ASUN
 Kennesaw State,ASUN
-Liberty,ASUN
 Lipscomb,ASUN
 North Alabama,ASUN
 North Florida,ASUN
@@ -64,16 +62,19 @@ San Jose State,MWEST
 UNLV,MWEST
 Utah State,MWEST
 Wyoming,MWEST
-Cincinnati,American
+Charlotte,American
 East Carolina,American
-Houston,American
+Florida Atlantic,American
 Memphis,American
+North Texas,American
+Rice,American
 SMU,American
 South Florida,American
 Temple,American
 Tulane,American
 Tulsa,American
-UCF,American
+UAB,American
+UTSA,American
 Wichita State,American
 Davidson,A10
 Dayton,A10
@@ -92,6 +93,7 @@ UMass,A10
 VCU,A10
 Central Connecticut,Northeast
 Fairleigh Dickinson,Northeast
+Le Moyne,Northeast
 LIU,Northeast
 Merrimack,Northeast
 Sacred Heart,Northeast
@@ -124,6 +126,7 @@ Southern Indiana,Ohio Valley
 Tennessee State,Ohio Valley
 Tennessee Tech,Ohio Valley
 UT-Martin,Ohio Valley
+Western Illinois,Ohio Valley
 Arizona State,PAC12
 Arizona,PAC12
 California,PAC12
@@ -136,7 +139,10 @@ USC,PAC12
 Utah,PAC12
 Washington,PAC12
 Washington State,PAC12
+BYU,BIG12
 Baylor,BIG12
+Cincinnati,BIG12
+Houston,BIG12
 Iowa State,BIG12
 Kansas,BIG12
 Kansas State,BIG12
@@ -145,6 +151,7 @@ Oklahoma State,BIG12
 TCU,BIG12
 Texas,BIG12
 Texas Tech,BIG12
+UCF,BIG12
 West Virginia,BIG12
 Butler,BigEast
 Creighton,BigEast
@@ -169,7 +176,7 @@ Loyola (MD),Patriot
 Navy,Patriot
 Eastern Washington,BigSky
 Idaho State,BigSky
-Idaho State,BigSky
+Idaho,BigSky
 Montana,BigSky
 Montana State,BigSky
 Northern Arizona,BigSky
@@ -191,7 +198,6 @@ South Carolina,SEC
 Tennessee,SEC
 Texas A&M,SEC
 Vanderbilt,SEC
-Campbell,BigSouth
 Charleston Southern,BigSouth
 Gardner-Webb,BigSouth
 High Point,BigSouth
@@ -258,19 +264,20 @@ Mississippi Valley State,SWAC
 Prairie View,SWAC
 Southern,SWAC
 Texas Southern,SWAC
-College of Charleston,Colonial
-Delaware,Colonial
-Drexel,Colonial
-Elon,Colonial
-Hampton,Colonial
-Hofstra,Colonial
-Monmouth,Colonial
-North Carolina A&T,Colonial
-Northeastern,Colonial
-Stony Brook,Colonial
-Towson,Colonial
-UNC Wilmington,Colonial
-William & Mary,Colonial
+Campbell,Coastal
+College of Charleston,Coastal
+Delaware,Coastal
+Drexel,Coastal
+Elon,Coastal
+Hampton,Coastal
+Hofstra,Coastal
+Monmouth,Coastal
+North Carolina A&T,Coastal
+Northeastern,Coastal
+Stony Brook,Coastal
+Towson,Coastal
+UNC Wilmington,Coastal
+William & Mary,Coastal
 Denver,Summit
 Kansas City,Summit
 North Dakota State,Summit
@@ -280,11 +287,11 @@ Oral Roberts,Summit
 South Dakota,Summit
 South Dakota State,Summit
 St. Thomas,Summit
-Western Illinois,Summit
 Appalachian State,SunBelt
 Arkansas State,SunBelt
 Coastal Carolina,SunBelt
 Georgia Southern,SunBelt
+Georgia State,SunBelt
 James Madison,SunBelt
 Louisiana,SunBelt
 Marshall,SunBelt
@@ -294,18 +301,15 @@ Southern Miss,SunBelt
 Texas State,SunBelt
 Troy,SunBelt
 Louisiana-Monroe,SunBelt
-Charlotte,CUSA
-Florida Atlantic,CUSA
 Florida International,CUSA
+Jacksonville State,CUSA
+Liberty,CUSA
 Louisiana Tech,CUSA
 Middle Tennessee,CUSA
-North Texas,CUSA
-Rice,CUSA
-UAB,CUSA
+New Mexico State,CUSA
+Sam Houston State,CUSA
 UTEP,CUSA
-UTSA,CUSA
 Western Kentucky,CUSA
-BYU,WCC
 Gonzaga,WCC
 Loyola Marymount,WCC
 Pacific,WCC
@@ -329,8 +333,6 @@ Youngstown State,Horizon
 Abilene Christian,WAC
 California Baptist,WAC
 Grand Canyon,WAC
-New Mexico State,WAC
-Sam Houston State,WAC
 Seattle,WAC
 Southern Utah,WAC
 Stephen F. Austin,WAC

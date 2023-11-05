@@ -1,17 +1,16 @@
 import scraper
 import utils
-import sys
 import datetime
 import argparse
 import pandas as pd
 
 ELO_BASE = 1500
-NEW_ELO = 1015
-K_FACTOR = 46
-SEASON_CARRY = 0.66
-HOME_ADVANTAGE = 79
-ELO_TO_POINTS_FACTOR = -24.3 #divide an elo margin by this to get the predicted point spread
-GAMES_REQUIRED = 5
+NEW_ELO = 1000
+K_FACTOR = 48
+SEASON_CARRY = 0.65
+HOME_ADVANTAGE = 75
+ELO_TO_POINTS_FACTOR = -25.1 #divide an elo margin by this to get the predicted point spread
+GAMES_REQUIRED = 10
 DATA_FOLDER = utils.DATA_FOLDER
 CONFERENCE_DICT = utils.read_two_column_csv_to_dict('conferences.csv')
 
@@ -53,6 +52,11 @@ class ELO_Sim():
 			self.teams[team].snapshots.append((self.date, self.get_elo(team)))
 
 	def season_reset(self, new_season_carry):
+		'''
+		Resets season-long counters/trackers
+		Adjusts team elo ratings towards their conference average by new_season_carry percentage
+		Conference alignment refreshed from https://www.espn.com/mens-college-basketball/teams as of 11/2/2023
+		'''
 		self.snapshot()
 		score_dict, count_dict = {}, {}
 		to_remove = []
@@ -178,7 +182,7 @@ def main(topteams = False, stop_short = '99999999', period = 7):
 		output['Point Spread vs. Next Rank'] = ["{0:+.1f}".format(((output['Elo Rating'][i] - output['Elo Rating'][i+1])/ELO_TO_POINTS_FACTOR)) for i in range(topteams - 1)] + ['']
 		output['Rank'] = [i for i in range (1, topteams+1)]
 		utils.table_output(output, 'Ratings through ' + this_sim.date + ' - Top ' + str(topteams), ['Rank', 'Team', 'Elo Rating', 'Point Spread vs. Next Rank', '%i Day Change' % period])
-			
+
 	return this_sim
 
 def parseArguments():

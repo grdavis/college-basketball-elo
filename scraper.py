@@ -3,15 +3,16 @@ from bs4 import BeautifulSoup
 import utils
 import requests
 
-URL = 'https://www.sports-reference.com/cbb/boxscores/index.cgi?month=MONTH&day=DAY&year=YEAR'
+URLV2 = 'https://www.scoresandodds.com/ncaab?date=YEAR-MONTH-DAY'
 DATA_FOLDER = utils.DATA_FOLDER
 NEUTRAL_MAP = None #will be set if needed. Maps (team1, team2, date) --> 1/0 depending on if the game is at a neutral site
-TR_NAMES_MAP = utils.read_two_column_csv_to_dict('sr_tr_mapping.csv')
+TR_NAMES_MAP = utils.read_two_column_csv_to_dict('sr_tr_mapping.csv') #maps sport reference names (our original source of truth for names) to team rankings names
+SR_NAMES_MAP = utils.read_two_column_csv_to_dict('so_sr_mapping.csv') #maps scores & odds names to sports reference names (our original source of truth for names)
 
 def scrape_neutral_data():
 	'''
 	The sports-reference source for all the scores is no longer accurate at providing neutral/not neutral information
-	The site at 'https://www.teamrankings.com/ncb/schedules/season/' provides accurate information
+	The site at 'https://www.teamrankings.com/ncb/schedules/season/' provides accurate information for the current season
 	The strategy will be to scrape games/scores from sports-reference as usual, but then check the Neutral flag with this new source
 	'''
 	schedule_url = 'https://www.teamrankings.com/ncb/schedules/season/'
@@ -39,35 +40,65 @@ def scrape_scores(date_obj):
 	'''
 	day, month, year = str(date_obj.day), str(date_obj.month), str(date_obj.year)
 	day_stats = []
-	url = URL.replace("DAY", day).replace("MONTH", month).replace("YEAR", year)
-	data = requests.get(url).content
-	table_divs = BeautifulSoup(data,'html.parser').find_all("div", {'class': 'game_summary'})
+	url = URLV2.replace("DAY", day).replace("MONTH", month).replace("YEAR", year)
+	response = requests.get(url)
+	if response.status_code != 200:
+		print(f'ERROR: Response Code {response.status_code}')
+	data = response.content
+
+	table_divs = BeautifulSoup(data, 'html.parser').find_all('tbody')
 	this_day_string = date_obj.strftime('%Y%m%d')
 	print(this_day_string)
-	for div in table_divs:
-		tables = div.find('tbody')
-		rows = tables.find_all('tr')
-		
-		extra_info = rows[2].text if len(rows) > 2 else ""
-		if "Men's" not in extra_info and "NIT" not in extra_info and "CBI" not in extra_info: continue
-		
-		stats = []
-		for row in rows[:2]:
-			datapts = row.find_all('td')[:2]
-			stats.append(datapts[0].find('a').text)
-			stats.append(datapts[1].text)
 
-		TR1, TR2 = TR_NAMES_MAP[stats[0]], TR_NAMES_MAP[stats[2]]
+	def get_info_from_row(row):
+		team = row.find('span', {'class': 'team-name'})
+		if team.find('a') == None:
+			team = team.find('span').text.strip(' 1234567890()')
+		else:
+			team = team.find('a').text.strip(' 1234567890()')
+		
+		if team not in SR_NAMES_MAP:
+			print(f"Warning... {team} not found in scores & odds map back to sports reference. {team} will count as a brand new team in the simulation")
+		team = SR_NAMES_MAP.get(team, team)
+
+		team_score = row.find('td', {'class': 'event-card-score'})
+		if team_score == None or team_score.text.strip() == '0':
+			#the game was either canceled or postponed, indicate with an empty string
+			return team, ''
+		else:
+			return team, team_score.text.strip()
+
+	for game in table_divs:
+		away_row, home_row = game.find_all('tr')
+		away, away_score = get_info_from_row(away_row)
+		home, home_score = get_info_from_row(home_row)
+
+		#if the game hasn't happened yet, no need to grab spreads from this source. This function will grab source of truth spreads when the games are final
+		spread_field = away_row.find('td', {'data-field': 'live-spread'})
+		if spread_field == None: away_spread = 'NL'
+		else:
+			away_span = spread_field.find('span')
+			if away_span == None: away_spread = 'NL'
+			else: 
+				away_spread = away_span.text.strip()
+				away_spread = 'NL' if away_spread == '' else away_spread
+
+		if away not in TR_NAMES_MAP:
+			print(f"Warning... {away} not found in sports reference map to teamrankings. {away} cannot be checked for neutral site game accurately")
+		if home not in TR_NAMES_MAP:
+			print(f"Warning... {home} not found in sports reference map to teamrankings. {home} cannot be checked for neutral site game accurately")
+
+		TR1, TR2 = TR_NAMES_MAP.get(away, away), TR_NAMES_MAP.get(home, home)
 		if (TR1, TR2, this_day_string) in NEUTRAL_MAP:
 			n_flag = NEUTRAL_MAP[(TR1, TR2, this_day_string)]
 		else:
 			n_flag = NEUTRAL_MAP.get((TR2, TR1, this_day_string), 0) #if this other orientation of names isn't there, default to non-neutral (0)
 
-		#Add 'NL' for spread - to be updated later with spread_enricher.add_historical_spreads()
-		day_stats.append([n_flag] + stats + [this_day_string, 'NL'])
+		day_stats.append([n_flag, away, away_score, home, home_score, this_day_string, away_spread])
+
 	return day_stats
 
-def check_for_cancellations(new):
+def check_for_incomplete(new):
 	modified = []
 	for i in range(len(new)):
 		row = new[i]
@@ -92,7 +123,7 @@ def scrape_by_day(file_start, scrape_start, scrape_end, all_data):
 		if i.month in [5, 6, 7, 8, 9, 10]: 
 			i += datetime.timedelta(days = 1)
 			continue
-		new_data.extend(check_for_cancellations(scrape_scores(i)))
+		new_data.extend(check_for_incomplete(scrape_scores(i)))
 		i += datetime.timedelta(days = 1)
 		if i.month != this_month:
 			this_month = i.month

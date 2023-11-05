@@ -10,7 +10,7 @@ from scipy.stats import linregress
 import pandas as pd
 from predictions import predict_tournament, ROUNDS, predict_game
 
-ERRORS_START = 9 #after how many seasons should we start tracking performance
+ERRORS_START = 9 #after how many seasons should we start tracking performance (9 = start with 2019 season)
 
 class Tuning_ELO_Sim(elo.ELO_Sim):
 	'''
@@ -92,7 +92,7 @@ def random_tune(data, number):
 	k_range = np.arange(40, 50, 1)
 	carry_range = np.arange(.55, .75, .05)
 	home_range = np.arange(70, 85, 2)
-	new_team_range = np.arange(950, 1050, 25)
+	new_team_range = np.arange(900, 1100, 25)
 	errors = []
 	
 	for i in tqdm(range(number)):
@@ -107,10 +107,10 @@ def brute_tune(data):
 	Use this function to cycle through all possible combinations of the 4 variables within the defined ranges and find the optimal solution
 	Since brute force can take some time to run, random_tune first to help narrow possible ranges
 	'''
-	k_range = [46, 47, 48]
-	carry_range = [.62, .64, .66]
-	home_range = [77, 78, 79]
-	new_team_range = [985, 1000, 1015, 1030, 1045, 1060, 1075] 
+	k_range = [47, 48]
+	carry_range = [.62, .64, .68]
+	home_range = [75, 76, 77]
+	new_team_range = [1000, 1025, 1050] 
 	errors = []
 
 	for k in tqdm(k_range):
@@ -157,6 +157,7 @@ def error2_viz(explore):
 	fig.show()
 
 ##############Elo margin vs. Margin of Victory################
+# 1/0.039843 = 25.1
 def elo_vs_MoV(explore):
 	x_vals = [i for i in explore.elo_margin_tracker]
 	y_vals = [explore.MoV_tracker[i]/explore.elo_margin_tracker[i] for i in x_vals]
@@ -360,7 +361,7 @@ def graphing(data):
 	# latest_dist(explore)
 	# spread_evaluation(explore, exclusion_threshold = 25, month_day_start = None)
 	# historical_brackets(explore)
-	# eval_spread_over_season(explore, dates = ['1101', '1116', '1201', '1216', '0101', '0116', '0201', '0216'])
+	eval_spread_over_season(explore, dates = ['1101', '1116', '1201', '1216', '0101', '0116', '0201', '0216'])
 
 ###########################TUNING############################
 def tuning(data, target = 'error1', graphs = True, verbose = False, tune_style_random = False, random_iterations = 50):
@@ -368,15 +369,10 @@ def tuning(data, target = 'error1', graphs = True, verbose = False, tune_style_r
 	if verbose: print(se1, se2)
 	if not graphs: return
 	
-	# start measuring after season 9 (start fall 2020), errors as of games through 2/23/2023
-	# best e1 optimized:	(error1 = 3652.13, error2 = 0.0167, k_factor = 48, carryover = .62, home_elo = 77, new_team = 1075)
-	# best e2 optimized:	(error1 = 3655.41, error2 = 0.0117, k_factor = 46, carryover = .66, home_elo = 79, new_team = 985)
-	# hybrid (active):		(error1 = 3653.61, error2 = 0.0128, k_factor = 46, carryover = .66, home_elo = 79, new_team = 1015), 24.3
-
-	# start measuring after season 3 (start fall 2014), errors as of games through 1/12/2023
-	# best e1 optimized:	(error1 = 8245.79, error2 = 0.0129, k_factor = 46, carryover = .69, home_elo = 80, new_team = 985)
-	# best e2 optimized:	(error1 = 8255.49, error2 = 0.0100, k_factor = 47, carryover = .72, home_elo = 90, new_team = 950)
-	# hybrid (active):		(error1 = 8250.67, error2 = 0.0104, k_factor = 47, carryover = .71, home_elo = 90, new_team = 990), 25.6
+	# start measuring after season 9 (start fall 2019), errors as of games through 4/3/2023
+	# best e1 optimized:	(error1 = 3783.62, error2 = 0.0173, k_factor = 48, carryover = .60, home_elo = 77, new_team = 1075)
+	# best e2 optimized:	(error1 = 3790.55, error2 = 0.0129, k_factor = 47, carryover = .70, home_elo = 75, new_team = 975)
+	# hybrid (active):		(error1 = 3653.61, error2 = 0.0128, k_factor = 48, carryover = .64, home_elo = 75, new_team = 1000), 24.3
 
 	# take the output of tuning and plot the errors over each of the variables
 	mapping = {'error1': 0, 'error2': 1}
@@ -398,4 +394,4 @@ if __name__ == '__main__':
 	graphing(data)
 
 	#start with random_tune, then switch to brute_tune when the ranges for values are tight enough so as not to take too long to run
-	# tuning(data, target = 'error1', graphs = True, verbose = False, tune_style_random = False, random_iterations = 50)
+	# tuning(data, target = 'error2', graphs = True, verbose = True, tune_style_random = False, random_iterations = 50)

@@ -90,7 +90,7 @@ def sim_tournaments(elo_state, tournamant_teams, n, verbose = False, rounds = RO
 
 def predict_next_day(elo_state, forecast_date, auto):
 	'''
-	checks Sports Reference for games on the specified date object date and uses the elo state to predict each game's outcome 
+	checks scrape source for games on forecast_date and uses the elo state to predict each game's outcome 
 	outputs a Plotly table summarizing predictions and saves a csv
 	'''
 	scraper.scrape_neutral_data() #set the NEUTRAL_MAP for predictions
@@ -107,7 +107,12 @@ def predict_next_day(elo_state, forecast_date, auto):
 		else:
 			predictions.append([game[0], game[1], "{0:.0%}".format(1 - (float(prob[:-1])/100)), -home_spread, game[3], prob, home_spread])
 	predictions, timestamp = spread_enricher.add_spreads_to_todays_preds(predictions, forecast_date)
-	output = pd.DataFrame(predictions, columns = ['Neutral', 'Away', 'Away Win Prob.', 'Away Pred. Spread', 'Live Away Spread', 'Home', 'Home Win Prob.', 'Home Pred. Spread'])
+	output = pd.DataFrame(predictions, columns = ['Neutral', 'Away', 'Away Win Prob.', 'Away Pred. Spread', 'DK Away Spread', 'Home', 'Home Win Prob.', 'Home Pred. Spread'])
+	
+	#add a * to the team names that are brand new to the simulation. Take those predictions with a grain of salt
+	output['Away'] = output.apply(lambda x: x['Away'] + "*" if elo_state.get_elo(x['Away']) == elo.NEW_ELO else x['Away'], axis = 1)
+	output['Home'] = output.apply(lambda x: x['Home'] + "*" if elo_state.get_elo(x['Home']) == elo.NEW_ELO else x['Home'], axis = 1)
+	
 	spreads_string = ''
 	if timestamp != 'N/A':
 		spreads_string = ' with Spreads as of '
