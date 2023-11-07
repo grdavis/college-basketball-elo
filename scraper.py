@@ -80,7 +80,7 @@ def scrape_scores(date_obj):
 			away_span = spread_field.find('span')
 			if away_span == None: away_spread = 'NL'
 			else: 
-				away_spread = away_span.text.strip()
+				away_spread = away_span.text.strip('+')
 				away_spread = 'NL' if away_spread == '' else away_spread
 
 		if away not in TR_NAMES_MAP:

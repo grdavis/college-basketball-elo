@@ -5,11 +5,11 @@ import argparse
 import pandas as pd
 
 ELO_BASE = 1500
-NEW_ELO = 1000
-K_FACTOR = 48
-SEASON_CARRY = 0.65
-HOME_ADVANTAGE = 75
-ELO_TO_POINTS_FACTOR = -25.1 #divide an elo margin by this to get the predicted point spread
+NEW_ELO = 975
+K_FACTOR = 46
+SEASON_CARRY = 0.70
+HOME_ADVANTAGE = 78
+ELO_TO_POINTS_FACTOR = -24.95 #divide an elo margin by this to get the predicted point spread
 GAMES_REQUIRED = 10
 DATA_FOLDER = utils.DATA_FOLDER
 CONFERENCE_DICT = utils.read_two_column_csv_to_dict('conferences.csv')

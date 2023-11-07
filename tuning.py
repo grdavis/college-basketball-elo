@@ -10,7 +10,7 @@ from scipy.stats import linregress
 import pandas as pd
 from predictions import predict_tournament, ROUNDS, predict_game
 
-ERRORS_START = 9 #after how many seasons should we start tracking performance (9 = start with 2019 season)
+ERRORS_START = 3 #after how many seasons should we start tracking performance (3 = start with 2013 season = 10 full seasons of data 2013-2022)
 
 class Tuning_ELO_Sim(elo.ELO_Sim):
 	'''
@@ -89,10 +89,10 @@ def random_tune(data, number):
 	Start with wide ranges, then use the outputs (which are sorted by their errors) to inform a tighter range for the next iteration
 	Once windows are small enough, switch to brute_tune
 	'''
-	k_range = np.arange(40, 50, 1)
+	k_range = np.arange(43, 51, 1)
 	carry_range = np.arange(.55, .75, .05)
-	home_range = np.arange(70, 85, 2)
-	new_team_range = np.arange(900, 1100, 25)
+	home_range = np.arange(70, 86, 2)
+	new_team_range = np.arange(950, 1200, 50)
 	errors = []
 	
 	for i in tqdm(range(number)):
@@ -107,10 +107,10 @@ def brute_tune(data):
 	Use this function to cycle through all possible combinations of the 4 variables within the defined ranges and find the optimal solution
 	Since brute force can take some time to run, random_tune first to help narrow possible ranges
 	'''
-	k_range = [47, 48]
-	carry_range = [.62, .64, .68]
-	home_range = [75, 76, 77]
-	new_team_range = [1000, 1025, 1050] 
+	k_range = [46, 47]
+	carry_range = [.70, .72]
+	home_range = [77, 78]
+	new_team_range = [950, 975] 
 	errors = []
 
 	for k in tqdm(k_range):
@@ -157,7 +157,6 @@ def error2_viz(explore):
 	fig.show()
 
 ##############Elo margin vs. Margin of Victory################
-# 1/0.039843 = 25.1
 def elo_vs_MoV(explore):
 	x_vals = [i for i in explore.elo_margin_tracker]
 	y_vals = [explore.MoV_tracker[i]/explore.elo_margin_tracker[i] for i in x_vals]
@@ -227,14 +226,16 @@ def get_breakeven(x_vals, y_vals):
 	for x, y in zip(x_vals, y_vals):
 		if y > .52381: return x
 
-def spread_evaluation(explore, exclusion_threshold = 25, month_day_start = None, plot = True):
+def spread_evaluation(explore, exclusion_threshold = 25, by_month = None, plot = True):
 	'''
 	The exclusion_threshold does not count games where the difference between the elo and vegas spreads is greater than
 	this threshold. These games are likely errors in either the spread predicted or in the vegas spread read in from the
 	historical data file. 
-	In addition, games occurring before month_day_start within a season are not tracked. The theory is that the model
-	needs some time each season to tune itself. We need to wait until it has seen a few games from each season before we
-	would consider acting on its predictions.
+
+	The by_month parameter can be set to a string representing a month of the CBB season (e.g. '11', '12', '01', etc.).
+	The purpose of this will be to evaluate performance against the spread at various points in the season. The hypothesis
+	is that the model needs some time to sort out who is good and who is bad every season such that our predictions, and
+	our edge, become more prominent in the later months of a season
 	'''
 	x_vals = []
 	y_vals_win = []
@@ -249,12 +250,8 @@ def spread_evaluation(explore, exclusion_threshold = 25, month_day_start = None,
 			if row[2] == 'NL': continue #we don't have a historical spread, so ignore
 			away_score, home_score, away_veg_spread, away_elo_spread = map(float, row[:4])
 			
-			game_month_day = row[-1][4:]
-			if month_day_start != None: #skip those too early in the season
-				if month_day_start < '0501':
-					if game_month_day >= '0501': continue
-					elif game_month_day < month_day_start: continue 
-				elif game_month_day >= '0501' and game_month_day < month_day_start: continue 
+			game_month = row[-1][4:6] #e.g. from '20221118', this takes '11'
+			if by_month != None and game_month != by_month: continue #if by_month is set, skip all games not in the set by_month
 
 			if abs(away_veg_spread - away_elo_spread) > exclusion_threshold: continue #skip those where the difference is too big to trust
 
@@ -278,7 +275,6 @@ def spread_evaluation(explore, exclusion_threshold = 25, month_day_start = None,
 		y_vals_pick.append(take_a_side/(take_a_side + agreed)) #track % of games with spread data for which a pick was made
 		ns.append(take_a_side)
 
-
 	if not plot: return get_breakeven(x_vals, y_vals_win) #if we're not using this function to graph, we're using it to find the first breakeven
 	
 	fig = make_subplots(specs=[[{"secondary_y": True}]])
@@ -296,20 +292,20 @@ def spread_evaluation(explore, exclusion_threshold = 25, month_day_start = None,
 	fig.show()
 
 ###############SPREAD OVER COURSE OF SEASON####################
-def eval_spread_over_season(explore, dates = ['1101', '1201', '0101', '0201', '0301', '0401'], exclusion_threshold = 25):
+def eval_spread_over_season(explore, months = ['11', '12', '01', '02', '03', '04'], exclusion_threshold = 25):
 	'''
 	The hypothesis is that early in the season, our predictions will be less accurate than they are later in the season.
 	The model needs time (game data) to sort out the kinks and converge on a more accurate Elo rating for each team.
 	When the difference between the model's prediction and the vegas spread is greater than X, we should trust our model
-	to outperform Vegas. To do that, we need to be right more than ~52% of the time. This function loops through possible
-	"dates" on which to start evaluating our performance and calculates that X breakeven value. In theory, we should see
+	to outperform Vegas. To do that, we need to be right more than ~52% of the time. This function loops through the months
+	specified (format as 'MM') and calculates that X breakeven value within that month historically. In theory, we should see
 	the value of X decreases as we get further and futher into the season. Our predictions are more and more accurate.
 	'''
 	print('Finding breakeven for multiple date cutoffs...')
 	y_vals = []
-	for d in tqdm(dates):
+	for d in tqdm(months):
 		y_vals.append(spread_evaluation(explore, exclusion_threshold, d, plot = False))
-	fig = go.Figure([go.Bar(x = dates, y = y_vals, name = 'Breakeven Difference for Games After')])
+	fig = go.Figure([go.Bar(x = months, y = y_vals, name = 'Breakeven Difference for Games After')])
 	fig.update_layout(title_text = 'Difference Between Model Prediction and Vegas Spread Needed to Break Even (52.381%+) Re-Calculated as Season Progresses', 
 		xaxis_title = 'Predictions Made After Date (MMDD)', yaxis_title = 'Breakeven Difference')
 	fig.update_xaxes(type = 'category')
@@ -359,9 +355,14 @@ def graphing(data):
 	# elo_vs_MoV(explore)
 	# elo_season_over_season(explore)
 	# latest_dist(explore)
-	# spread_evaluation(explore, exclusion_threshold = 25, month_day_start = None)
 	# historical_brackets(explore)
-	eval_spread_over_season(explore, dates = ['1101', '1116', '1201', '1216', '0101', '0116', '0201', '0216'])
+	# eval_spread_over_season(explore)
+	# spread_evaluation(explore, exclusion_threshold = 25)
+	# spread_evaluation(explore, exclusion_threshold = 25, by_month = '11')
+	# spread_evaluation(explore, exclusion_threshold = 25, by_month = '12')
+	# spread_evaluation(explore, exclusion_threshold = 25, by_month = '01')
+	# spread_evaluation(explore, exclusion_threshold = 25, by_month = '02')
+	# spread_evaluation(explore, exclusion_threshold = 25, by_month = '03')
 
 ###########################TUNING############################
 def tuning(data, target = 'error1', graphs = True, verbose = False, tune_style_random = False, random_iterations = 50):
@@ -369,10 +370,14 @@ def tuning(data, target = 'error1', graphs = True, verbose = False, tune_style_r
 	if verbose: print(se1, se2)
 	if not graphs: return
 	
-	# start measuring after season 9 (start fall 2019), errors as of games through 4/3/2023
-	# best e1 optimized:	(error1 = 3783.62, error2 = 0.0173, k_factor = 48, carryover = .60, home_elo = 77, new_team = 1075)
-	# best e2 optimized:	(error1 = 3790.55, error2 = 0.0129, k_factor = 47, carryover = .70, home_elo = 75, new_team = 975)
-	# hybrid (active):		(error1 = 3653.61, error2 = 0.0128, k_factor = 48, carryover = .64, home_elo = 75, new_team = 1000), 24.3
+	# important to remember the final step after setting k, carryover, home_elo, and new_team in elo.py: run elo_vs_MoV()! 
+	# This prints out the slope of the relationship between elo differences and margins of victory. Take 1/slope and set 
+	# ELO_TO_POINTS_FACTOR equal to -(1/slope)
+
+	# start measuring after season 3 (start fall 2013), errors as of games through 4/3/2023
+	# best e1 optimized:	(error1 = 9785.26, error2 = 0.0152, k_factor = 46, carryover = .64, home_elo = 80, new_team = 1000), 24.8
+	# best e2 optimized:	(error1 = 9798.85, error2 = 0.0094, k_factor = 47, carryover = .72, home_elo = 77, new_team = 950), 25.5
+	# hybrid (active):		(error1 = 9790.13, error2 = 0.0126, k_factor = 46, carryover = .70, home_elo = 78, new_team = 975), 24.95
 
 	# take the output of tuning and plot the errors over each of the variables
 	mapping = {'error1': 0, 'error2': 1}
@@ -394,4 +399,4 @@ if __name__ == '__main__':
 	graphing(data)
 
 	#start with random_tune, then switch to brute_tune when the ranges for values are tight enough so as not to take too long to run
-	# tuning(data, target = 'error2', graphs = True, verbose = True, tune_style_random = False, random_iterations = 50)
+	# tuning(data, target = 'error1', graphs = True, verbose = True, tune_style_random = False, random_iterations = 100)
