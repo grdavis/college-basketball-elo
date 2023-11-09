@@ -1,5 +1,6 @@
 # 2023-11-08 Game Predictions
 Teams with * or those written as abbreviations (e.g. BREC) are not D1 programs and predictions are more uncertain. Check out [the full repository](https://github.com/grdavis/college-basketball-elo) for methodology and more
+
 |   Neutral | Away               | Away Win Prob.   |   Away Pred. Spread | DK Away Spread   | Home                | Home Win Prob.   |   Home Pred. Spread |
 |----------:|:-------------------|:-----------------|--------------------:|:-----------------|:--------------------|:-----------------|--------------------:|
 |         0 | FISF*              | 6%               |                18.6 | NL               | Bryant              | 94%              |               -18.6 |

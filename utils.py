@@ -93,7 +93,7 @@ def save_markdown_df(df, date_str):
 	with open(f"{DOCS_FOLDER}/index.md", 'w') as md:
 		md.write(f'# {date_str} Game Predictions\n')
 		md.write('Teams with * or those written as abbreviations (e.g. BREC) are not D1 programs and predictions are more uncertain. ')
-		md.write('Check out [the full repository](https://github.com/grdavis/college-basketball-elo) for methodology and more\n')
+		md.write('Check out [the full repository](https://github.com/grdavis/college-basketball-elo) for methodology and more\n\n')
 		df.to_markdown(buf = md, index = False)
 
 def table_output(df, table_title, order = None):
