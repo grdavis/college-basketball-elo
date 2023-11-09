@@ -7,3 +7,4 @@ numpy==1.23
 pandas==1.2.4
 beautifulsoup4==4.10.0
 scikit_learn==1.0.2
+tabulate==0.9.0

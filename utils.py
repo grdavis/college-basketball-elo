@@ -4,6 +4,7 @@ import os
 import plotly.graph_objects as go
 from datetime import datetime, timedelta
 
+DOCS_FOLDER = 'docs/'
 DATA_FOLDER = 'Data/'
 OUTPUTS_FOLDER = 'Outputs/'
 SPREAD_FOLDER = 'New_Spreads/'
@@ -84,6 +85,13 @@ def clean_up_old_outputs_and_data():
 	elligible_data = list(filter(r.match, os.listdir(OUTPUTS_FOLDER)))
 	sorted_files = sorted(elligible_data, key = lambda x: x[:8], reverse = True)
 	remove_files([OUTPUTS_FOLDER + f for f in sorted_files], 3)
+
+def save_markdown_df(df):
+	'''
+	Takes in a dataframe, converts it to markdown, and saves it in the docs folder for GitHub pages to find
+	'''
+	with open(f"{DOCS_FOLDER}/todays_predictions.md", 'w') as md:
+	  df.to_markdown(buf = md, tablefmt = "grid")
 
 def table_output(df, table_title, order = None):
 	'''
