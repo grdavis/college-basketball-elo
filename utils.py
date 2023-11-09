@@ -86,12 +86,15 @@ def clean_up_old_outputs_and_data():
 	sorted_files = sorted(elligible_data, key = lambda x: x[:8], reverse = True)
 	remove_files([OUTPUTS_FOLDER + f for f in sorted_files], 3)
 
-def save_markdown_df(df):
+def save_markdown_df(df, date_str):
 	'''
 	Takes in a dataframe, converts it to markdown, and saves it in the docs folder for GitHub pages to find
 	'''
-	with open(f"{DOCS_FOLDER}/todays_predictions.md", 'w') as md:
-	  df.to_markdown(buf = md, tablefmt = "grid")
+	with open(f"{DOCS_FOLDER}/index.md", 'w') as md:
+		md.write(f'# {date_str} Game Predictions\n')
+		md.write('Teams with * or those written as abbreviations (e.g. BREC) are not D1 programs and predictions are more uncertain. ')
+		md.write('Check out [the full repository](https://github.com/grdavis/college-basketball-elo) for methodology and more\n')
+		df.to_markdown(buf = md, index = False)
 
 def table_output(df, table_title, order = None):
 	'''
