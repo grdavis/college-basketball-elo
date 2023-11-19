@@ -9,6 +9,7 @@ from sklearn.metrics import r2_score
 from scipy.stats import linregress
 import pandas as pd
 from predictions import predict_tournament, ROUNDS, predict_game
+import math
 
 ERRORS_START = 3 #after how many seasons should we start tracking performance (3 = start with 2013 season = 10 full seasons of data 2013-2022)
 
@@ -16,8 +17,8 @@ class Tuning_ELO_Sim(elo.ELO_Sim):
 	'''
 	This class is an extension of ELO_Sim that allows us to keep track of errors and extra metrics through the
 	simulation process which are useful for tuning. Errors tracked are...
-	error1: calculated (1 - predicted win probability)^2 for each game and add them up. More commonly known as Brier score (https://en.wikipedia.org/wiki/Brier_score). This is the primary error of interest
-	error2: calculated at the end of a simulation as the average absolute difference between predicted win probability and actual win probability for teams who were given that prediction
+	error1: Brier score (https://en.wikipedia.org/wiki/Brier_score). Average of (predicted probability - outcome)^2
+	error2: Log loss (https://www.analyticsvidhya.com/blog/2020/11/binary-cross-entropy-aka-log-loss-the-cost-function-used-in-logistic-regression/). Average of -(outcome * log(predicted probability of that outcome))
 	'''
 	def __init__(self):
 		super().__init__()
@@ -27,11 +28,13 @@ class Tuning_ELO_Sim(elo.ELO_Sim):
 		self.elo_margin_tracker = {}
 		self.MoV_tracker = {}
 		self.error1 = []
+		self.error2 = []
 
 	def update_errors(self, w_winp, for_spread_tracker):
 		if self.season_count >= ERRORS_START:
 			rounded, roundedL = round(w_winp, 2), round(1 - w_winp, 2)
 			self.error1.append((1 - w_winp)**2)
+			self.error2.append(-math.log(w_winp) if w_winp != 0 else -math.log(.000000001))
 			self.win_tracker[rounded] = self.win_tracker.get(rounded, 0) + 1
 			self.predict_tracker[rounded] = self.predict_tracker.get(rounded, 0) + 1
 			self.predict_tracker[roundedL] = self.predict_tracker.get(roundedL, 0) + 1
@@ -47,12 +50,7 @@ class Tuning_ELO_Sim(elo.ELO_Sim):
 			self.MoV_tracker[-rounded] = self.MoV_tracker.get(-rounded, 0) - MoV
 
 	def get_errors(self):
-		error2 = 0
-		total_games = sum(self.predict_tracker.values())
-		for i in sorted(self.predict_tracker):
-			result = self.win_tracker.get(i, 0)/self.predict_tracker[i]
-			error2 += self.predict_tracker[i] * abs(result - i)
-		return (sum(self.error1), error2 / total_games)
+		return (sum(self.error1) / len(self.error1), sum(self.error2) / len(self.error2))
 
 def tuning_sim(data, k_factor, new_season_carry, home_elo, new_team_elo):
 	'''
@@ -89,12 +87,12 @@ def random_tune(data, number):
 	Start with wide ranges, then use the outputs (which are sorted by their errors) to inform a tighter range for the next iteration
 	Once windows are small enough, switch to brute_tune
 	'''
-	k_range = np.arange(43, 51, 1)
-	carry_range = np.arange(.55, .75, .05)
-	home_range = np.arange(70, 86, 2)
-	new_team_range = np.arange(950, 1200, 50)
+	k_range = np.arange(45, 51, 1)
+	carry_range = np.arange(.58, .71, .03)
+	home_range = np.arange(78, 87, 2)
+	new_team_range = np.arange(950, 1051, 25)
 	errors = []
-	
+
 	for i in tqdm(range(number)):
 		k_factor, new_season_carry, home_elo, nte = random.choice(k_range), random.choice(carry_range), random.choice(home_range), random.choice(new_team_range)
 		error1, error2 = tuning_sim(data, k_factor, new_season_carry, home_elo, nte).get_errors()
@@ -108,9 +106,9 @@ def brute_tune(data):
 	Since brute force can take some time to run, random_tune first to help narrow possible ranges
 	'''
 	k_range = [46, 47]
-	carry_range = [.70, .72]
-	home_range = [77, 78]
-	new_team_range = [950, 975] 
+	carry_range = [.64, .66]
+	home_range = [81, 82, 83, 84]
+	new_team_range = [970, 985, 1000] 
 	errors = []
 
 	for k in tqdm(k_range):
@@ -132,28 +130,16 @@ def tune(data, tune_style_random = False, random_iterations = 50):
 	se2 = sorted(errors, key = lambda x: x[1])
 	return se1, se2
 
-################Brier (Error 1) Over Time####################
-def error1_viz(explore):
+################Error Over Time####################
+def error_viz(explore, error_list, error_string):
 	size = 5750 #roughly the number of games per season if we have ~40K errors over the course of 7 seasons (Fall 2014 - Spring 2021)
-	leftover = len(explore.error1) % size
-	y_vals = [sum(explore.error1[i*size:(i*size)+size])/size for i in range(len(explore.error1)//size)] + [sum(explore.error1[-leftover:])/leftover]
-	sizes = [size for i in range(len(explore.error1)//size)] + [leftover]
+	leftover = len(error_list) % size
+	y_vals = [sum(error_list[i*size:(i*size)+size])/size for i in range(len(error_list)//size)] + [sum(error_list[-leftover:])/leftover]
+	sizes = [size for i in range(len(error_list)//size)] + [leftover]
 	x_vals = [i for i in range(len(sizes))]
 	fig = go.Figure([go.Bar(x = x_vals, y = y_vals, text = ['n = ' + str(size) for size in sizes], textposition = 'auto')])
-	fig.update_layout(title_text = 'Brier Score Over Time: Fall 2014 - Fall 2022', 
-		xaxis_title = 'Bucket of Chronological Games', yaxis_title = 'Avg. Brier Score in Bucket')
-	fig.show()
-
-###################Visualizing Error 2#######################
-def error2_viz(explore):
-	x_vals = [i for i in explore.predict_tracker]
-	y_vals = [explore.win_tracker[i]/explore.predict_tracker[i] for i in x_vals]
-	sizes = [explore.predict_tracker[i] for i in x_vals]
-	fig = go.Figure()
-	fig.add_trace(go.Scatter(x = x_vals, y = y_vals, mode = 'markers', name = 'Predictions', text = ['n = ' + str(size) for size in sizes]))
-	fig.add_trace(go.Scatter(x = [0, 1], y = [0, 1], mode = 'lines', name = 'Perfect Line'))
-	r2 = r2_score(x_vals, y_vals)
-	fig.update_layout(title_text = 'Predicted vs. Actual Win Probability (R^2 = 0.99)', xaxis_title = 'Predicted Win Probability', yaxis_title = 'Actual Win Probability')
+	fig.update_layout(title_text = f'{error_string} Over Time', 
+		xaxis_title = 'Bucket of Chronological Games', yaxis_title = f'Avg. {error_string} in Bucket')
 	fig.show()
 
 ##############Elo margin vs. Margin of Victory################
@@ -173,7 +159,8 @@ def elo_vs_MoV(explore):
 	x_trimmed = [j*25 for j in range(-i, i+1)]
 	y_trimmed = [explore.MoV_tracker[i]/explore.elo_margin_tracker[i] for i in x_trimmed]
 	slope, intercept, r, p, se = linregress(x_trimmed, y_trimmed)
-	print(slope, r)
+	print(f'Slope of {slope}. R^2 of {r}. Fitted from {min(x_trimmed)} to {max(x_trimmed)}')
+	print(f'The elo difference equivalent to a 1-point difference: {1/slope}')
 	# 1/slope tells us what elo difference is equivalent to 1 point difference
 	fig.add_trace(go.Scatter(x = x_trimmed, y = [i*slope + intercept for i in x_trimmed], mode = 'lines', 
 		name = 'LSRL for Middle 80% of Games (R^2 > 0.99)'))
@@ -226,11 +213,15 @@ def get_breakeven(x_vals, y_vals):
 	for x, y in zip(x_vals, y_vals):
 		if y > .52381: return x
 
-def spread_evaluation(explore, exclusion_threshold = 25, by_month = None, plot = True):
+def spread_evaluation(explore, exclusion_threshold = 25, accuracy_cap = 1000, by_month = None, plot = True):
 	'''
 	The exclusion_threshold does not count games where the difference between the elo and vegas spreads is greater than
 	this threshold. These games are likely errors in either the spread predicted or in the vegas spread read in from the
 	historical data file. 
+
+	accuracy_cap ignores games where the elo difference between two teams is too large for us to be confident in
+	the projection. Per findings in the elo_vs_MoV() graph, once the elo difference between two teams gets large enough,
+	we can no longer accurately project the margin of victory with a straight-line relationship between ELO and margin
 
 	The by_month parameter can be set to a string representing a month of the CBB season (e.g. '11', '12', '01', etc.).
 	The purpose of this will be to evaluate performance against the spread at various points in the season. The hypothesis
@@ -241,7 +232,7 @@ def spread_evaluation(explore, exclusion_threshold = 25, by_month = None, plot =
 	y_vals_win = []
 	y_vals_pick = []
 	ns = []
-	for k in np.arange(0, min(exclusion_threshold, 20), .25):
+	for k in np.arange(0, min(exclusion_threshold, 20), .25): #don't want to graph more than 20 on the x axis
 		take_a_side = 0 #made a "bet"
 		correct_side = 0 #"bet" was correct
 		tied_side = 0 #"bet" was a push
@@ -254,6 +245,8 @@ def spread_evaluation(explore, exclusion_threshold = 25, by_month = None, plot =
 			if by_month != None and game_month != by_month: continue #if by_month is set, skip all games not in the set by_month
 
 			if abs(away_veg_spread - away_elo_spread) > exclusion_threshold: continue #skip those where the difference is too big to trust
+
+			if abs(away_elo_spread) > accuracy_cap / - elo.ELO_TO_POINTS_FACTOR: continue #skip those where the predicted margin is outside our confidence zone
 
 			adjusted_score_away = away_score + away_veg_spread
 			if away_veg_spread - away_elo_spread > k: #elo says take the away team
@@ -286,13 +279,13 @@ def spread_evaluation(explore, exclusion_threshold = 25, by_month = None, plot =
 					name = 'Breakeven with -110 Odds', line = dict(dash='dashdot')), secondary_y = False)
 	fig.update_yaxes(title_text = 'Elo Win %', secondary_y = False)
 	fig.update_yaxes(title_text = 'Games Meeting Criteria %', secondary_y = True)
-	fig.update_layout(title_text = 'Win Percentage of Elo-Informed Picks', 
+	fig.update_layout(title_text = f'Win Percentage of Elo-Informed Picks with Accuracy Cap = {accuracy_cap} Elo points and Exclusion Threshold = {exclusion_threshold} points', 
 					xaxis_title = 'Difference between Elo and Vegas Required for Pick',
 					plot_bgcolor='rgba(0,0,0,0)', yaxis_tickformat = ',.2%', yaxis2_tickformat = ',.2%')
 	fig.show()
 
 ###############SPREAD OVER COURSE OF SEASON####################
-def eval_spread_over_season(explore, months = ['11', '12', '01', '02', '03', '04'], exclusion_threshold = 25):
+def eval_spread_over_season(explore, months = ['11', '12', '01', '02', '03', '04'], exclusion_threshold = 25, accuracy_cap = 1000):
 	'''
 	The hypothesis is that early in the season, our predictions will be less accurate than they are later in the season.
 	The model needs time (game data) to sort out the kinks and converge on a more accurate Elo rating for each team.
@@ -304,7 +297,7 @@ def eval_spread_over_season(explore, months = ['11', '12', '01', '02', '03', '04
 	print('Finding breakeven for multiple date cutoffs...')
 	y_vals = []
 	for d in tqdm(months):
-		y_vals.append(spread_evaluation(explore, exclusion_threshold, d, plot = False))
+		y_vals.append(spread_evaluation(explore, exclusion_threshold, accuracy_cap, d, plot = False))
 	fig = go.Figure([go.Bar(x = months, y = y_vals, name = 'Breakeven Difference for Games After')])
 	fig.update_layout(title_text = 'Difference Between Model Prediction and Vegas Spread Needed to Break Even (52.381%+) Re-Calculated as Season Progresses', 
 		xaxis_title = 'Predictions Made After Date (MMDD)', yaxis_title = 'Breakeven Difference')
@@ -350,19 +343,19 @@ def historical_brackets(explore):
 def graphing(data):
 	explore = tuning_sim(data, elo.K_FACTOR, elo.SEASON_CARRY, elo.HOME_ADVANTAGE, elo.NEW_ELO)
 	# print(explore.get_errors())
-	# error1_viz(explore)
-	# error2_viz(explore)
+	# error_viz(explore, explore.error1, 'Brier Score')
+	# error_viz(explore, explore.error2, 'Log Loss')
 	# elo_vs_MoV(explore)
 	# elo_season_over_season(explore)
 	# latest_dist(explore)
 	# historical_brackets(explore)
-	# eval_spread_over_season(explore)
-	# spread_evaluation(explore, exclusion_threshold = 25)
-	# spread_evaluation(explore, exclusion_threshold = 25, by_month = '11')
-	# spread_evaluation(explore, exclusion_threshold = 25, by_month = '12')
-	# spread_evaluation(explore, exclusion_threshold = 25, by_month = '01')
-	# spread_evaluation(explore, exclusion_threshold = 25, by_month = '02')
-	# spread_evaluation(explore, exclusion_threshold = 25, by_month = '03')
+	# eval_spread_over_season(explore, exclusion_threshold = 25, accuracy_cap = 325)
+	# spread_evaluation(explore, exclusion_threshold = 25, accuracy_cap = 325)
+	# spread_evaluation(explore, exclusion_threshold = 25, accuracy_cap = 325, by_month = '11')
+	# spread_evaluation(explore, exclusion_threshold = 25, accuracy_cap = 325, by_month = '12')
+	# spread_evaluation(explore, exclusion_threshold = 25, accuracy_cap = 325, by_month = '01')
+	# spread_evaluation(explore, exclusion_threshold = 25, accuracy_cap = 325, by_month = '02')
+	# spread_evaluation(explore, exclusion_threshold = 25, accuracy_cap = 325, by_month = '03')
 
 ###########################TUNING############################
 def tuning(data, target = 'error1', graphs = True, verbose = False, tune_style_random = False, random_iterations = 50):
@@ -374,10 +367,11 @@ def tuning(data, target = 'error1', graphs = True, verbose = False, tune_style_r
 	# This prints out the slope of the relationship between elo differences and margins of victory. Take 1/slope and set 
 	# ELO_TO_POINTS_FACTOR equal to -(1/slope)
 
-	# start measuring after season 3 (start fall 2013), errors as of games through 4/3/2023
-	# best e1 optimized:	(error1 = 9785.26, error2 = 0.0152, k_factor = 46, carryover = .64, home_elo = 80, new_team = 1000), 24.8
-	# best e2 optimized:	(error1 = 9798.85, error2 = 0.0094, k_factor = 47, carryover = .72, home_elo = 77, new_team = 950), 25.5
-	# hybrid (active):		(error1 = 9790.13, error2 = 0.0126, k_factor = 46, carryover = .70, home_elo = 78, new_team = 975), 24.95
+	# start measuring after season 3 (start fall 2013), errors as of games through 11/17/2023
+	# hybrid (active):	(error1 = 0.16893, error2 = 0.50379, k_factor = 47, carryover = .64, home_elo = 82, new_team = 985), 24.78
+	# e1 (brier score):	(error1 = 0.16892, error2 = 0.50393, k_factor = 46, carryover = .64, home_elo = 81, new_team = 1000), 24.35
+	# e2 (log loss):	(error1 = 0.16896, error2 = 0.50373, k_factor = 47, carryover = .65, home_elo = 84, new_team = 970), 25.18
+	
 
 	# take the output of tuning and plot the errors over each of the variables
 	mapping = {'error1': 0, 'error2': 1}
@@ -399,4 +393,4 @@ if __name__ == '__main__':
 	graphing(data)
 
 	#start with random_tune, then switch to brute_tune when the ranges for values are tight enough so as not to take too long to run
-	# tuning(data, target = 'error1', graphs = True, verbose = True, tune_style_random = False, random_iterations = 100)
+	# tuning(data, target = 'error1', graphs = True, verbose = True, tune_style_random = False, random_iterations = 50)
