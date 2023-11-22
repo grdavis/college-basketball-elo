@@ -8,37 +8,46 @@ from scraper import scrape_scores
 
 def scrape_live_odds():
 	'''
-	This function scrapes and returns the current spreads for college basketball games posted on DraftKings
+	This function scrapes and returns the current spreads for college basketball games posted on Scores and Odds
+	DraftKings was the original source, but they altered their page to make it more difficult than needed
 	'''
-	url = "https://sportsbook.draftkings.com/leagues/basketball/88670771"
+	url = "https://www.scoresandodds.com/ncaab"
+
 	data = requests.get(url).content
-	table = BeautifulSoup(data, 'html.parser').find_all('tbody', {'class': 'sportsbook-table__body'})
-	rows = []
-	for t in table:
-		rows.extend(t.find_all('tr'))
-	home = False
+	games = BeautifulSoup(data, 'html.parser').find_all('tbody')
 	all_data = []
 	today = datetime.now()
-	for row in rows:
-		team = row.find('div', {'class': 'event-cell__name-text'}).text
-		if home:
-			all_data.append(new_data + [team, today.date().strftime('%Y%m%d'), today.time().strftime('%H%M%S')])
+	for game in games:
+		away_row, home_row = game.find_all('tr')
+		away = away_row.find('span', {'class': 'team-name'})
+		if away.find('a') == None:
+			away = away.find('span').text.strip(' 1234567890()')
 		else:
-			spread = row.find('span', {'class': 'sportsbook-outcome-cell__line'})
-			new_data = [team, spread.text if spread != None else 'NL']
-		home = not home
-	utils.save_data('New_Spreads/DK_spreads_%s_%s.csv' % (today.date().strftime('%Y%m%d'), today.time().strftime('%H%M%S')), all_data)
+			away = away.find('a').text.strip(' 1234567890()')
+
+		odds_obj = away_row.find('div', {'class': 'game-odds'})
+		away_spread = 'NL' if odds_obj == None else odds_obj.find('span').text.replace('+', '')
+
+		home = home_row.find('span', {'class': 'team-name'})
+		if home.find('a') == None:
+			home = home.find('span').text.strip(' 1234567890()')
+		else:
+			home = home.find('a').text.strip(' 1234567890()')
+
+		all_data.append([away, away_spread, home, today.date().strftime('%Y%m%d'), today.time().strftime('%H%M%S')])
+	
+	utils.save_data('New_Spreads/SO_spreads_%s_%s.csv' % (today.date().strftime('%Y%m%d'), today.time().strftime('%H%M%S')), all_data)
 	return all_data, today
 
 def add_spreads_to_todays_preds(predictions, forecast_date):
 	'''
-	This function is used to enrich game predictions with live spread data from DraftKings. If trying to
-	forecast for a date in the future or the past, the latest live spreads from DK are not relevant/available.
+	This function is used to enrich game predictions with live spread data. If trying to
+	forecast for a date in the future or the past, the latest live spreads are not relevant/available.
 	In that situation, this prints a warning and puts 'NL' in for all live spreads. If it is the day of the
-	predictions, this uses fuzzy matching techniques to match games with their DK spreads. If the match doesn't
+	predictions, this uses fuzzy matching techniques to match games with their scraped spreads. If the match doesn't
 	meet a certain threshold, input 'NL' for "No Line".
 
-	Since these spreads are scraped directly from DK, they may be more volatile than those scraped from our 
+	Since these spreads are scraped directly from a site, they may be more volatile than those scraped from our 
 	official scrape source. Thus, these spreads are only displayed in predictions output and not stored long-term
 	'''
 	if forecast_date != datetime.today().date():
