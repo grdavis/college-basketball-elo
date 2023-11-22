@@ -107,7 +107,7 @@ def predict_next_day(elo_state, forecast_date, auto):
 		else:
 			predictions.append([game[0], game[1], "{0:.0%}".format(1 - (float(prob[:-1])/100)), -home_spread, game[3], prob, home_spread])
 	predictions, timestamp = spread_enricher.add_spreads_to_todays_preds(predictions, forecast_date)
-	output = pd.DataFrame(predictions, columns = ['Neutral', 'Away', 'Away Win Prob.', 'Away Pred. Spread', 'DK Away Spread', 'Home', 'Home Win Prob.', 'Home Pred. Spread'])
+	output = pd.DataFrame(predictions, columns = ['Neutral', 'Away', 'Away Win Prob.', 'Away Pred. Spread', 'Live Away Spread', 'Home', 'Home Win Prob.', 'Home Pred. Spread'])
 	
 	#add a * to the team names that are brand new to the simulation. Take those predictions with a grain of salt
 	output['Away'] = output.apply(lambda x: x['Away'] + "*" if elo_state.get_elo(x['Away']) == elo.NEW_ELO else x['Away'], axis = 1)
