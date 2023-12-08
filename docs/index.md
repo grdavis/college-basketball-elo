@@ -1,16 +1,17 @@
-# 2023-12-07 Game Predictions
+# 2023-12-08 Game Predictions
 Teams with * or those written as abbreviations (e.g. BREC) are not D1 programs and predictions are more uncertain. Check out [the full repository](https://github.com/grdavis/college-basketball-elo) for methodology and more
 
-|   Neutral | Away             | Away Win Prob.   |   Away Pred. Spread | Live Away Spread   | Home                 | Home Win Prob.   |   Home Pred. Spread |
-|----------:|:-----------------|:-----------------|--------------------:|:-------------------|:---------------------|:-----------------|--------------------:|
-|         0 | BERM*            | 6%               |                19.7 | NL                 | Bellarmine           | 94%              |               -19.7 |
-|         0 | RUST*            | 5%               |                20.8 | NL                 | North Alabama        | 95%              |               -20.8 |
-|         0 | BETIN*           | 4%               |                22.5 | NL                 | Wright State         | 96%              |               -22.5 |
-|         0 | VULYN            | 11%              |                14.7 | NL                 | Delaware State       | 89%              |               -14.7 |
-|         0 | Eastern Kentucky | 14%              |                12.6 | 6.5                | UNC Greensboro       | 86%              |               -12.6 |
-|         0 | Iowa             | 41%              |                 2.7 | 6.5                | Iowa State           | 59%              |                -2.7 |
-|         0 | Little Rock      | 50%              |                -0   | -6.5               | Central Arkansas     | 50%              |                 0   |
-|         0 | Portland         | 41%              |                 2.5 | 2.5                | North Dakota State   | 59%              |                -2.5 |
-|         0 | IUPUI            | 27%              |                 6.9 | 4.5                | Eastern Illinois     | 73%              |                -6.9 |
-|         0 | BETH             | 8%               |                17.5 | NL                 | Cal State Northridge | 92%              |               -17.5 |
-|         0 | POINT*           | 5%               |                20.8 | NL                 | North Alabama        | 95%              |               -20.8 |
+|   Neutral | Away                | Away Win Prob.   |   Away Pred. Spread | Live Away Spread   | Home               | Home Win Prob.   |   Home Pred. Spread |
+|----------:|:--------------------|:-----------------|--------------------:|:-------------------|:-------------------|:-----------------|--------------------:|
+|         0 | St. Peter's         | 14%              |                12.6 | 14.5               | Duquesne           | 86%              |               -12.6 |
+|         0 | Oakland             | 45%              |                 1.5 | -6.5               | Eastern Michigan   | 55%              |                -1.5 |
+|         0 | UIC                 | 43%              |                 1.9 | -1.5               | Jacksonville State | 57%              |                -1.9 |
+|         0 | COLS*               | 3%               |                24.1 | NL                 | Yale               | 97%              |               -24.1 |
+|         0 | Fairleigh Dickinson | 39%              |                 3.3 | 1.5                | Manhattan          | 61%              |                -3.3 |
+|         0 | Stonehill           | 17%              |                10.9 | 10.5               | Rider              | 83%              |               -10.9 |
+|         0 | Holy Cross          | 4%               |                22.5 | 22.5               | Boston College     | 96%              |               -22.5 |
+|         0 | Navy                | 30%              |                 5.9 | 5.5                | Quinnipiac         | 70%              |                -5.9 |
+|         0 | Army                | 13%              |                13.6 | 11.5               | Harvard            | 87%              |               -13.6 |
+|         0 | North Carolina A&T  | 11%              |                14.4 | 20.5               | High Point         | 89%              |               -14.4 |
+|         0 | Little Rock         | 46%              |                 1.1 | NL                 | Central Arkansas   | 54%              |                -1.1 |
+|         0 | MTTECH*             | 4%               |                23   | NL                 | Montana            | 96%              |               -23   |
