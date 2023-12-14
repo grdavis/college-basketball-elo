@@ -1,33 +1,19 @@
-# 2023-12-13 Game Predictions
+# 2023-12-14 Game Predictions
 Teams with * or those written as abbreviations (e.g. BREC) are not D1 programs and predictions are more uncertain. Check out [the full repository](https://github.com/grdavis/college-basketball-elo) for methodology and more
 
-|   Neutral | Away                  | Away Win Prob.   |   Away Pred. Spread | Live Away Spread   | Home                | Home Win Prob.   |   Home Pred. Spread |
-|----------:|:----------------------|:-----------------|--------------------:|:-------------------|:--------------------|:-----------------|--------------------:|
-|         0 | MID-                  | 8%               |                17.2 | NL                 | Presbyterian        | 92%              |               -17.2 |
-|         0 | Incarnate Word        | 18%              |                10.5 | 12.5               | Rice                | 82%              |               -10.5 |
-|         0 | REGEN                 | 6%               |                19.8 | NL                 | Howard              | 94%              |               -19.8 |
-|         0 | BRYN*                 | 1%               |                31.8 | NL                 | Princeton           | 99%              |               -31.8 |
-|         0 | Norfolk State         | 47%              |                 1   | 2.5                | Stony Brook         | 53%              |                -1   |
-|         0 | Florida International | 6%               |                19.6 | 23.5               | Florida Atlantic    | 94%              |               -19.6 |
-|         0 | Marshall              | 29%              |                 6.2 | 7.5                | Toledo              | 71%              |                -6.2 |
-|         0 | Boston University     | 51%              |                -0.2 | 1.5                | Dartmouth           | 49%              |                 0.2 |
-|         0 | Appalachian State     | 65%              |                -4.4 | -6.5               | Queens (NC)         | 35%              |                 4.4 |
-|         0 | North Alabama         | 53%              |                -0.9 | -5.5               | Charleston Southern | 47%              |                 0.9 |
-|         0 | UTSA                  | 57%              |                -1.9 | 6.5                | Little Rock         | 43%              |                 1.9 |
-|         0 | Murray State          | 7%               |                17.7 | 16.5               | Mississippi State   | 93%              |               -17.7 |
-|         0 | Arkansas State        | 24%              |                 7.9 | 3.5                | Louisville          | 76%              |                -7.9 |
-|         0 | Tennessee State       | 10%              |                15.3 | 14.5               | Liberty             | 90%              |               -15.3 |
-|         0 | Longwood              | 61%              |                -3.1 | -3.5               | Milwaukee           | 39%              |                 3.1 |
-|         0 | Alabama State         | 17%              |                11.2 | 20.5               | LSU                 | 83%              |               -11.2 |
-|         0 | Southern Miss         | 50%              |                -0.1 | 5.5                | McNeese State       | 50%              |                 0.1 |
-|         0 | Chicago State         | 1%               |                29.4 | 24.5               | Northwestern        | 99%              |               -29.4 |
-|         0 | UAB                   | 44%              |                 1.7 | -12.5              | Alabama A&M         | 56%              |                -1.7 |
-|         1 | Auburn                | 89%              |               -14.9 | -18.5              | UNC Asheville       | 11%              |                14.9 |
-|         0 | Eastern Kentucky      | 22%              |                 8.7 | 2.5                | Louisiana           | 78%              |                -8.7 |
-|         0 | Denver                | 5%               |                21.3 | 26.5               | BYU                 | 95%              |               -21.3 |
-|         1 | Creighton             | 90%              |               -15   | -12.5              | UNLV                | 10%              |                15   |
-|         0 | PORTBI*               | 3%               |                24.6 | NL                 | Eastern Washington  | 97%              |               -24.6 |
-|         0 | Utah State            | 66%              |                -4.7 | -1.5               | Santa Clara         | 34%              |                 4.7 |
-|         0 | Weber State           | 16%              |                11.6 | 9.5                | Nevada              | 84%              |               -11.6 |
-|         0 | Seattle               | 18%              |                10.6 | 9.5                | San Francisco       | 82%              |               -10.6 |
-|         0 | PFEIFR                | 6%               |                19.1 | NL                 | Campbell            | 94%              |               -19.1 |
+|   Neutral | Away               | Away Win Prob.   |   Away Pred. Spread | Live Away Spread   | Home                  | Home Win Prob.   |   Home Pred. Spread |
+|----------:|:-------------------|:-----------------|--------------------:|:-------------------|:----------------------|:-----------------|--------------------:|
+|         0 | TRINB              | 4%               |                22   | NL                 | Jacksonville          | 96%              |               -22   |
+|         0 | BTHWV              | 2%               |                27.2 | NL                 | Youngstown State      | 98%              |               -27.2 |
+|         0 | The Citadel        | 12%              |                14   | 13.5               | College of Charleston | 88%              |               -14   |
+|         1 | East Carolina      | 22%              |                 8.9 | 14.5               | Florida               | 78%              |                -8.9 |
+|         0 | Furman             | 29%              |                 6.3 | 7.5                | Tulane                | 71%              |                -6.3 |
+|         0 | Jacksonville State | 6%               |                19.4 | 19.5               | Wisconsin             | 94%              |               -19.4 |
+|         0 | CUKY*              | 3%               |                23.9 | NL                 | Northern Kentucky     | 97%              |               -23.9 |
+|         0 | STMRW              | 3%               |                24.8 | NL                 | Morehead State        | 97%              |               -24.8 |
+|         0 | STAUG*             | 6%               |                18.8 | NL                 | Campbell              | 94%              |               -18.8 |
+|         0 | BSC*               | 8%               |                17.2 | NL                 | New Orleans           | 92%              |               -17.2 |
+|         0 | St. Thomas         | 3%               |                24.6 | 25.5               | Marquette             | 97%              |               -24.6 |
+|         0 | MYVLST*            | 2%               |                25.8 | NL                 | South Dakota State    | 98%              |               -25.8 |
+|         0 | Grambling          | 5%               |                20.6 | 22.5               | Drake                 | 95%              |               -20.6 |
+|         0 | Louisiana-Monroe   | 60%              |                -2.9 | -1.5               | Lamar                 | 40%              |                 2.9 |
