@@ -1,19 +1,19 @@
-# 2023-12-14 Game Predictions
+# 2023-12-15 Game Predictions
 Teams with * or those written as abbreviations (e.g. BREC) are not D1 programs and predictions are more uncertain. Check out [the full repository](https://github.com/grdavis/college-basketball-elo) for methodology and more
 
-|   Neutral | Away               | Away Win Prob.   |   Away Pred. Spread | Live Away Spread   | Home                  | Home Win Prob.   |   Home Pred. Spread |
-|----------:|:-------------------|:-----------------|--------------------:|:-------------------|:----------------------|:-----------------|--------------------:|
-|         0 | TRINB              | 4%               |                22   | NL                 | Jacksonville          | 96%              |               -22   |
-|         0 | BTHWV              | 2%               |                27.2 | NL                 | Youngstown State      | 98%              |               -27.2 |
-|         0 | The Citadel        | 12%              |                14   | 13.5               | College of Charleston | 88%              |               -14   |
-|         1 | East Carolina      | 22%              |                 8.9 | 14.5               | Florida               | 78%              |                -8.9 |
-|         0 | Furman             | 29%              |                 6.3 | 7.5                | Tulane                | 71%              |                -6.3 |
-|         0 | Jacksonville State | 6%               |                19.4 | 19.5               | Wisconsin             | 94%              |               -19.4 |
-|         0 | CUKY*              | 3%               |                23.9 | NL                 | Northern Kentucky     | 97%              |               -23.9 |
-|         0 | STMRW              | 3%               |                24.8 | NL                 | Morehead State        | 97%              |               -24.8 |
-|         0 | STAUG*             | 6%               |                18.8 | NL                 | Campbell              | 94%              |               -18.8 |
-|         0 | BSC*               | 8%               |                17.2 | NL                 | New Orleans           | 92%              |               -17.2 |
-|         0 | St. Thomas         | 3%               |                24.6 | 25.5               | Marquette             | 97%              |               -24.6 |
-|         0 | MYVLST*            | 2%               |                25.8 | NL                 | South Dakota State    | 98%              |               -25.8 |
-|         0 | Grambling          | 5%               |                20.6 | 22.5               | Drake                 | 95%              |               -20.6 |
-|         0 | Louisiana-Monroe   | 60%              |                -2.9 | -1.5               | Lamar                 | 40%              |                 2.9 |
+|   Neutral | Away                     | Away Win Prob.   |   Away Pred. Spread | Live Away Spread   | Home                    | Home Win Prob.   |   Home Pred. Spread |
+|----------:|:-------------------------|:-----------------|--------------------:|:-------------------|:------------------------|:-----------------|--------------------:|
+|         0 | SAGV*                    | 1%               |                34.5 | NL                 | Butler                  | 99%              |               -34.5 |
+|         0 | STANDR                   | 6%               |                19.3 | NL                 | North Carolina Central  | 94%              |               -19.3 |
+|         0 | TUSC*                    | 4%               |                21.9 | NL                 | ETSU                    | 96%              |               -21.9 |
+|         0 | BRIDVA*                  | 7%               |                17.6 | NL                 | Elon                    | 93%              |               -17.6 |
+|         0 | Mount St. Mary's         | 58%              |                -2.2 | -6.5               | Saint Francis (PA)      | 42%              |                 2.2 |
+|         0 | Texas State              | 21%              |                 9.2 | 4.5                | Sam Houston State       | 79%              |                -9.2 |
+|         0 | Texas A&M-Corpus Christi | 42%              |                 2.2 | 2.5                | Texas-Rio Grande Valley | 58%              |                -2.2 |
+|         0 | Northern Colorado        | 6%               |                19.4 | 21.5               | Colorado                | 94%              |               -19.4 |
+|         0 | Cleveland State          | 17%              |                11.1 | 9.5                | Bradley                 | 83%              |               -11.1 |
+|         0 | New Mexico               | 78%              |                -9.1 | -14.5              | New Mexico State        | 22%              |                 9.1 |
+|         0 | Cal State Bakersfield    | 17%              |                11.2 | 9.5                | Fresno State            | 83%              |               -11.2 |
+|         0 | Portland State           | 34%              |                 4.6 | -2.5               | San Diego               | 66%              |                -4.6 |
+|         1 | UConn                    | 72%              |                -6.6 | NL                 | Gonzaga                 | 28%              |                 6.6 |
+|         0 | STAUG                    | 6%               |                19.3 | NL                 | Campbell                | 94%              |               -19.3 |
