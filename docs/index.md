@@ -1,23 +1,19 @@
-# 2024-01-07 Game Predictions
+# 2024-01-08 Game Predictions
 Teams with * or those written as abbreviations (e.g. BREC) are not D1 programs and predictions are more uncertain. Check out [the full repository](https://github.com/grdavis/college-basketball-elo) for methodology and more
 
-|   Neutral | Away              | Away Win Prob.   |   Away Pred. Spread | Live Away Spread   | Home             | Home Win Prob.   |   Home Pred. Spread |
-|----------:|:------------------|:-----------------|--------------------:|:-------------------|:-----------------|:-----------------|--------------------:|
-|         0 | Michigan          | 40%              |                 2.7 | -3.5               | Penn State       | 60%              |                -2.7 |
-|         0 | Wichita State     | 55%              |                -1.4 | -1.5               | Temple           | 45%              |                 1.4 |
-|         0 | UMass             | 21%              |                 9.3 | NL                 | Dayton           | 79%              |                -9.3 |
-|         0 | Niagara           | 20%              |                 9.6 | 9.5                | Iona             | 80%              |                -9.6 |
-|         0 | IUPUI             | 8%               |                16.7 | 17.5               | Youngstown State | 92%              |               -16.7 |
-|         0 | Marist            | 31%              |                 5.4 | 2.5                | Fairfield        | 69%              |                -5.4 |
-|         0 | Canisius          | 47%              |                 0.9 | 1.5                | Rider            | 53%              |                -0.9 |
-|         0 | Mount St. Mary's  | 31%              |                 5.7 | 1.5                | St. Peter's      | 69%              |                -5.7 |
-|         0 | Manhattan         | 16%              |                11.7 | 9.5                | Quinnipiac       | 84%              |               -11.7 |
-|         0 | Tulsa             | 40%              |                 2.9 | 4.5                | East Carolina    | 60%              |                -2.9 |
-|         0 | Indiana State     | 57%              |                -1.9 | -1.5               | Northern Iowa    | 43%              |                 1.9 |
-|         0 | South Florida     | 67%              |                -4.9 | 3.5                | UAB              | 33%              |                 4.9 |
-|         0 | Drake             | 65%              |                -4.4 | -4.5               | Belmont          | 35%              |                 4.4 |
-|         0 | Chicago State     | 20%              |                 9.8 | 10.5               | UTEP             | 80%              |                -9.8 |
-|         0 | Northern Kentucky | 41%              |                 2.6 | 4.5                | Cleveland State  | 59%              |                -2.6 |
-|         0 | SMU               | 15%              |                12.3 | 7.5                | Memphis          | 85%              |               -12.3 |
-|         0 | Maryland          | 51%              |                -0.2 | 1.5                | Minnesota        | 49%              |                 0.2 |
-|         0 | Michigan State    | 51%              |                -0.2 | -3.5               | Northwestern     | 49%              |                 0.2 |
+|   Neutral | Away                   | Away Win Prob.   |   Away Pred. Spread | Live Away Spread   | Home                     | Home Win Prob.   |   Home Pred. Spread |
+|----------:|:-----------------------|:-----------------|--------------------:|:-------------------|:-------------------------|:-----------------|--------------------:|
+|         0 | Texas A&M-Commerce     | 36%              |                 4.1 | 3.5                | New Orleans              | 64%              |                -4.1 |
+|         0 | Northeastern           | 28%              |                 6.7 | 2.5                | Monmouth                 | 72%              |                -6.7 |
+|         0 | Norfolk State          | 44%              |                 1.7 | 1.5                | North Carolina Central   | 56%              |                -1.7 |
+|         0 | McNeese State          | 78%              |                -9   | -20.5              | Northwestern State       | 22%              |                 9   |
+|         0 | Maryland-Eastern Shore | 51%              |                -0.3 | -2.5               | Coppin State             | 49%              |                 0.3 |
+|         0 | Delaware State         | 46%              |                 1.2 | -3.5               | Morgan State             | 54%              |                -1.2 |
+|         0 | Howard                 | 61%              |                -3.2 | -4.5               | South Carolina State     | 39%              |                 3.2 |
+|         0 | Incarnate Word         | 27%              |                 6.8 | 6.5                | Lamar                    | 73%              |                -6.8 |
+|         0 | Houston Christian      | 14%              |                12.9 | 10.5               | Texas A&M-Corpus Christi | 86%              |               -12.9 |
+|         0 | Texas Southern         | 27%              |                 7   | 1.5                | Grambling                | 73%              |                -7   |
+|         0 | Alabama A&M            | 52%              |                -0.5 | -8.5               | Mississippi Valley State | 48%              |                 0.5 |
+|         0 | Alabama State          | 49%              |                 0.2 | -1.5               | Arkansas-Pine Bluff      | 51%              |                -0.2 |
+|         0 | Prairie View           | 27%              |                 7   | 5.5                | Southern                 | 73%              |                -7   |
+|         0 | Southeastern Louisiana | 37%              |                 3.8 | NL                 | Nicholls State           | 63%              |                -3.8 |
