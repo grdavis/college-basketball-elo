@@ -8,6 +8,7 @@ from plotly.subplots import make_subplots
 from sklearn.metrics import r2_score
 from scipy.stats import linregress
 import pandas as pd
+from datetime import datetime
 from predictions import predict_tournament, ROUNDS, predict_game
 import math
 
@@ -213,6 +214,67 @@ def get_breakeven(x_vals, y_vals):
 	for x, y in zip(x_vals, y_vals):
 		if y > .52381: return x
 
+def convert_spread_to_winnings_mult(spread):
+	'''
+	What is the relationship between a vegas spread and the ml? 
+	Use https://oddsjam.com/betting-calculators/point-spread for exact estimates between -6.5 and 6.5
+	Fit an exponential function to 2-13.5 and -6.5--13.5 to predict the rest of the relationships
+
+	Then what is the profit earned if you won with that ML?
+	- when ML > 0, p = ml/100
+	- when ML < 0, p = -100/ml
+	'''
+	sp_map = {-6.5: -288, -6: -264, -5.5: -235, -5: -212, -4.5: -191, -4: -180, -3.5: -168, -3: -155, -2.5: -140, -2: -134, -1.5: -127, -1: -118, -0.5: -114, 0: -110,
+				6.5: 215, 6: 197, 5.5: 183, 5: 171, 4.5: 160, 4: 148, 3.5: 136, 3: 129, 2.5: 119, 2: 111, 1.5: 106, 1: 100, 0.5: -106}
+	if spread in sp_map:
+		ml = sp_map[spread]
+		return ml / 100 if ml > 0 else -100 / ml
+	elif spread <= -1:
+		ml = 67.154 * math.exp(-.2105 * spread)
+		return 100 / ml
+	elif spread >= 1:
+		ml = 77.055 * math.exp(.1623 * spread)
+		return ml / 100
+
+def create_predictions_csv_for_export(explore, exclude_nls = True):
+	save_rows = []
+	for row in explore.spread_tracker:
+		if exclude_nls and row[2] == 'NL': 
+			continue #we don't have a historical spread, so ignore
+
+		away_score, home_score, away_veg_spread, away_elo_spread = map(float, row[:4])
+		away_winp = elo.winp(away_elo_spread * elo.ELO_TO_POINTS_FACTOR)
+		home_winp = 1 - away_winp
+		home_profit = convert_spread_to_winnings_mult(-away_veg_spread)
+		away_profit = convert_spread_to_winnings_mult(away_veg_spread)
+		if away_elo_spread == away_veg_spread:
+			spread_pred = 'N/A'
+		elif away_veg_spread - away_elo_spread > 0:
+			spread_pred = 'Away'
+		elif away_elo_spread - away_veg_spread > 0:
+			spread_pred = 'Home'
+
+		adjusted_score_away = away_score + away_veg_spread
+		if adjusted_score_away == home_score:
+			spread_outcome = 'N/A'
+		elif adjusted_score_away > home_score:
+			spread_outcome = 'Away'
+		elif adjusted_score_away < home_score:
+			spread_outcome = 'Home'
+
+		if home_winp == away_winp:
+			ml_pred = 'N/A'
+		elif home_winp > away_winp:
+			ml_pred = 'Home'
+		elif home_winp < away_winp:
+			ml_pred = 'Away'
+
+		ml_outcome = 'Home' if home_score > away_score else 'Away'
+
+		save_rows.append([away_score, away_elo_spread, away_veg_spread, away_winp, away_profit, home_score, home_winp, home_profit, spread_pred, spread_outcome, ml_pred, ml_outcome])
+
+	utils.save_data(utils.DATA_FOLDER + 'all_preds_through_' + explore.date + '_as_of_'+ datetime.now().date().strftime('%Y%m%d') + '.csv', save_rows)
+
 def spread_evaluation(explore, exclusion_threshold = 25, accuracy_cap = 1000, by_month = None, plot = True):
 	'''
 	The exclusion_threshold does not count games where the difference between the elo and vegas spreads is greater than
@@ -356,6 +418,7 @@ def graphing(data):
 	# spread_evaluation(explore, exclusion_threshold = 25, accuracy_cap = 325, by_month = '01')
 	# spread_evaluation(explore, exclusion_threshold = 25, accuracy_cap = 325, by_month = '02')
 	# spread_evaluation(explore, exclusion_threshold = 25, accuracy_cap = 325, by_month = '03')
+	# create_predictions_csv_for_export(explore)
 
 ###########################TUNING############################
 def tuning(data, target = 'error1', graphs = True, verbose = False, tune_style_random = False, random_iterations = 50):

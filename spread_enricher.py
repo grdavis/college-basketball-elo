@@ -8,7 +8,7 @@ from scraper import scrape_scores
 
 def scrape_live_odds():
 	'''
-	This function scrapes and returns the current spreads for college basketball games posted on Scores and Odds
+	This function scrapes and returns the current spreads for college basketball games posted on Scores and Odds.
 	DraftKings was the original source, but they altered their page to make it more difficult than needed
 	'''
 	url = "https://www.scoresandodds.com/ncaab"
