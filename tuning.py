@@ -30,8 +30,9 @@ class Tuning_ELO_Sim(elo.ELO_Sim):
 		self.MoV_tracker = {}
 		self.error1 = []
 		self.error2 = []
+		self.home_adv_tracker = [] #tuple of (neutral flag, home team elo, predicted home team scoring margin, home team scoring margin)
 
-	def update_errors(self, w_winp, for_spread_tracker):
+	def update_errors(self, w_winp, for_spread_tracker, for_home_tracker):
 		if self.season_count >= ERRORS_START:
 			rounded, roundedL = round(w_winp, 2), round(1 - w_winp, 2)
 			self.error1.append((1 - w_winp)**2)
@@ -41,6 +42,7 @@ class Tuning_ELO_Sim(elo.ELO_Sim):
 			self.predict_tracker[roundedL] = self.predict_tracker.get(roundedL, 0) + 1
 			self.spread_tracker.append((for_spread_tracker['away_score'], for_spread_tracker['home_score'],
 				for_spread_tracker['veg_away_spread'], for_spread_tracker['away_elo_spread'], self.date))
+			self.home_adv_tracker.append(for_home_tracker)
 
 	def update_MoVs(self, elo_margin, MoV):
 		if self.season_count >= ERRORS_START:
@@ -73,11 +75,12 @@ def tuning_sim(data, k_factor, new_season_carry, home_elo, new_team_elo):
 		#make predictions for row
 		is_neutral = True if row[0] == 1 else False
 		winner, prob, home_spread = predict_game(this_sim, row[3], row[1], pick_mode = 1, neutral = is_neutral)
+		for_home_tracker = (is_neutral, this_sim.get_elo(row[3]), home_spread, int(row[4]) - int(row[2]))
 		for_spread_tracker = {'away_score': row[2], 'home_score': row[4], 'veg_away_spread': row[6], 'away_elo_spread': -home_spread}
 
 		#elo and error updates
 		elo_margin, MoV = elo.step_elo(this_sim, row, k_factor, home_elo)
-		this_sim.update_errors(elo.winp(elo_margin), for_spread_tracker)
+		this_sim.update_errors(elo.winp(elo_margin), for_spread_tracker, for_home_tracker)
 		this_sim.update_MoVs(elo_margin, MoV)
 	
 	return this_sim
@@ -205,6 +208,30 @@ def latest_dist(explore):
 		yaxis_title = 'Number of Teams', xaxis_range = [1000, x_vals[-1]+1], yaxis_range = [0, 20])
 	fig.show()
 
+#####################HOME ADVANTAGE##############################
+def home_pred_vs_actual_by_elo(explore):
+	'''
+	With this exploration we found that our flat-rate home court advantage does not work well for all games.
+	For home teams in the (1600, 2000) elo range, the current advantage is pretty good (82 elo points on 1/21/24).
+	Below 1600, home teams should get a bit more of a boost (flat_home_adv + ((-75/550)*home_elo) + 218)
+	Above 2000, home teams should have their boost reduced (flat_home_adv + ((-125/200)*home_elo) + 1250)
+	'''
+	bucketing = {}
+	bucket_size = 20
+	for game in explore.home_adv_tracker:
+		neutral, home_elo, home_pred_spread, home_margin = game
+		if neutral == 1: continue
+		rounded = round(home_elo / bucket_size) * bucket_size
+		#note that home_pred_spread is a "spread" so it is negative when a team is favored - thus, we add it here to get the difference
+		bucketing[rounded] = bucketing.get(rounded, []) + [home_margin + home_pred_spread] 
+
+	x_vals = [i for i in range(min(bucketing), max(bucketing) + 1, bucket_size)]
+	y_vals = [sum(bucketing.get(i, [])) / len(bucketing.get(i, [])) for i in x_vals]
+	fig = go.Figure([go.Bar(x = x_vals, y = y_vals, text = [len(bucketing.get(i, [])) for i in x_vals])])
+	fig.update_layout(title_text = 'Home Winning Margin Predictions Versus Actuals by ELO Bucket', xaxis_title = 'Elo Rating', 
+		yaxis_title = 'Average Difference between Actual Winning Margin and Predicted Winning Margin', xaxis_range = [1000, x_vals[-1]+1], yaxis_range = [-10, 10])
+	fig.show()
+
 ##################SPREAD EVALUATION##############################
 def get_breakeven(x_vals, y_vals):
 	'''
@@ -236,9 +263,10 @@ def convert_spread_to_winnings_mult(spread):
 		ml = 77.055 * math.exp(.1623 * spread)
 		return ml / 100
 
-def create_predictions_csv_for_export(explore, exclude_nls = True):
+def csv_for_export(explore, exclude_nls = True, num_latest_games = None):
 	save_rows = []
-	for row in explore.spread_tracker:
+	stop_index = len(explore.spread_tracker) if num_latest_games == None else num_latest_games
+	for row in explore.spread_tracker[-num_latest_games:]:
 		if exclude_nls and row[2] == 'NL': 
 			continue #we don't have a historical spread, so ignore
 
@@ -273,7 +301,7 @@ def create_predictions_csv_for_export(explore, exclude_nls = True):
 
 		save_rows.append([away_score, away_elo_spread, away_veg_spread, away_winp, away_profit, home_score, home_winp, home_profit, spread_pred, spread_outcome, ml_pred, ml_outcome])
 
-	utils.save_data(utils.DATA_FOLDER + 'all_preds_through_' + explore.date + '_as_of_'+ datetime.now().date().strftime('%Y%m%d') + '.csv', save_rows)
+	utils.save_data(utils.DATA_FOLDER + 'preds_through_' + explore.date + '_as_of_'+ datetime.now().date().strftime('%Y%m%d') + '.csv', save_rows)
 
 def spread_evaluation(explore, exclusion_threshold = 25, accuracy_cap = 1000, by_month = None, plot = True):
 	'''
@@ -411,6 +439,7 @@ def graphing(data):
 	# elo_season_over_season(explore)
 	# latest_dist(explore)
 	# historical_brackets(explore)
+	# home_pred_vs_actual_by_elo(explore)
 	# eval_spread_over_season(explore, exclusion_threshold = 25, accuracy_cap = 325)
 	# spread_evaluation(explore, exclusion_threshold = 25, accuracy_cap = 325)
 	# spread_evaluation(explore, exclusion_threshold = 25, accuracy_cap = 325, by_month = '11')
@@ -418,7 +447,7 @@ def graphing(data):
 	# spread_evaluation(explore, exclusion_threshold = 25, accuracy_cap = 325, by_month = '01')
 	# spread_evaluation(explore, exclusion_threshold = 25, accuracy_cap = 325, by_month = '02')
 	# spread_evaluation(explore, exclusion_threshold = 25, accuracy_cap = 325, by_month = '03')
-	# create_predictions_csv_for_export(explore)
+	csv_for_export(explore, num_latest_games = 20000)
 
 ###########################TUNING############################
 def tuning(data, target = 'error1', graphs = True, verbose = False, tune_style_random = False, random_iterations = 50):
@@ -430,12 +459,9 @@ def tuning(data, target = 'error1', graphs = True, verbose = False, tune_style_r
 	# This prints out the slope of the relationship between elo differences and margins of victory. Take 1/slope and set 
 	# ELO_TO_POINTS_FACTOR equal to -(1/slope)
 
-	# start measuring after season 3 (start fall 2013), errors as of games through 11/17/2023
-	# hybrid (active):	(error1 = 0.16893, error2 = 0.50379, k_factor = 47, carryover = .64, home_elo = 82, new_team = 985), 24.78
-	# e1 (brier score):	(error1 = 0.16892, error2 = 0.50393, k_factor = 46, carryover = .64, home_elo = 81, new_team = 1000), 24.35
-	# e2 (log loss):	(error1 = 0.16896, error2 = 0.50373, k_factor = 47, carryover = .65, home_elo = 84, new_team = 970), 25.18
+	# start measuring after season 3 (start fall 2013), errors as of games through 1/20/2024
+	# hybrid (active):	(error1 = 0.16879, error2 = 0.50355, k_factor = 47, carryover = .64, home_elo = 82, new_team = 985), 24.78
 	
-
 	# take the output of tuning and plot the errors over each of the variables
 	mapping = {'error1': 0, 'error2': 1}
 	for i in [2, 3, 4, 5]:
@@ -456,4 +482,4 @@ if __name__ == '__main__':
 	graphing(data)
 
 	#start with random_tune, then switch to brute_tune when the ranges for values are tight enough so as not to take too long to run
-	# tuning(data, target = 'error1', graphs = True, verbose = True, tune_style_random = False, random_iterations = 50)
+	# tuning(data, target = 'error1', graphs = False, verbose = True, tune_style_random = False, random_iterations = 50)

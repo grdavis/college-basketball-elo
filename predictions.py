@@ -20,6 +20,20 @@ def matchups_from_list(team_list):
 			ret_list.append([team_list[i], team_list[i + 1]])
 	return ret_list
 
+def add_home_advantage(home_elo):
+	'''
+	In the tuning process, we found that the flat home advantage of about 3.3 points (80 elo points) works for the majority of games
+	However, when the home team's ELO is outside of the (1600, 2000) range, a pattern of inaccuracy emerges.
+	We attempt to correct for that pattern in this function. Essentially, below 1600, home teams should get more of a boost
+	while above 2000, home teams should have their boost reduced.
+	'''
+	if home_elo < 1600:
+		return (elo.HOME_ADVANTAGE + ((-75/550)*home_elo) + 218)
+	elif home_elo > 2000:
+		return (elo.HOME_ADVANTAGE + ((-125/200)*home_elo) + 1250)
+	else:
+		return elo.HOME_ADVANTAGE
+
 def predict_game(elo_state, home, away, pick_mode = False, neutral = False, verbose = False):
 	'''
 	uses the specified elo_state to predict the outcome of a game between home and away
@@ -27,8 +41,10 @@ def predict_game(elo_state, home, away, pick_mode = False, neutral = False, verb
 	neutral: specifies if the game is played at a neutral site
 	returns a winner (either home or away), their win probability, and the home team's predicted spread
 	'''
-	home_boost = elo.HOME_ADVANTAGE if not neutral else 0
-	home_elo = elo_state.get_elo(home) + home_boost
+	
+	home_elo = elo_state.get_elo(home)
+	home_boost = add_home_advantage(home_elo) if not neutral else 0
+	home_elo += home_boost
 	away_elo = elo_state.get_elo(away)
 	winp_home = elo.winp(home_elo - away_elo)
 	home_spread = round((home_elo - away_elo)/elo.ELO_TO_POINTS_FACTOR, 1)
