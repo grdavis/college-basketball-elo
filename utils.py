@@ -86,7 +86,7 @@ def clean_up_old_outputs_and_data():
 	sorted_files = sorted(elligible_data, key = lambda x: x[:8], reverse = True)
 	remove_files([OUTPUTS_FOLDER + f for f in sorted_files], 3)
 
-def save_markdown_df(df, date_str):
+def save_markdown_df(predictions, top_50, date_str):
 	'''
 	Takes in a dataframe, converts it to markdown, and saves it in the docs folder for GitHub pages to find
 	'''
@@ -94,7 +94,10 @@ def save_markdown_df(df, date_str):
 		md.write(f'# NCAAM ELO Game Predictions for {date_str} - @grdavis\n')
 		md.write("Below are predictions for today's Men's college basketball games using an ELO rating methodology. Check out the full [college-basketball-elo](https://github.com/grdavis/college-basketball-elo) repository on github to see methodology and more.\n")
 		md.write("Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new to the model (i.e. they haven't played any/many D1 games) and predictions are more uncertain.\n\n")
-		df.to_markdown(buf = md, index = False)
+		predictions.to_markdown(buf = md, index = False)
+		md.write('\n\n')
+		md.write('# Top 50 Teams by ELO Rating')
+		top_50.to_markdown(buf = md, index = False)
 
 def table_output(df, table_title, order = None):
 	'''

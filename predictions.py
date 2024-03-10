@@ -136,7 +136,9 @@ def predict_next_day(elo_state, forecast_date, auto):
 	utils.table_output(output, forecast_date.strftime('%Y%m%d') + ' Game Predictions Based on Ratings through ' + elo_state.date + spreads_string)
 	
 	#if running via github actions, save the predictions output in markdown where github pages can find it
-	if auto: utils.save_markdown_df(output, forecast_date.strftime('%Y-%m-%d'))
+	if auto:
+		new_top_50 = pd.DataFrame(elo_state.get_top(50), columns = ['Team', 'Elo Rating', '7 Day Change']) 
+		utils.save_markdown_df(predictions = output, top_50 = new_top_50, forecast_date.strftime('%Y-%m-%d'))
 
 def main(auto = False, forecast_date = False, matchup = False, neutral = False, sim_mode = False, stop_short = '99999999', bracket = False, pick_mode = 0):
 	'''
