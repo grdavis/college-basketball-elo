@@ -91,9 +91,9 @@ def save_markdown_df(df, date_str):
 	Takes in a dataframe, converts it to markdown, and saves it in the docs folder for GitHub pages to find
 	'''
 	with open(f"{DOCS_FOLDER}/index.md", 'w') as md:
-		md.write(f'# {date_str} Game Predictions\n')
-		md.write('Teams with * or those written as abbreviations (e.g. BREC) are not D1 programs and predictions are more uncertain. ')
-		md.write('Check out [the full repository](https://github.com/grdavis/college-basketball-elo) for methodology and more\n\n')
+		md.write(f'# NCAAM ELO Game Predictions for {date_str} - @grdavis\n')
+		md.write("Below are predictions for today's Men's college basketball games using an ELO rating methodology. Check out the full [college-basketball-elo](https://github.com/grdavis/college-basketball-elo) repository on github to see methodology and more.\n")
+		md.write("Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new to the model (i.e. they haven't played any/many D1 games) and predictions are more uncertain.\n\n")
 		df.to_markdown(buf = md, index = False)
 
 def table_output(df, table_title, order = None):

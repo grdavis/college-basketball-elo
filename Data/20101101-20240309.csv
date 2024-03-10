@@ -80842,7 +80842,7 @@
 0,Binghamton,64,New Hampshire,77,20240309, +5.5 
 0,Middle Tennessee,70,Louisiana Tech,84,20240309, +12.5 
 0,Jacksonville State,73,Sam Houston State,81,20240309, +6.5 
-0,Louisiana,62,Arkansas State,89,20240309, +3.5 
+1,Louisiana,62,Arkansas State,89,20240309, +3.5 
 0,Utah Tech,71,Stephen F. Austin,84,20240309, +10.5 
 0,UMBC,89,UMass-Lowell,94,20240309, +7.5 
 0,South Florida,70,Tulsa,76,20240309, -5.5 
@@ -80869,7 +80869,7 @@
 0,Colorado,73,Oregon State,57,20240309, -8.5 
 0,UCF,79,TCU,77,20240309, +7.5 
 0,Boston College,67,Louisville,61,20240309, -4.5 
-0,Texas State,74,Troy,68,20240309, +5.5 
+1,Texas State,74,Troy,68,20240309, +5.5 
 0,Clemson,76,Wake Forest,81,20240309, +3.5 
 0,Baylor,68,Texas Tech,78,20240309, +2.5 
 0,UC-Davis,88,Long Beach State,78,20240309, +2.5 
@@ -80901,9 +80901,9 @@
 0,Oklahoma State,71,BYU,85,20240309, +13.5 
 0,UC-Irvine,81,Cal State Fullerton,71,20240309, -9.5 
 0,Minnesota,66,Northwestern,90,20240309, +4.5 
-0,Denver,61,Kansas City,60,20240309, +5.5 
+1,Denver,61,Kansas City,60,20240309, +5.5 
 0,Arizona,65,USC,78,20240309, -8.5 
-0,Idaho State,68,Northern Arizona,60,20240309, -4.5 
+1,Idaho State,68,Northern Arizona,60,20240309, -4.5 
 0,UC-Riverside,81,UCSB,64,20240309, +4.5 
 1,San Diego,79,Santa Clara,104,20240309, +11.5 
 0,UNLV,65,Nevada,75,20240309, +5.5 
