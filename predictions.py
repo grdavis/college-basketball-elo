@@ -41,6 +41,10 @@ def predict_game(elo_state, home, away, pick_mode = False, neutral = False, verb
 	neutral: specifies if the game is played at a neutral site
 	returns a winner (either home or away), their win probability, and the home team's predicted spread
 	'''
+
+	#to account for conference tournaments where there are byes, the bracket will be formatted to have a team play itself
+	if home == away:
+		return home, "BYE", "N/A"
 	
 	home_elo = elo_state.get_elo(home)
 	home_boost = add_home_advantage(home_elo) if not neutral else 0
@@ -101,7 +105,7 @@ def sim_tournaments(elo_state, tournamant_teams, n, verbose = False, rounds = RO
 
 	if verbose:
 		formatted = [[team] + [round(i/n, 4) for i in sim_results[team]] for team in tournamant_teams]
-		output = pd.DataFrame(formatted, columns = ['team'] + rounds[1:]).sort_values(rounds[-1], ascending = False)
+		output = pd.DataFrame(formatted, columns = ['team'] + rounds[1:]).sort_values(rounds[-1], ascending = False).drop_duplicates()
 		utils.table_output(output, 'Tournament Predictions Based on Ratings through ' + elo_state.date + ' and ' + str(n) + ' Simulations')
 
 def predict_next_day(elo_state, forecast_date, auto):
@@ -138,7 +142,7 @@ def predict_next_day(elo_state, forecast_date, auto):
 	#if running via github actions, save the predictions output in markdown where github pages can find it
 	if auto:
 		new_top_50 = pd.DataFrame(elo_state.get_top(50), columns = ['Team', 'Elo Rating', '7 Day Change']) 
-		utils.save_markdown_df(predictions = output, top_50 = new_top_50, forecast_date.strftime('%Y-%m-%d'))
+		utils.save_markdown_df(output, new_top_50, forecast_date.strftime('%Y-%m-%d'))
 
 def main(auto = False, forecast_date = False, matchup = False, neutral = False, sim_mode = False, stop_short = '99999999', bracket = False, pick_mode = 0):
 	'''
