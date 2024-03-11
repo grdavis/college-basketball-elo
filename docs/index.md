@@ -1,5 +1,6 @@
 # NCAAM ELO Game Predictions for 2024-03-11 - @grdavis
 Below are predictions for today's Men's college basketball games using an ELO rating methodology. Check out the full [college-basketball-elo](https://github.com/grdavis/college-basketball-elo) repository on github to see methodology and more.
+
 Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new to the model (i.e. they haven't played any/many D1 games) and predictions are more uncertain.
 
 |   Neutral | Away               | Away Win Prob.   |   Away Pred. Spread | Live Away Spread   | Home                  | Home Win Prob.   |   Home Pred. Spread |
@@ -10,16 +11,17 @@ Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new 
 |         1 | St. Thomas         | 38%              |                 3.5 | 2.5                | South Dakota State    | 62%              |                -3.5 |
 |         1 | Arkansas State     | 31%              |                 5.7 | 5.5                | James Madison         | 69%              |                -5.7 |
 |         1 | ETSU               | 30%              |                 6.1 | NL                 | Samford               | 70%              |                -6.1 |
-|         0 | Montana State      | 25%              |                 7.6 | 7.5                | Weber State           | 75%              |                -7.6 |
+|         1 | Montana State      | 36%              |                 3.9 | 7.5                | Weber State           | 64%              |                -3.9 |
 |         1 | Stony Brook        | 31%              |                 5.5 | 7.5                | Hofstra               | 69%              |                -5.5 |
-|         0 | Texas A&M-Commerce | 16%              |                11.7 | 4.5                | Nicholls State        | 84%              |               -11.7 |
+|         1 | Texas A&M-Commerce | 26%              |                 7.5 | 4.5                | Nicholls State        | 74%              |                -7.5 |
 |         1 | Santa Clara        | 23%              |                 8.5 | 10.5               | Saint Mary's          | 77%              |                -8.5 |
-|         0 | Milwaukee          | 34%              |                 4.8 | 1.5                | Northern Kentucky     | 66%              |                -4.8 |
+|         1 | Milwaukee          | 46%              |                 1   | 1.5                | Northern Kentucky     | 54%              |                -1   |
 |         1 | Denver             | 43%              |                 1.9 | 1.5                | Omaha                 | 57%              |                -1.9 |
 |         1 | Portland State     | 29%              |                 6.4 | 6.5                | Montana               | 71%              |                -6.4 |
 |         1 | San Francisco      | 22%              |                 8.9 | 8.5                | Gonzaga               | 78%              |                -8.9 |
 
-# Top 50 Teams by ELO Rating| Team              |   Elo Rating |   7 Day Change |
+# Top 50 Teams by ELO Rating
+| Team              |   Elo Rating |   7 Day Change |
 |:------------------|-------------:|---------------:|
 | Houston           |         2078 |            +21 |
 | UConn             |         2075 |            +27 |
