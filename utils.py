@@ -92,11 +92,11 @@ def save_markdown_df(predictions, top_50, date_str):
 	'''
 	with open(f"{DOCS_FOLDER}/index.md", 'w') as md:
 		md.write(f'# NCAAM ELO Game Predictions for {date_str} - @grdavis\n')
-		md.write("Below are predictions for today's Men's college basketball games using an ELO rating methodology. Check out the full [college-basketball-elo](https://github.com/grdavis/college-basketball-elo) repository on github to see methodology and more.\n")
+		md.write("Below are predictions for today's Men's college basketball games using an ELO rating methodology. Check out the full [college-basketball-elo](https://github.com/grdavis/college-basketball-elo) repository on github to see methodology and more.\n\n")
 		md.write("Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new to the model (i.e. they haven't played any/many D1 games) and predictions are more uncertain.\n\n")
 		predictions.to_markdown(buf = md, index = False)
 		md.write('\n\n')
-		md.write('# Top 50 Teams by ELO Rating')
+		md.write('# Top 50 Teams by ELO Rating\n')
 		top_50.to_markdown(buf = md, index = False)
 
 def table_output(df, table_title, order = None):
