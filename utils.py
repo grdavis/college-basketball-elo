@@ -97,7 +97,8 @@ def save_markdown_df(predictions, top_50, date_str):
 		predictions.to_markdown(buf = md, index = False)
 		md.write('\n\n')
 		md.write('# Top 50 Teams by ELO Rating\n')
-		top_50.to_markdown(buf = md, index = False)
+		top_50.index = top_50.index + 1
+		top_50.to_markdown(buf = md, index = True)
 
 def table_output(df, table_title, order = None):
 	'''
