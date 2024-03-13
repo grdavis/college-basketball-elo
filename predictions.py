@@ -8,7 +8,7 @@ import datetime
 import spread_enricher
 
 DATA_FOLDER = utils.DATA_FOLDER
-ROUNDS = ['first', 'second', 'sixteen', 'eight', 'four', 'final', 'champion']
+ALL_ROUNDS = ['first', 'second', 'sixteen', 'eight', 'four', 'final', 'champion']
 
 def matchups_from_list(team_list):
 	'''
@@ -64,7 +64,7 @@ def predict_game(elo_state, home, away, pick_mode = False, neutral = False, verb
 
 	return winner, "{0:.0%}".format(winp_home) if winner == home else "{0:.0%}".format(1 - winp_home), home_spread
 
-def predict_tournament(elo_state, tournamant_teams, pick_mode = 0, verbose = False, rounds = ROUNDS):
+def predict_tournament(elo_state, tournamant_teams, pick_mode = 0, verbose = False, rounds = ALL_ROUNDS):
 	'''
 	uses the specified elo_state to simulate a single tournament for teams in tournament teams
 	pick_mode: 0 -> chooose winners probabilistically, 1 -> always choose the better team, 2 -> choose a random team
@@ -87,7 +87,7 @@ def predict_tournament(elo_state, tournamant_teams, pick_mode = 0, verbose = Fal
 
 	return results
 
-def sim_tournaments(elo_state, tournamant_teams, n, verbose = False, rounds = ROUNDS):
+def sim_tournaments(elo_state, tournamant_teams, n, verbose = False, rounds = ALL_ROUNDS):
 	'''
 	uses the specified elo_state to simulate a tournament (specified by tournament_teams) n times
 	each row in the output specifies the share of simulations in which a team made it to the corresponding round
@@ -144,7 +144,7 @@ def predict_next_day(elo_state, forecast_date, auto):
 		new_top_50 = pd.DataFrame(elo_state.get_top(50), columns = ['Team', 'Elo Rating', '7 Day Change']) 
 		utils.save_markdown_df(output, new_top_50, forecast_date.strftime('%Y-%m-%d'))
 
-def main(auto = False, forecast_date = False, matchup = False, neutral = False, sim_mode = False, stop_short = '99999999', bracket = False, pick_mode = 0):
+def main(auto = False, forecast_date = False, matchup = False, neutral = False, sim_mode = False, stop_short = '99999999', bracket = False, pick_mode = 0, bracket_round_start = 0):
 	'''
 	Retrieves an elo simulation through the specified 'stop_short' date then cascades through options:
 	1. if a 'matchup' of two teams is provided, print out predictions for that matchup - factoring in 
@@ -166,13 +166,13 @@ def main(auto = False, forecast_date = False, matchup = False, neutral = False, 
 		predict_game(elo_state, home, away, neutral = neutral, verbose = True)
 	elif sim_mode != False:
 		file, simulations = sim_mode
-		tournamant_teams = list(pd.read_csv(file).iloc[:,0].dropna()) #switch 0 to index of round of interest
+		tournamant_teams = list(pd.read_csv(file).iloc[:,bracket_round_start].dropna())
 		rounds = list(pd.read_csv(file).columns)
-		sim_tournaments(elo_state, tournamant_teams, n = int(simulations), verbose = True, rounds = rounds[0:]) #switch 0 to index of round of interest
+		sim_tournaments(elo_state, tournamant_teams, n = int(simulations), verbose = True, rounds = rounds[bracket_round_start:])
 	elif bracket != False:
-		tournamant_teams = list(pd.read_csv(bracket).iloc[:,0].dropna()) #switch 0 to index of round of interest
+		tournamant_teams = list(pd.read_csv(bracket).iloc[:,bracket_round_start].dropna())
 		rounds = list(pd.read_csv(bracket).columns)
-		predict_tournament(elo_state, tournamant_teams, pick_mode = pick_mode, verbose = True, rounds = rounds[0:]) #switch 0 to index of round of interest
+		predict_tournament(elo_state, tournamant_teams, pick_mode = pick_mode, verbose = True, rounds = rounds[bracket_round_start:])
 	else:
 		forecast_date = datetime.date.today() if forecast_date == False else datetime.datetime.strptime(forecast_date, "%Y%m%d")
 		forecast_date = forecast_date - datetime.timedelta(hours = 5) if auto else forecast_date
@@ -188,9 +188,11 @@ def parseArguments():
 	parser.add_argument('-d', '--dateSim', type = str, default = '99999999', help = 'Use if predicting games or tournament as of a date in the past. Enter date as YYYYMMDD (e.g. 20190315). Can be specified in any mode to get outputs as of the specified date')
 	parser.add_argument('-P', '--PredictBracket', default = False, type = str, help = "Use to predict results of a tournament (i.e. generate a single bracket). Enter the filename storing the tournament participants in the first column. Use the -m flag to specify how each matchup should be decided. Don't forget to use -d if predicting this tournament as of a date in the past")
 	parser.add_argument('-m', '--mode', default = 0, choices = [0, 1, 2], type = int, help = "By default, the winner for each matchup in a tournament prediction is selected probabilistically (mode 0). Use 1 to have the model always pick the 'better' team according to Elo ratings. Use 2 to decide each matchup with a coinflip (random selection)")
+	parser.add_argument('-r', '--round', default = 0, type = int, help = "When using -P PredictBracket or -S SimMode, optionally specify which round of the tournament file to start making predictions from (e.g. 0 = predict advancements from the 0th column onwards in the tournament file)")
 	parser.add_argument('-A', '--auto', action = 'store_true', help = 'Used only by github actions to account for the time difference on the virtual machine')
 	return parser.parse_args()
 
 if __name__ == '__main__':
 	args = parseArguments()
-	main(auto = args.auto, forecast_date = args.ForecastDate, matchup = args.GamePredictor, neutral = args.neutral, sim_mode = args.SimMode, stop_short = args.dateSim, bracket = args.PredictBracket, pick_mode = args.mode)
+	main(auto = args.auto, forecast_date = args.ForecastDate, matchup = args.GamePredictor, neutral = args.neutral, sim_mode = args.SimMode, 
+		stop_short = args.dateSim, bracket = args.PredictBracket, pick_mode = args.mode, bracket_round_start = args.round)
