@@ -13,15 +13,15 @@ Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new 
 |         1 | Fresno State           | 28%              |                 6.7 | 6.5                | Wyoming                | 72%              |                -6.7 |
 |         1 | Notre Dame             | 31%              |                 5.7 | 9.5                | Wake Forest            | 69%              |                -5.7 |
 |         1 | Oklahoma               | 49%              |                 0.3 | 3.5                | TCU                    | 51%              |                -0.3 |
-|         0 | UTSA                   | 31%              |                 5.8 | 0.5                | Temple                 | 69%              |                -5.8 |
+|         1 | UTSA                   | 44%              |                 1.6 | 0.5                | Temple                 | 56%              |                -1.6 |
 |         1 | USC                    | 49%              |                 0.3 | -3.5               | Washington             | 51%              |                -0.3 |
-|         0 | Alabama A&M            | 17%              |                10.9 | 3.5                | Alcorn State           | 83%              |               -10.9 |
+|         1 | Alabama A&M            | 28%              |                 6.5 | 3.5                | Alcorn State           | 72%              |                -6.5 |
 |         1 | Xavier                 | 53%              |                -0.9 | -1.5               | Butler                 | 47%              |                 0.9 |
 |         1 | San Jose State         | 10%              |                15.1 | 14.5               | Colorado State         | 90%              |               -15.1 |
 |         1 | La Salle               | 39%              |                 3.1 | 7.5                | St. Bonaventure        | 61%              |                -3.1 |
 |         0 | Nicholls State         | 21%              |                 9.5 | 16.5               | McNeese State          | 79%              |                -9.5 |
-|         1 | Oregon State           | 33%              |                 5   | 6.5                | UCLA                   | 67%              |                -5   |
-|         0 | Coppin State           | 6%               |                19.3 | 13.5               | Norfolk State          | 94%              |               -19.3 |
+|         1 | Oregon State           | 33%              |                 5   | 5.5                | UCLA                   | 67%              |                -5   |
+|         1 | Coppin State           | 10%              |                15.2 | 13.5               | Norfolk State          | 90%              |               -15.2 |
 |         1 | Georgetown             | 15%              |                12   | 9.5                | Providence             | 85%              |               -12   |
 |         1 | Rutgers                | 40%              |                 2.9 | 3.5                | Maryland               | 60%              |                -2.9 |
 |         1 | Canisius               | 32%              |                 5.1 | 6.5                | Quinnipiac             | 68%              |                -5.1 |
@@ -33,16 +33,16 @@ Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new 
 |         0 | Lehigh                 | 20%              |                 9.7 | 8.5                | Colgate                | 80%              |                -9.7 |
 |         1 | Saint Louis            | 27%              |                 7   | 8.5                | Duquesne               | 73%              |                -7   |
 |         1 | Maryland-Eastern Shore | 27%              |                 7   | 9.5                | North Carolina Central | 73%              |                -7   |
-|         0 | Michigan               | 17%              |                11   | 6.5                | Penn State             | 83%              |               -11   |
+|         1 | Michigan               | 25%              |                 7.7 | 6.5                | Penn State             | 75%              |                -7.7 |
 |         1 | Stanford               | 54%              |                -1   | -1.5               | California             | 46%              |                 1   |
 |         1 | DePaul                 | 7%               |                18.4 | 22.5               | Villanova              | 93%              |               -18.4 |
 |         1 | Iona                   | 30%              |                 6.1 | 5.5                | Fairfield              | 70%              |                -6.1 |
 |         1 | Middle Tennessee       | 22%              |                 9   | 8.5                | Louisiana Tech         | 78%              |                -9   |
-|         0 | California Baptist     | 20%              |                 9.6 | 5.5                | Utah Valley            | 80%              |                -9.6 |
+|         1 | California Baptist     | 29%              |                 6.3 | 5.5                | Utah Valley            | 71%              |                -6.3 |
 |         1 | Cal State Bakersfield  | 40%              |                 3   | 1.5                | UC-Riverside           | 60%              |                -3   |
 |         1 | Boston College         | 36%              |                 4.1 | 6.5                | Clemson                | 64%              |                -4.1 |
 |         1 | Cincinnati             | 35%              |                 4.5 | -2.5               | Kansas                 | 65%              |                -4.5 |
-|         1 | Missouri               | 30%              |                 6.1 | 3.5                | Georgia                | 70%              |                -6.1 |
+|         1 | Missouri               | 30%              |                 6.1 | 2.5                | Georgia                | 70%              |                -6.1 |
 |         1 | Alabama State          | 26%              |                 7.2 | 1.5                | Grambling              | 74%              |                -7.2 |
 |         1 | Arizona State          | 42%              |                 2.3 | 5.5                | Utah                   | 58%              |                -2.3 |
 |         1 | Abilene Christian      | 48%              |                 0.6 | 3.5                | Stephen F. Austin      | 52%              |                -0.6 |
