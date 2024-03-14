@@ -5,8 +5,8 @@ Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new 
 
 |   Neutral | Away                 | Away Win Prob.   |   Away Pred. Spread | Live Away Spread   | Home                 | Home Win Prob.   |   Home Pred. Spread |
 |----------:|:---------------------|:-----------------|--------------------:|:-------------------|:---------------------|:-----------------|--------------------:|
-|         0 | Kent State           | 21%              |                 9.3 | 4.5                | Toledo               | 79%              |                -9.3 |
-|         1 | St. Joseph's         | 41%              |                 2.5 | 3.5                | Richmond             | 59%              |                -2.5 |
+|         1 | Kent State           | 30%              |                 6   | 4.5                | Toledo               | 70%              |                -6   |
+|         1 | St. Joseph's         | 41%              |                 2.5 | 2.5                | Richmond             | 59%              |                -2.5 |
 |         1 | Florida State        | 17%              |                11.1 | 10.5               | UNC                  | 83%              |               -11.1 |
 |         1 | Minnesota            | 32%              |                 5.4 | 6.5                | Michigan State       | 68%              |                -5.4 |
 |         1 | Xavier               | 13%              |                13.3 | NL                 | UConn                | 87%              |               -13.3 |
@@ -21,7 +21,7 @@ Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new 
 |         1 | Wichita State        | 20%              |                 9.5 | 8.5                | Memphis              | 80%              |                -9.5 |
 |         1 | TCU                  | 19%              |                10.1 | 10.5               | Houston              | 81%              |               -10.1 |
 |         1 | USC                  | 27%              |                 7.1 | 8.5                | Arizona              | 73%              |                -7.1 |
-|         0 | Fresno State         | 7%               |                18.1 | 12.5               | Utah State           | 93%              |               -18.1 |
+|         1 | Fresno State         | 11%              |                14.7 | 12.5               | Utah State           | 89%              |               -14.7 |
 |         1 | Jackson State        | 43%              |                 2   | 2.5                | Texas Southern       | 57%              |                -2   |
 |         1 | Arkansas             | 24%              |                 7.9 | 5.5                | South Carolina       | 76%              |                -7.9 |
 |         1 | Miami (OH)           | 28%              |                 6.6 | 8.5                | Akron                | 72%              |                -6.6 |
@@ -30,12 +30,12 @@ Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new 
 |         0 | San Diego State      | 54%              |                -1.2 | -4.5               | UNLV                 | 46%              |                 1.2 |
 |         1 | Morgan State         | 35%              |                 4.4 | 4.5                | Howard               | 65%              |                -4.4 |
 |         1 | Western Michigan     | 21%              |                 9.1 | 9.5                | Ohio                 | 79%              |                -9.1 |
-|         0 | Ohio State           | 40%              |                 2.7 | -1.5               | Iowa                 | 60%              |                -2.7 |
+|         1 | Ohio State           | 52%              |                -0.6 | -2.5               | Iowa                 | 48%              |                 0.6 |
 |         1 | Niagara              | 46%              |                 1.2 | 1.5                | Marist               | 54%              |                -1.2 |
 |         1 | UTEP                 | 53%              |                -1   | 3.5                | Liberty              | 47%              |                 1   |
 |         1 | NC State             | 23%              |                 8.3 | 10.5               | Duke                 | 77%              |                -8.3 |
 |         1 | Providence           | 24%              |                 8   | 8.5                | Creighton            | 76%              |                -8   |
-|         0 | Kansas State         | 23%              |                 8.4 | 7.5                | Iowa State           | 77%              |                -8.4 |
+|         1 | Kansas State         | 33%              |                 5.1 | 7.5                | Iowa State           | 67%              |                -5.1 |
 |         1 | Tulane               | 29%              |                 6.3 | 5.5                | North Texas          | 71%              |                -6.3 |
 |         1 | Ole Miss             | 28%              |                 6.6 | 4.5                | Texas A&M            | 72%              |                -6.6 |
 |         1 | Duquesne             | 34%              |                 4.7 | 6.5                | Dayton               | 66%              |                -4.7 |
@@ -54,7 +54,7 @@ Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new 
 |         1 | Georgia              | 23%              |                 8.7 | 7.5                | Florida              | 77%              |                -8.7 |
 |         1 | Bethune-Cookman      | 46%              |                 1.1 | 4                  | Southern             | 54%              |                -1.1 |
 |         1 | Utah                 | 35%              |                 4.4 | 3.5                | Colorado             | 65%              |                -4.4 |
-|         0 | New Mexico           | 33%              |                 5.1 | 1.5                | Boise State          | 67%              |                -5.1 |
+|         1 | New Mexico           | 44%              |                 1.8 | -1.5               | Boise State          | 56%              |                -1.8 |
 |         1 | Stephen F. Austin    | 34%              |                 4.8 | 1.5                | UT Arlington         | 66%              |                -4.8 |
 |         1 | UC-Riverside         | 58%              |                -2.2 | 3.5                | Long Beach State     | 42%              |                 2.2 |
 
