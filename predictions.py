@@ -104,7 +104,8 @@ def sim_tournaments(elo_state, tournamant_teams, n, verbose = False, rounds = AL
 				sim_results[team[0]][r-1] += 1
 
 	if verbose:
-		formatted = [[team] + [round(i/n, 4) for i in sim_results[team]] for team in tournamant_teams]
+		current_rankings = elo_state.get_rankings_dict()
+		formatted = [[f'{team} (#{current_rankings[team]})'] + [round(i/n, 4) for i in sim_results[team]] for team in tournamant_teams]
 		output = pd.DataFrame(formatted, columns = ['team'] + rounds[1:]).sort_values(rounds[-1], ascending = False).drop_duplicates()
 		utils.table_output(output, 'Tournament Predictions Based on Ratings through ' + elo_state.date + ' and ' + str(n) + ' Simulations')
 

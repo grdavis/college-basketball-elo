@@ -84,6 +84,11 @@ class ELO_Sim():
 	def get_top(self, x):
 		return sorted([(self.teams[team].name, round(self.get_elo(team), 0), "{0:+.0f}".format(self.get_elo(team) - self.teams[team].snapshots[-1][-1])) for team in self.teams], key = lambda x: x[1], reverse = True)[:x]
 
+	def get_rankings_dict(self):
+		#returns a dictionary mapping each team to their position in the current ELO rankings
+		ordered_teams = self.get_top(len(self.teams))
+		return {ordered_teams[i][0]: i + 1 for i in range(len(ordered_teams))}
+
 def calc_MoV_multiplier(elo_margin, MoV):
 	'''
 	return the MoV multiplier based on the elo_margin and MoV
