@@ -1,15 +1,14 @@
-# NCAAM ELO Game Predictions for 2024-03-25 - @grdavis
+# NCAAM ELO Game Predictions for 2024-03-26 - @grdavis
 Below are predictions for today's Men's college basketball games using an ELO rating methodology. Check out the full [college-basketball-elo](https://github.com/grdavis/college-basketball-elo) repository on github to see methodology and more.
 
 Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new to the model (i.e. they haven't played any/many D1 games) and predictions are more uncertain.
 
-|   Neutral | Away              | Away Win Prob.   |   Away Pred. Spread |   Live Away Spread | Home            | Home Win Prob.   |   Home Pred. Spread |
-|----------:|:------------------|:-----------------|--------------------:|-------------------:|:----------------|:-----------------|--------------------:|
-|         1 | High Point        | 62%              |                -3.5 |               -4.5 | Cleveland State | 38%              |                 3.5 |
-|         1 | Arkansas State    | 59%              |                -2.6 |               -2.5 | Montana         | 41%              |                 2.6 |
-|         1 | Fairfield         | 79%              |                -9.4 |               -4.5 | Chicago State   | 21%              |                 9.4 |
-|         1 | Seattle           | 68%              |                -5.4 |               -7.5 | Evansville      | 32%              |                 5.4 |
-|         0 | Purdue-Fort Wayne | 21%              |                 9.1 |                5.5 | Tarleton State  | 79%              |                -9.1 |
+|   Neutral | Away           | Away Win Prob.   |   Away Pred. Spread |   Live Away Spread | Home          | Home Win Prob.   |   Home Pred. Spread |
+|----------:|:---------------|:-----------------|--------------------:|-------------------:|:--------------|:-----------------|--------------------:|
+|         0 | Georgia        | 19%              |                10.4 |                8.5 | Ohio State    | 81%              |               -10.4 |
+|         1 | Arkansas State | 53%              |                -0.9 |                2.5 | High Point    | 47%              |                 0.9 |
+|         0 | Cincinnati     | 47%              |                 0.9 |                3.5 | Indiana State | 53%              |                -0.9 |
+|         1 | Fairfield      | 47%              |                 0.9 |                6.5 | Seattle       | 53%              |                -0.9 |
 
 # Top 50 Teams by ELO Rating
 |    | Team              |   Elo Rating |   7 Day Change |
