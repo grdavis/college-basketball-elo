@@ -1,14 +1,14 @@
-# NCAAM ELO Game Predictions for 2024-03-27 - @grdavis
+# NCAAM ELO Game Predictions for 2024-03-28 - @grdavis
 Below are predictions for today's Men's college basketball games using an ELO rating methodology. Check out the full [college-basketball-elo](https://github.com/grdavis/college-basketball-elo) repository on github to see methodology and more.
 
 Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new to the model (i.e. they haven't played any/many D1 games) and predictions are more uncertain.
 
-|   Neutral | Away              | Away Win Prob.   |   Away Pred. Spread |   Live Away Spread | Home          | Home Win Prob.   |   Home Pred. Spread |
-|----------:|:------------------|:-----------------|--------------------:|-------------------:|:--------------|:-----------------|--------------------:|
-|         1 | High Point        | 50%              |                -0.1 |                1.5 | Seattle       | 50%              |                 0.1 |
-|         0 | UNLV              | 32%              |                 5.3 |                5.5 | Seton Hall    | 68%              |                -5.3 |
-|         0 | Purdue-Fort Wayne | 48%              |                 0.5 |               -1.5 | Norfolk State | 52%              |                -0.5 |
-|         0 | Utah              | 35%              |                 4.5 |               -7.5 | VCU           | 65%              |                -4.5 |
+|   Neutral | Away            | Away Win Prob.   |   Away Pred. Spread | Live Away Spread   | Home       | Home Win Prob.   |   Home Pred. Spread |
+|----------:|:----------------|:-----------------|--------------------:|:-------------------|:-----------|:-----------------|--------------------:|
+|         1 | Clemson         | 36%              |                 4   | 7.5                | Arizona    | 64%              |                -4   |
+|         1 | San Diego State | 20%              |                 9.6 | 11.5               | UConn      | 80%              |                -9.6 |
+|         1 | Alabama         | 39%              |                 3   | NL                 | UNC        | 61%              |                -3   |
+|         1 | Illinois        | 42%              |                 2.3 | 1.5                | Iowa State | 58%              |                -2.3 |
 
 # Top 50 Teams by ELO Rating
 |    | Team              |   Elo Rating |   7 Day Change |
@@ -38,7 +38,7 @@ Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new 
 | 23 | Texas Tech        |         1854 |            -35 |
 | 24 | Saint Mary's      |         1848 |            -30 |
 | 25 | Michigan State    |         1845 |            +12 |
-| 26 | Colorado          |         1845 |            +19 |
+| 26 | Colorado          |         1845 |             +3 |
 | 27 | Nebraska          |         1840 |            -34 |
 | 28 | Pitt              |         1839 |             +0 |
 | 29 | BYU               |         1836 |            -20 |
@@ -46,14 +46,14 @@ Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new 
 | 31 | Ohio State        |         1830 |            -16 |
 | 32 | Nevada            |         1830 |            -16 |
 | 33 | Wisconsin         |         1829 |            -32 |
-| 34 | Oregon            |         1819 |            +13 |
-| 35 | Kansas            |         1817 |            -20 |
-| 36 | Clemson           |         1815 |            +83 |
-| 37 | Utah State        |         1815 |            +11 |
-| 38 | Cincinnati        |         1813 |             +4 |
-| 39 | Mississippi State |         1812 |            -34 |
-| 40 | Washington State  |         1808 |             +7 |
-| 41 | Seton Hall        |         1801 |            +17 |
+| 34 | Seton Hall        |         1822 |            +34 |
+| 35 | Oregon            |         1819 |            +13 |
+| 36 | Kansas            |         1817 |            -20 |
+| 37 | Clemson           |         1815 |            +83 |
+| 38 | Utah State        |         1815 |            +11 |
+| 39 | Cincinnati        |         1813 |             +0 |
+| 40 | Mississippi State |         1812 |            -34 |
+| 41 | Washington State  |         1808 |             +7 |
 | 42 | South Carolina    |         1798 |            -30 |
 | 43 | Grand Canyon      |         1794 |            +11 |
 | 44 | New Mexico        |         1790 |            -53 |
