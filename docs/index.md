@@ -1,12 +1,11 @@
-# NCAAM ELO Game Predictions for 2024-04-02 - @grdavis
+# NCAAM ELO Game Predictions for 2024-04-04 - @grdavis
 Below are predictions for today's Men's college basketball games using an ELO rating methodology. Check out the full [college-basketball-elo](https://github.com/grdavis/college-basketball-elo) repository on github to see methodology and more.
 
 Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new to the model (i.e. they haven't played any/many D1 games) and predictions are more uncertain.
 
-|   Neutral | Away    | Away Win Prob.   |   Away Pred. Spread |   Live Away Spread | Home          | Home Win Prob.   |   Home Pred. Spread |
-|----------:|:--------|:-----------------|--------------------:|-------------------:|:--------------|:-----------------|--------------------:|
-|         1 | Utah    | 50%              |                -0   |                3.5 | Indiana State | 50%              |                 0   |
-|         1 | Georgia | 34%              |                 4.8 |                3.5 | Seton Hall    | 66%              |                -4.8 |
+|   Neutral | Away          | Away Win Prob.   |   Away Pred. Spread |   Live Away Spread | Home       | Home Win Prob.   |   Home Pred. Spread |
+|----------:|:--------------|:-----------------|--------------------:|-------------------:|:-----------|:-----------------|--------------------:|
+|         1 | Indiana State | 44%              |                 1.5 |               -2.5 | Seton Hall | 56%              |                -1.5 |
 
 # Top 50 Teams by ELO Rating
 |    | Team              |   Elo Rating |   7 Day Change |
@@ -37,27 +36,27 @@ Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new 
 | 24 | Saint Mary's      |         1848 |             +0 |
 | 25 | Michigan State    |         1845 |             +0 |
 | 26 | Colorado          |         1845 |             +0 |
-| 27 | Nebraska          |         1840 |             +0 |
-| 28 | Pitt              |         1839 |             +0 |
-| 29 | BYU               |         1836 |             +0 |
-| 30 | Northwestern      |         1831 |             +0 |
-| 31 | Ohio State        |         1830 |            -25 |
-| 32 | Nevada            |         1830 |             +0 |
-| 33 | Wisconsin         |         1829 |             +0 |
-| 34 | Clemson           |         1823 |             +8 |
-| 35 | Seton Hall        |         1822 |            +21 |
+| 27 | Seton Hall        |         1841 |            +40 |
+| 28 | Nebraska          |         1840 |             +0 |
+| 29 | Pitt              |         1839 |             +0 |
+| 30 | BYU               |         1836 |             +0 |
+| 31 | Northwestern      |         1831 |             +0 |
+| 32 | Ohio State        |         1830 |             +0 |
+| 33 | Nevada            |         1830 |             +0 |
+| 34 | Wisconsin         |         1829 |             +0 |
+| 35 | Clemson           |         1823 |             +8 |
 | 36 | Oregon            |         1819 |             +0 |
 | 37 | Kansas            |         1817 |             +0 |
 | 38 | Utah State        |         1815 |             +0 |
-| 39 | Cincinnati        |         1813 |            -13 |
+| 39 | Cincinnati        |         1813 |             +0 |
 | 40 | Mississippi State |         1812 |             +0 |
 | 41 | Washington State  |         1808 |             +0 |
-| 42 | South Carolina    |         1798 |             +0 |
-| 43 | Grand Canyon      |         1794 |             +0 |
-| 44 | New Mexico        |         1790 |             +0 |
-| 45 | Dayton            |         1789 |             +0 |
-| 46 | Colorado State    |         1788 |             +0 |
-| 47 | TCU               |         1787 |             +0 |
-| 48 | Oklahoma          |         1784 |             +0 |
-| 49 | Florida Atlantic  |         1783 |             +0 |
-| 50 | James Madison     |         1781 |             +0 |
+| 42 | Indiana State     |         1802 |            +23 |
+| 43 | South Carolina    |         1798 |             +0 |
+| 44 | Grand Canyon      |         1794 |             +0 |
+| 45 | New Mexico        |         1790 |             +0 |
+| 46 | Dayton            |         1789 |             +0 |
+| 47 | Colorado State    |         1788 |             +0 |
+| 48 | TCU               |         1787 |             +0 |
+| 49 | Oklahoma          |         1784 |             +0 |
+| 50 | Florida Atlantic  |         1783 |             +0 |
