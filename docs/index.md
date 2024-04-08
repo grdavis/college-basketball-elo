@@ -1,30 +1,29 @@
-# NCAAM ELO Game Predictions for 2024-04-06 - @grdavis
+# NCAAM ELO Game Predictions for 2024-04-08 - @grdavis
 Below are predictions for today's Men's college basketball games using an ELO rating methodology. Check out the full [college-basketball-elo](https://github.com/grdavis/college-basketball-elo) repository on github to see methodology and more.
 
 Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new to the model (i.e. they haven't played any/many D1 games) and predictions are more uncertain.
 
-|   Neutral | Away     | Away Win Prob.   |   Away Pred. Spread | Live Away Spread   | Home   | Home Win Prob.   |   Home Pred. Spread |
-|----------:|:---------|:-----------------|--------------------:|:-------------------|:-------|:-----------------|--------------------:|
-|         1 | NC State | 28%              |                 6.6 | 9.5                | Purdue | 72%              |                -6.6 |
-|         1 | Alabama  | 20%              |                 9.6 | NL                 | UConn  | 80%              |                -9.6 |
+|   Neutral | Away   | Away Win Prob.   |   Away Pred. Spread | Live Away Spread   | Home   | Home Win Prob.   |   Home Pred. Spread |
+|----------:|:-------|:-----------------|--------------------:|:-------------------|:-------|:-----------------|--------------------:|
+|         1 | Purdue | 41%              |                 2.7 | NL                 | UConn  | 59%              |                -2.7 |
 
 # Top 50 Teams by ELO Rating
 |    | Team              |   Elo Rating |   7 Day Change |
 |---:|:------------------|-------------:|---------------:|
-|  1 | UConn             |         2156 |            +24 |
-|  2 | Purdue            |         2086 |            +25 |
+|  1 | UConn             |         2165 |             +9 |
+|  2 | Purdue            |         2099 |            +23 |
 |  3 | Iowa State        |         2041 |             +0 |
-|  4 | Houston           |         2030 |            -18 |
-|  5 | Illinois          |         1991 |            -24 |
+|  4 | Houston           |         2030 |             +0 |
+|  5 | Illinois          |         1991 |             +0 |
 |  6 | Auburn            |         1974 |             +0 |
 |  7 | UNC               |         1950 |             +0 |
-|  8 | Tennessee         |         1941 |            +10 |
-|  9 | Duke              |         1935 |            -16 |
-| 10 | Creighton         |         1932 |            -21 |
-| 11 | Marquette         |         1924 |            -31 |
-| 12 | Gonzaga           |         1923 |            -15 |
-| 13 | NC State          |         1922 |            +65 |
-| 14 | Alabama           |         1919 |            +14 |
+|  8 | Tennessee         |         1941 |            -10 |
+|  9 | Duke              |         1935 |            -34 |
+| 10 | Creighton         |         1932 |             +0 |
+| 11 | Marquette         |         1924 |             +0 |
+| 12 | Gonzaga           |         1923 |             +0 |
+| 13 | Alabama           |         1910 |             -9 |
+| 14 | NC State          |         1909 |            +21 |
 | 15 | Arizona           |         1891 |             +0 |
 | 16 | Texas             |         1879 |             +0 |
 | 17 | St. John's (NY)   |         1879 |             +0 |
@@ -45,7 +44,7 @@ Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new 
 | 32 | Ohio State        |         1830 |             +0 |
 | 33 | Nevada            |         1830 |             +0 |
 | 34 | Wisconsin         |         1829 |             +0 |
-| 35 | Clemson           |         1823 |            -14 |
+| 35 | Clemson           |         1823 |             +0 |
 | 36 | Oregon            |         1819 |             +0 |
 | 37 | Kansas            |         1817 |             +0 |
 | 38 | Utah State        |         1815 |             +0 |
