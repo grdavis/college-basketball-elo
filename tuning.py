@@ -9,7 +9,7 @@ from sklearn.metrics import r2_score
 from scipy.stats import linregress
 import pandas as pd
 from datetime import datetime
-from predictions import predict_tournament, ROUNDS, predict_game
+from predictions import predict_tournament, ALL_ROUNDS, predict_game
 import math
 
 ERRORS_START = 3 #after how many seasons should we start tracking performance (3 = start with 2013 season = 10 full seasons of data 2013-2022)
@@ -399,11 +399,13 @@ def historical_brackets(explore):
 	scores = [10, 20, 40, 80, 160, 320] #ESPN scoring system for correct game in round
 	def evaluate_brackets(predictions, real_results):
 		predictions_score = 0
-		for index in range(len(ROUNDS)-1):
-			predictions_score += sum([scores[index] if predictions[ROUNDS[index+1]][i][0] == real_results[ROUNDS[index+1]][i] else 0 for i in range(len(predictions[ROUNDS[index+1]]))])
+		for index in range(len(ALL_ROUNDS)-1):
+			predictions_score += sum([scores[index] if predictions[ALL_ROUNDS[index+1]][i][0] == real_results[ALL_ROUNDS[index+1]][i] else 0 for i in range(len(predictions[ALL_ROUNDS[index+1]]))])
 		return predictions_score
 
-	for stop_date, tourney_filepath in [('20230315', 'tournament_results_2023.csv'),
+	#set the date as the day before the round of 64 begins
+	for stop_date, tourney_filepath in [('20230321', 'tournament_results_2024.csv'),
+										('20230315', 'tournament_results_2023.csv'),
 										('20220316', 'tournament_results_2022.csv'),
 										('20210317', 'tournament_results_2021.csv'), 
 										('20190320', 'tournament_results_2019.csv'), 
@@ -413,7 +415,7 @@ def historical_brackets(explore):
 		df = pd.read_csv(utils.DATA_FOLDER + tourney_filepath)
 		tournamant_teams = list(df['first'].dropna())
 		results = {'first': tournamant_teams}
-		for r in ROUNDS:
+		for r in ALL_ROUNDS:
 			results[r] = df[r].dropna().values
 		best_bracket = predict_tournament(elo_state, tournamant_teams, pick_mode = 1)
 		print(evaluate_brackets(best_bracket, results))
@@ -421,11 +423,12 @@ def historical_brackets(explore):
 	remaining = [32, 16, 8, 4, 2, 1]
 	print(sum([remaining[index]*scores[index]*(.5**(index + 1)) for index in range(6)]))
 
+	#2024: 690
 	#2023: 380
 	#2022: 450
 	#2021: 820
-	#2019: 1340
-	#2018: 890
+	#2019: 1220
+	#2018: 900
 	#2017: 650
 	#Random: 315
 
@@ -438,7 +441,7 @@ def graphing(data):
 	# elo_vs_MoV(explore)
 	# elo_season_over_season(explore)
 	# latest_dist(explore)
-	# historical_brackets(explore)
+	historical_brackets(explore)
 	# home_pred_vs_actual_by_elo(explore)
 	# eval_spread_over_season(explore, exclusion_threshold = 25, accuracy_cap = 325)
 	# spread_evaluation(explore, exclusion_threshold = 25, accuracy_cap = 325)
@@ -447,7 +450,7 @@ def graphing(data):
 	# spread_evaluation(explore, exclusion_threshold = 25, accuracy_cap = 325, by_month = '01')
 	# spread_evaluation(explore, exclusion_threshold = 25, accuracy_cap = 325, by_month = '02')
 	# spread_evaluation(explore, exclusion_threshold = 25, accuracy_cap = 325, by_month = '03')
-	csv_for_export(explore, num_latest_games = 20000)
+	# csv_for_export(explore, num_latest_games = 20000)
 
 ###########################TUNING############################
 def tuning(data, target = 'error1', graphs = True, verbose = False, tune_style_random = False, random_iterations = 50):
