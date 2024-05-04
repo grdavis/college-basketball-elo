@@ -88,7 +88,8 @@ def clean_up_old_outputs_and_data():
 
 def save_markdown_df(predictions, top_50, date_str):
 	'''
-	Takes in a dataframe, converts it to markdown, and saves it in the docs folder for GitHub pages to find
+	Takes in a predictions dataframe of today's predictions and a table with the top 50 team rankings
+	Converts tables to markdown, and saves them in the same file in the docs folder for GitHub pages to find
 	'''
 	with open(f"{DOCS_FOLDER}/index.md", 'w') as md:
 		md.write(f'# NCAAM ELO Game Predictions for {date_str} - @grdavis\n')
