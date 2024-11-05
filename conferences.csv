@@ -4,12 +4,13 @@ Central Arkansas,ASUN
 Eastern Kentucky,ASUN
 Florida Gulf Coast,ASUN
 Jacksonville,ASUN
-Kennesaw State,ASUN
+Kennesaw State,CUSA
 Lipscomb,ASUN
 North Alabama,ASUN
 North Florida,ASUN
 Queens (NC),ASUN
 Stetson,ASUN
+West Georgia,ASUN
 Akron,MAC
 Ball State,MAC
 Bowling Green State,MAC
@@ -68,7 +69,7 @@ Florida Atlantic,American
 Memphis,American
 North Texas,American
 Rice,American
-SMU,American
+SMU,ACC
 South Florida,American
 Temple,American
 Tulane,American
@@ -92,11 +93,13 @@ Saint Louis,A10
 UMass,A10
 VCU,A10
 Central Connecticut,Northeast
+Chicago State,Northeast
 Fairleigh Dickinson,Northeast
 Le Moyne,Northeast
 LIU,Northeast
+Mercyhurst,Northeast
 Merrimack,Northeast
-Sacred Heart,Northeast
+Sacred Heart,MAAC
 Saint Francis (PA),Northeast
 St. Francis (NY),Northeast
 Stonehill,Northeast
@@ -127,18 +130,18 @@ Tennessee State,Ohio Valley
 Tennessee Tech,Ohio Valley
 UT-Martin,Ohio Valley
 Western Illinois,Ohio Valley
-Arizona State,PAC12
-Arizona,PAC12
-California,PAC12
-Colorado,PAC12
-Oregon,PAC12
-Oregon State,PAC12
-Stanford,PAC12
-UCLA,PAC12
-USC,PAC12
-Utah,PAC12
-Washington,PAC12
-Washington State,PAC12
+Arizona State,BIG12
+Arizona,BIG12
+California,ACC
+Colorado,BIG12
+Oregon,BIG10
+Oregon State,WCC
+Stanford,ACC
+UCLA,BIG10
+USC,BIG10
+Utah,BIG12
+Washington,BIG10
+Washington State,WCC
 BYU,BIG12
 Baylor,BIG12
 Cincinnati,BIG12
@@ -146,10 +149,10 @@ Houston,BIG12
 Iowa State,BIG12
 Kansas,BIG12
 Kansas State,BIG12
-Oklahoma,BIG12
+Oklahoma,SEC
 Oklahoma State,BIG12
 TCU,BIG12
-Texas,BIG12
+Texas,SEC
 Texas Tech,BIG12
 UCF,BIG12
 West Virginia,BIG12
@@ -335,10 +338,10 @@ California Baptist,WAC
 Grand Canyon,WAC
 Seattle,WAC
 Southern Utah,WAC
-Stephen F. Austin,WAC
+Stephen F. Austin,Southland
 Tarleton State,WAC
 UT Arlington,WAC
-Texas-Rio Grande Valley,WAC
+Texas-Rio Grande Valley,Southland
 Utah Tech,WAC
 Utah Valley,WAC
 Brown,Ivy
