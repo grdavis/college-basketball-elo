@@ -24,15 +24,19 @@ def scrape_neutral_data():
 	NEUTRAL_MAP = {}
 	this_date = utils.format_tr_dates(all_rows[0][1])
 	for r in all_rows[1:]:
+		
 		val = r[1]
 		if '@' in val:
 			teams = val.split('  @  ')
 			NEUTRAL_MAP[(teams[0], teams[1], this_date)] = 0
 		elif 'vs.' in val:
 			teams = val.split('  vs.  ')
+			print((teams[0], teams[1], this_date))
 			NEUTRAL_MAP[(teams[0], teams[1], this_date)] = 1
 		else:
 			this_date = utils.format_tr_dates(val)
+
+scrape_neutral_data()
 
 def scrape_scores(date_obj):
 	'''

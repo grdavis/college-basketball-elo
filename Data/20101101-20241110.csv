@@ -81255,23 +81255,23 @@
 1,Purdue,60,UConn,75,20240408, +6.5 
 0,IUCO,44,IU Indy,100,20241104,NL
 0,UNTD,55,UT Arlington,90,20241104,NL
-0,College of Charleston,90,Southern Illinois,80,20241104, -3.5 
+1,College of Charleston,90,Southern Illinois,80,20241104, -3.5 
 0,OGLE,51,Middle Tennessee,97,20241104,NL
 0,CCAR,48,Jacksonville State,112,20241104,NL
-0,Saint Louis,78,Santa Clara,85,20241104, +2 
+1,Saint Louis,78,Santa Clara,85,20241104, +2 
 0,PSY,66,UMBC,95,20241104,NL
 0,Denver,62,Stanford,85,20241104, +17 
 0,ERSFF,58,Wofford,112,20241104,NL
 0,SUNYOW,62,Hofstra,89,20241104,NL
 0,Marist,66,Harvard,79,20241104, +2.5 
-0,Valparaiso,63,Liberty,83,20241104, +10.5 
+1,Valparaiso,63,Liberty,83,20241104, +10.5 
 0,FRMHM,62,Stonehill,81,20241104,NL
 0,Sacred Heart,70,Temple,81,20241104, +14 
 0,WASHMD,54,VMI,103,20241104,NL
 0,GCL,43,Drexel,95,20241104,NL
 0,RIVI,59,UMass-Lowell,115,20241104,NL
 0,Texas A&M-Corpus Christi,73,Purdue,90,20241104, +24.5 
-0,McNeese State,73,South Dakota State,80,20241104, -10.5 
+1,McNeese State,73,South Dakota State,80,20241104, -10.5 
 0,Miami (OH),77,Appalachian State,63,20241104, +7 
 0,Fordham,60,St. John's (NY),92,20241104, +19.5 
 0,Bucknell,85,Delaware,73,20241104, +4.5 
@@ -81346,7 +81346,7 @@
 0,Vermont,67,UAB,62,20241104, +5 
 0,BOB,61,Western Carolina,100,20241104,NL
 0,DALCHR,55,Northwestern State,96,20241104,NL
-0,Indiana State,64,Florida Atlantic,97,20241104, +5.5 
+1,Indiana State,64,Florida Atlantic,97,20241104, +5.5 
 0,Northeastern,80,Boston University,72,20241104, +1.5 
 0,YORKNE,41,Drake,93,20241104,NL
 0,LSUAG,50,Louisiana Tech,77,20241104,NL
@@ -81403,7 +81403,7 @@
 0,MIDAMC,69,Omaha,85,20241104,NL
 0,Chicago State,72,Loyola (IL),79,20241104, +21.5 
 0,WILCAR,53,Southeastern Louisiana,91,20241104,NL
-0,South Florida,83,Florida,98,20241104, +11.5 
+1,South Florida,83,Florida,98,20241104, +11.5 
 0,HOWP,74,Abilene Christian,107,20241104,NL
 0,WSTMMO,42,SIU-Edwardsville,95,20241104,NL
 0,Stony Brook,62,Marquette,102,20241104, +21.5 
@@ -81436,7 +81436,7 @@
 0,Incarnate Word,78,California Baptist,83,20241104, +11.5 
 0,LAV,48,Long Beach State,93,20241104,NL
 0,Canisius,64,Arizona,93,20241104, +36.5 
-0,Ohio State,80,Texas,72,20241104, -1.5 
+1,Ohio State,80,Texas,72,20241104, -1.5 
 0,LIFE,56,Loyola Marymount,99,20241104,NL
 0,WJU,65,Pacific,92,20241104,NL
 0,Sam Houston State,75,Nevada,91,20241104, +10.5 
@@ -81548,12 +81548,12 @@
 0,Cal State Fullerton,53,Stanford,80,20241108, +16 
 0,FRANK,60,Ball State,87,20241108,NL
 0,PSWB,34,Towson,89,20241108,NL
-0,Boston College,55,VCU,80,20241108, +11 
+1,Boston College,55,VCU,80,20241108, +11 
 0,St. Peter's,74,UMass-Lowell,81,20241108, +12 
 0,UMBC,54,Penn State,103,20241108, +22.5 
 0,Army,58,Duke,100,20241108, +34 
 0,Samford,86,Cornell,88,20241108, -2 
-0,Monmouth,74,Temple,103,20241108, +6.5 
+1,Monmouth,74,Temple,103,20241108, +6.5 
 0,IU Indy,80,Xavier,94,20241108, +30.5 
 0,Austin Peay,68,Butler,66,20241108, +17.5 
 0,Purdue-Fort Wayne,68,UCF,75,20241108, +11.5 
@@ -81592,7 +81592,7 @@
 0,DALCHR,36,Texas A&M-Corpus Christi,87,20241108,NL
 0,Houston Christian,59,Texas,90,20241108, +35.5 
 0,KANCH,36,Kansas City,124,20241108,NL
-0,Santa Clara,74,Arizona State,81,20241108, -5.5 
+1,Santa Clara,74,Arizona State,81,20241108, -5.5 
 0,UOZC,49,Oral Roberts,105,20241108,NL
 0,Florida Gulf Coast,51,TCU,67,20241108, +17.5 
 0,East Texas A&M,55,Texas A&M,87,20241108, +31 
@@ -81603,7 +81603,7 @@
 0,SIU-Edwardsville,58,Illinois,90,20241108, +27.5 
 0,Arkansas State,79,Alabama,88,20241108, +25.5 
 0,Mount St. Mary's,52,Maryland,86,20241108, +23.5 
-0,Princeton,75,Duquesne,68,20241108, -5.5 
+1,Princeton,75,Duquesne,68,20241108, -5.5 
 0,NJIT,54,Villanova,91,20241108, +21.5 
 0,Harvard,80,Navy,85,20241108, +2 
 0,George Mason,63,Marquette,82,20241108, +14 
@@ -81611,14 +81611,14 @@
 0,Northern Colorado,88,Colorado,90,20241108, +12.5 
 0,Northwestern State,65,Texas Tech,86,20241108, +34 
 0,Long Beach State,79,South Dakota State,80,20241108, +9.5 
-0,Pacific,80,San Jose State,67,20241108, +2 
+1,Pacific,80,San Jose State,67,20241108, +2 
 0,Tennessee State,79,Colorado State,87,20241108, +23.5 
 0,Boston University,60,San Diego,74,20241108, +2.5 
 0,UC-Irvine,66,Loyola Marymount,51,20241108, -1.5 
 0,Montana,48,Oregon,79,20241108, +18 
 0,Sacramento State,57,Fresno State,64,20241108, +7.5 
 0,Weber State,48,Oregon State,76,20241108, +5 
-0,UCLA,64,New Mexico,72,20241108, -5 
+1,UCLA,64,New Mexico,72,20241108, -5 
 0,Bradley,74,Washington State,91,20241108, +1.5 
 0,LIFE,61,Hawaii,96,20241108,NL
 0,Tennessee,77,Louisville,55,20241109, +2.5 
@@ -81663,13 +81663,13 @@
 0,Montana State,69,Wichita State,89,20241109, +10 
 0,Vermont,51,Merrimack,65,20241109, -8 
 0,UNC Asheville,76,Ohio,82,20241109, +9.5 
-0,Florida State,73,Rice,65,20241109, -10 
+1,Florida State,73,Rice,65,20241109, -10 
 0,SPOLY,73,Le Moyne,107,20241109,NL
 0,Middle Tennessee,79,Abilene Christian,56,20241109, +4 
 0,ONEO,69,Albany (NY),89,20241109,NL
 0,LBC,42,Loyola (MD),83,20241109,NL
 0,Northwestern,66,Dayton,71,20241109, +4.5 
-0,Arkansas,67,Baylor,72,20241109, +4.5 
+1,Arkansas,67,Baylor,72,20241109, +4.5 
 0,BCRR,66,Elon,103,20241109,NL
 0,Kennesaw State,84,California Baptist,88,20241109, +10.5 
 0,New Hampshire,53,UConn,92,20241109, +37 
@@ -81680,7 +81680,7 @@
 0,Western Kentucky,72,Grand Canyon,74,20241109, +12 
 0,Florida International,75,Southern Utah,80,20241109, +7 
 0,New Mexico State,75,Utah Tech,63,20241109, -3.5 
-0,Auburn,74,Houston,69,20241109, +5.5 
+1,Auburn,74,Houston,69,20241109, +5.5 
 0,Pepperdine,76,UC-San Diego,94,20241109, +8.5 
 0,Washington,53,Nevada,63,20241109, +6.5 
 0,Boise State,73,San Francisco,84,20241109, -1.5 
@@ -81689,7 +81689,7 @@
 0,Niagara,78,Detroit,84,20241110, +1.5 
 0,North Florida,105,Georgia Tech,93,20241110, +14 
 0,Southeast Missouri State,76,Vanderbilt,85,20241110, +26.5 
-0,Michigan,70,Wake Forest,72,20241110, -2 
+1,Michigan,70,Wake Forest,72,20241110, -2 
 0,EUREKA,53,Loyola (IL),105,20241110,NL
 0,Binghamton,64,Miami (FL),88,20241110, +27.5 
 0,Maine,69,Brown,67,20241110, +3.5 
@@ -81708,8 +81708,8 @@
 0,Fairleigh Dickinson,70,Creighton,96,20241110, +36.5 
 0,Arizona State,80,Gonzaga,88,20241110, +22 
 0,Alabama State,61,LSU,74,20241110, +19 
-0,LIFE,41,Pacific,94,20241110,NL
+1,LIFE,41,Pacific,94,20241110,NL
 0,CCT,60,Texas-Rio Grande Valley,110,20241110,NL
 0,MENLO,66,Cal Poly,99,20241110,NL
-0,San Jose State,69,Hawaii,80,20241110, +4.5 
+1,San Jose State,69,Hawaii,80,20241110, +4.5 
 0,NWIN,44,Montana,94,20241110,NL
