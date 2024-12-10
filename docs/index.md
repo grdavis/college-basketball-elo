@@ -1,18 +1,47 @@
-# NCAAM ELO Game Predictions for 2024-12-09 - @grdavis
+# NCAAM ELO Game Predictions for 2024-12-10 - @grdavis
 Below are predictions for today's Men's college basketball games using an ELO rating methodology. Check out the full [college-basketball-elo](https://github.com/grdavis/college-basketball-elo) repository on github to see methodology and more.
 
 Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new to the model (i.e. they haven't played any/many D1 games) and predictions are more uncertain.
 
-|   Neutral | Away                | Away Win Prob.   |   Away Pred. Spread | Live Away Spread   | Home                 | Home Win Prob.   |   Home Pred. Spread |
-|----------:|:--------------------|:-----------------|--------------------:|:-------------------|:---------------------|:-----------------|--------------------:|
-|         0 | TOM*                | 6%               |                19.6 | NL                 | Boston University    | 94%              |               -19.6 |
-|         0 | Minnesota           | 28%              |                 6.6 | 10                 | Indiana              | 72%              |                -6.6 |
-|         0 | Penn                | 6%               |                19.4 | 22.5               | VCU                  | 94%              |               -19.4 |
-|         0 | SARL*               | 4%               |                21.9 | NL                 | Columbia             | 96%              |               -21.9 |
-|         0 | Charleston Southern | 34%              |                 4.5 | 1.5                | South Carolina State | 66%              |                -4.5 |
-|         0 | Hofstra             | 45%              |                 1.3 | 3                  | Norfolk State        | 55%              |                -1.3 |
-|         0 | Abilene Christian   | 9%               |                16   | 22.5               | Baylor               | 91%              |               -16   |
-|         0 | LOAKS*              | 3%               |                23.7 | NL                 | San Jose State       | 97%              |               -23.7 |
+|   Neutral | Away                   | Away Win Prob.   |   Away Pred. Spread | Live Away Spread   | Home                | Home Win Prob.   |   Home Pred. Spread |
+|----------:|:-----------------------|:-----------------|--------------------:|:-------------------|:--------------------|:-----------------|--------------------:|
+|         0 | LWC*                   | 6%               |                19.8 | NL                 | Southern            | 94%              |               -19.8 |
+|         0 | CAIR*                  | 5%               |                21.3 | NL                 | UMBC                | 95%              |               -21.3 |
+|         0 | North Dakota State     | 13%              |                13.6 | 14.5               | Butler              | 87%              |               -13.6 |
+|         0 | Miami (FL)             | 5%               |                20.4 | 16                 | Tennessee           | 95%              |               -20.4 |
+|         0 | CHES*                  | 3%               |                23.4 | NL                 | Delaware            | 97%              |               -23.4 |
+|         0 | College of Charleston  | 33%              |                 4.9 | 7.5                | St. Joseph's        | 67%              |                -4.9 |
+|         0 | Charlotte              | 28%              |                 6.6 | 9                  | Davidson            | 72%              |                -6.6 |
+|         0 | Penn State             | 59%              |                -2.5 | 1.5                | Rutgers             | 41%              |                 2.5 |
+|         0 | Rhode Island           | 54%              |                -1   | -4                 | Brown               | 46%              |                 1   |
+|         0 | Monmouth               | 16%              |                11.5 | 14.5               | Princeton           | 84%              |               -11.5 |
+|         0 | CARO                   | 4%               |                22   | NL                 | Queens (NC)         | 96%              |               -22   |
+|         0 | HSST*                  | 12%              |                14   | NL                 | Lindenwood          | 88%              |               -14   |
+|         0 | NEW*                   | 6%               |                19.9 | NL                 | Hampton             | 94%              |               -19.9 |
+|         0 | PSALT*                 | 15%              |                12.3 | NL                 | Mercyhurst          | 85%              |               -12.3 |
+|         0 | FAMILY*                | 2%               |                26.4 | NL                 | Temple              | 98%              |               -26.4 |
+|         0 | Jacksonville           | 14%              |                13   | 13.5               | Florida Atlantic    | 86%              |               -13   |
+|         0 | Morgan State           | 3%               |                23.4 | 30.5               | Xavier              | 97%              |               -23.4 |
+|         0 | North Carolina Central | 6%               |                18.8 | 26.5               | West Virginia       | 94%              |               -18.8 |
+|         0 | Albany (NY)            | 11%              |                14.3 | 12                 | Syracuse            | 89%              |               -14.3 |
+|         0 | Incarnate Word         | 1%               |                29.4 | 35                 | Duke                | 99%              |               -29.4 |
+|         0 | Coppin State           | 1%               |                31.3 | 33                 | NC State            | 99%              |               -31.3 |
+|         0 | SNOK                   | 4%               |                22.3 | NL                 | Nicholls State      | 96%              |               -22.3 |
+|         0 | Tennessee State        | 11%              |                14.9 | 16                 | Western Kentucky    | 89%              |               -14.9 |
+|         0 | Troy                   | 7%               |                18.6 | 26                 | Houston             | 93%              |               -18.6 |
+|         0 | Wyoming                | 67%              |                -4.9 | 1                  | South Dakota        | 33%              |                 4.9 |
+|         0 | OCHT*                  | 3%               |                24.4 | NL                 | Little Rock         | 97%              |               -24.4 |
+|         0 | Southern Miss          | 32%              |                 5.1 | 6                  | Tulane              | 68%              |                -5.1 |
+|         0 | Providence             | 53%              |                -0.8 | 1.5                | DePaul              | 47%              |                 0.8 |
+|         0 | Wisconsin              | 33%              |                 5   | 6.5                | Illinois            | 67%              |                -5   |
+|         1 | Arkansas               | 38%              |                 3.3 | 4.5                | Michigan            | 62%              |                -3.3 |
+|         0 | MTTECH*                | 3%               |                25.1 | NL                 | Montana             | 97%              |               -25.1 |
+|         0 | UCCS*                  | 6%               |                19.1 | NL                 | Denver              | 94%              |               -19.1 |
+|         0 | LASU                   | 5%               |                20.1 | NL                 | Cal State Fullerton | 95%              |               -20.1 |
+|         0 | Cornell                | 34%              |                 4.6 | 8.5                | California          | 66%              |                -4.6 |
+|         0 | Kansas City            | 31%              |                 5.8 | 2.5                | Portland            | 69%              |                -5.8 |
+|         0 | Long Beach State       | 41%              |                 2.5 | 4                  | San Diego           | 59%              |                -2.5 |
+|         0 | Eastern Washington     | 14%              |                12.9 | 13.5               | Washington          | 86%              |               -12.9 |
 
 # Top 50 Teams by ELO Rating
 |    | Team              |   Elo Rating |   7 Day Change |
@@ -42,10 +71,10 @@ Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new 
 | 23 | Creighton         |         1828 |            +38 |
 | 24 | San Diego State   |         1828 |            +14 |
 | 25 | Texas             |         1825 |             -7 |
-| 26 | Oklahoma          |         1820 |             +6 |
-| 27 | Colorado          |         1819 |            +15 |
-| 28 | Nebraska          |         1817 |            -35 |
-| 29 | Baylor            |         1816 |             -6 |
+| 26 | Baylor            |         1822 |             -0 |
+| 27 | Oklahoma          |         1820 |             +6 |
+| 28 | Colorado          |         1819 |            +14 |
+| 29 | Nebraska          |         1817 |            -35 |
 | 30 | Penn State        |         1813 |            +36 |
 | 31 | Northwestern      |         1813 |             +9 |
 | 32 | Cincinnati        |         1811 |            -27 |
@@ -65,5 +94,5 @@ Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new 
 | 46 | Georgia           |         1776 |            +12 |
 | 47 | Drake             |         1772 |             +4 |
 | 48 | South Carolina    |         1771 |            +39 |
-| 49 | Washington State  |         1767 |            +60 |
-| 50 | Arizona State     |         1755 |             +6 |
+| 49 | Washington State  |         1767 |            +15 |
+| 50 | Indiana           |         1757 |            +37 |
