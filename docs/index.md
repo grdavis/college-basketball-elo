@@ -1,18 +1,11 @@
-# NCAAM ELO Game Predictions for 2024-12-23 - @grdavis
+# NCAAM ELO Game Predictions for 2024-12-24 - @grdavis
 Below are predictions for today's Men's college basketball games using an ELO rating methodology. Check out the full [college-basketball-elo](https://github.com/grdavis/college-basketball-elo) repository on github to see methodology and more.
 
 Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new to the model (i.e. they haven't played any/many D1 games) and predictions are more uncertain.
 
-|   Neutral | Away                  | Away Win Prob.   |   Away Pred. Spread | Live Away Spread   | Home                  | Home Win Prob.   |   Home Pred. Spread |
-|----------:|:----------------------|:-----------------|--------------------:|:-------------------|:----------------------|:-----------------|--------------------:|
-|         0 | PSSCR*                | 7%               |                18.6 | NL                 | Wagner                | 93%              |               -18.6 |
-|         0 | AQUN                  | 6%               |                19.9 | NL                 | Bowling Green State   | 94%              |               -19.9 |
-|         1 | Loyola (IL)           | 61%              |                -3.2 | -2.5               | College of Charleston | 39%              |                 3.2 |
-|         0 | Middle Tennessee      | 6%               |                19.6 | 26.5               | Tennessee             | 94%              |               -19.6 |
-|         0 | Cal State Bakersfield | 25%              |                 7.5 | 10                 | North Dakota State    | 75%              |                -7.5 |
-|         1 | Oregon State          | 71%              |                -6.3 | -10.5              | Oakland               | 29%              |                 6.3 |
-|         0 | Seattle               | 14%              |                12.5 | 11                 | Washington            | 86%              |               -12.5 |
-|         0 | Nebraska              | 77%              |                -8.5 | -9.5               | Hawaii                | 23%              |                 8.5 |
+|   Neutral | Away         | Away Win Prob.   |   Away Pred. Spread | Live Away Spread   | Home      | Home Win Prob.   |   Home Pred. Spread |
+|----------:|:-------------|:-----------------|--------------------:|:-------------------|:----------|:-----------------|--------------------:|
+|         1 | Murray State | 55%              |                -1.4 | NL                 | Charlotte | 45%              |                 1.4 |
 
 # Top 50 Teams by ELO Rating
 |    | Team              |   Elo Rating |   7 Day Change |
@@ -20,7 +13,7 @@ Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new 
 |  1 | Auburn            |         2013 |            +26 |
 |  2 | Iowa State        |         2001 |             +0 |
 |  3 | UConn             |         1974 |             +9 |
-|  4 | Tennessee         |         1963 |             +2 |
+|  4 | Tennessee         |         1966 |             +5 |
 |  5 | Alabama           |         1950 |             +5 |
 |  6 | Florida           |         1945 |            +14 |
 |  7 | Marquette         |         1928 |            +12 |
@@ -34,12 +27,12 @@ Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new 
 | 15 | Texas A&M         |         1885 |             +1 |
 | 16 | Mississippi State |         1885 |            +29 |
 | 17 | Gonzaga           |         1860 |             +4 |
-| 18 | Wisconsin         |         1852 |             +2 |
-| 19 | Oklahoma          |         1848 |             +8 |
-| 20 | Nebraska          |         1843 |             +8 |
+| 18 | Nebraska          |         1853 |            +19 |
+| 19 | Wisconsin         |         1852 |             +2 |
+| 20 | Oklahoma          |         1848 |             +8 |
 | 21 | San Diego State   |         1841 |            +11 |
 | 22 | Utah State        |         1840 |             +2 |
-| 23 | Texas Tech        |         1839 |             +8 |
+| 23 | Texas Tech        |         1839 |             +6 |
 | 24 | Cincinnati        |         1839 |            +22 |
 | 25 | Kansas            |         1836 |             +7 |
 | 26 | Texas             |         1831 |             +1 |
