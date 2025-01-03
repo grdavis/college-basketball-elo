@@ -83897,3 +83897,123 @@
 0,Pacific,65,San Diego,75,20241230, +1 
 0,Gonzaga,89,Pepperdine,82,20241230, -20.5 
 0,Santa Clara,94,San Francisco,97,20241230, +4 
+0,NC State,67,Virginia,70,20241231, +1 
+0,Brown,54,Kentucky,88,20241231, +25 
+0,Davidson,57,George Mason,69,20241231, +6 
+0,Wake Forest,81,Syracuse,71,20241231, -2 
+0,AND,76,Ball State,89,20241231,NL
+0,Tulane,83,Charlotte,68,20241231, +2.5 
+0,Utah,56,Baylor,81,20241231, +11 
+0,Seton Hall,72,Xavier,94,20241231, +9.5 
+0,UCF,87,Texas Tech,83,20241231, +13.5 
+0,West Virginia,62,Kansas,61,20241231, +13.5 
+0,La Salle,70,Dayton,84,20241231, +16.5 
+0,UMass,72,St. Joseph's,81,20241231, +10 
+0,VCU,75,St. Bonaventure,77,20241231, -2.5 
+0,Saint Louis,88,Fordham,63,20241231, -1 
+0,Rhode Island,55,Duquesne,67,20241231, -1.5 
+0,Notre Dame,75,Georgia Tech,86,20241231, +1.5 
+0,Norfolk State,52,Tennessee,67,20241231, +29.5 
+0,STANDR,61,North Carolina Central,121,20241231,NL
+0,East Carolina,69,South Florida,75,20241231, +1.5 
+0,Arizona State,56,BYU,76,20241231, +9.5 
+0,George Washington,61,Richmond,66,20241231, -2 
+0,UNLV,77,Air Force,58,20241231, -7 
+0,Stephen F. Austin,62,Abilene Christian,57,20241231, +3.5 
+0,UAB,75,North Texas,78,20241231, +6 
+0,St. John's (NY),56,Creighton,57,20241231, +1 
+0,Virginia Tech,65,Duke,88,20241231, +25 
+0,WAWA,39,Portland State,96,20241231,NL
+0,Colorado State,72,San Jose State,50,20241231, -3 
+0,Marquette,78,Providence,50,20241231, -6.5 
+0,New Mexico,103,Fresno State,89,20241231, -14.5 
+0,Morehead State,70,Southern Indiana,68,20241231, +1 
+0,Boise State,67,Wyoming,58,20241231, -7.5 
+0,Utah State,69,Nevada,64,20241231, +3.5 
+0,Youngstown State,77,IU Indy,61,20250101, -5.5 
+0,Miami (FL),68,Boston College,78,20250101, -2 
+0,VMI,69,ETSU,84,20250101, +15 
+0,Purdue-Fort Wayne,68,Northern Kentucky,69,20250101, +2.5 
+0,UNC Greensboro,68,Wofford,66,20250101, +3 
+0,Howard,65,Yale,93,20250101, +15 
+0,Furman,90,Western Carolina,61,20250101, -9 
+0,UConn,81,DePaul,68,20250101, -12 
+0,Evansville,68,Southern Illinois,53,20250101, +7.5 
+0,California,74,Pitt,86,20250101, +13 
+0,Rice,70,Tulsa,64,20250101, +3 
+0,Chattanooga,94,Mercer,99,20250101, -1.5 
+0,Drake,70,UIC,74,20250101, -6 
+0,Stanford,71,Clemson,85,20250101, +10.5 
+0,COLS,55,Dartmouth,108,20250101,NL
+0,UNC,70,Louisville,83,20250101, +1.5 
+0,Villanova,73,Butler,65,20250101, +1 
+0,Bradley,90,Indiana State,89,20250101, -3.5 
+0,The Citadel,56,Samford,86,20250101, +20.5 
+0,Valparaiso,73,Missouri State,72,20250101, +5 
+0,Belmont,70,Northern Iowa,76,20250101, +5.5 
+0,Gardner-Webb,63,Charleston Southern,72,20250102, -2 
+0,Austin Peay,97,North Florida,89,20250102, +6 
+0,Longwood,60,Presbyterian,68,20250102, -3.5 
+0,USC Upstate,76,Winthrop,95,20250102, +15 
+0,Loyola (MD),72,Holy Cross,74,20250102, +2.5 
+0,Troy,69,Appalachian State,61,20250102, -2.5 
+0,Western Kentucky,71,Liberty,70,20250102, +10 
+0,Middle Tennessee,73,Florida International,69,20250102, -4 
+0,Robert Morris,76,Detroit,78,20250102, -5.5 
+0,Arkansas State,78,Old Dominion,59,20250102, -9.5 
+0,Texas State,71,Marshall,77,20250102, +1 
+0,American,58,Navy,81,20250102, -2 
+0,Memphis,90,Florida Atlantic,62,20250102, -3 
+0,Southern Miss,72,James Madison,83,20250102, +11.5 
+0,Louisiana-Monroe,82,Georgia Southern,90,20250102, +10 
+0,South Alabama,77,Georgia State,51,20250102, -4.5 
+0,Boston University,46,Lafayette,60,20250102, -1.5 
+0,Elon,75,North Carolina A&T,67,20250102, -6.5 
+0,Bucknell,64,Lehigh,66,20250102, +3 
+0,Bellarmine,66,North Alabama,82,20250102, +13.5 
+0,Army,59,Colgate,71,20250102, +6 
+0,Stony Brook,56,Monmouth,78,20250102, +6.5 
+0,Lipscomb,70,Jacksonville,65,20250102, -5.5 
+0,Stetson,87,Queens (NC),96,20250102, +9.5 
+0,Florida Gulf Coast,79,West Georgia,68,20250102, -8 
+0,William & Mary,74,Hofstra,56,20250102, +6 
+0,Hampton,67,College of Charleston,94,20250102, +10 
+0,Drexel,54,Campbell,57,20250102, -3.5 
+0,Delaware,77,Northeastern,80,20250102, +5.5 
+0,Northwestern,80,Penn State,84,20250102, +3.5 
+0,Louisiana,71,Coastal Carolina,68,20250102, +2 
+0,Milwaukee,49,Oakland,65,20250102, -1 
+0,Towson,65,UNC Wilmington,61,20250102, +5.5 
+0,Green Bay,51,Wright State,74,20250102, +13.5 
+0,Radford,58,High Point,76,20250102, +9 
+0,Purdue,81,Minnesota,61,20250102, -5.5 
+0,Illinois State,74,Murray State,68,20250102, +7 
+0,Omaha,95,North Dakota,85,20250102, +5.5 
+0,UC-Irvine,98,Cal Poly,89,20250102, -8 
+0,South Dakota,54,Kansas City,68,20250102, +4.5 
+0,St. Thomas,89,North Dakota State,85,20250102, +2.5 
+0,Weber State,72,Northern Colorado,89,20250102, +6.5 
+0,Idaho State,72,Northern Arizona,67,20250102, +3.5 
+0,Rutgers,74,Indiana,84,20250102, +9 
+0,Southeast Missouri State,67,Tennessee State,65,20250102, +2.5 
+0,Eastern Kentucky,89,Central Arkansas,83,20250102, -6.5 
+0,Little Rock,57,UT-Martin,56,20250102, +2 
+0,Southern Indiana,64,Tennessee Tech,68,20250102, +4 
+0,Lindenwood,74,Eastern Illinois,78,20250102, +2.5 
+0,Montana,92,Eastern Washington,81,20250102, -1.5 
+0,Denver,70,South Dakota State,91,20250102, +15.5 
+0,Louisiana Tech,60,UTEP,70,20250102, +2.5 
+0,Sam Houston State,71,New Mexico State,75,20250102, +1 
+0,Montana State,64,Idaho,69,20250102, -1.5 
+0,Portland,50,Gonzaga,81,20250102, +33.5 
+0,Western Illinois,66,SIU-Edwardsville,77,20250102, +7 
+0,UC-Davis,64,Cal State Bakersfield,75,20250102, +1.5 
+0,Maryland,69,Washington,75,20250102, -6 
+0,Illinois,109,Oregon,77,20250102, +4.5 
+0,Pepperdine,41,Saint Mary's,71,20250102, +17 
+0,San Francisco,89,Pacific,81,20250102, -13 
+0,Oregon State,61,Loyola Marymount,82,20250102, -2.5 
+0,UC-Riverside,76,Long Beach State,60,20250102, -3.5 
+0,Santa Clara,81,San Diego,80,20250102, -13 
+0,Cal State Northridge,95,Cal State Fullerton,65,20250102, -5 
+0,UCSB,64,Hawaii,61,20250102, +2.5 
