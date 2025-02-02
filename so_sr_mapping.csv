@@ -5,6 +5,7 @@ Alabama,Alabama
 Alabama A&M,Alabama A&M
 Alabama State,Alabama State
 Albany,Albany (NY)
+University at Albany,Albany (NY)
 Alcorn State,Alcorn State
 American,American
 Appalachian State,Appalachian State
@@ -16,6 +17,7 @@ Army,Army
 Auburn,Auburn
 Austin Peay,Austin Peay
 Bakersfield,Cal State Bakersfield
+Cal State Bakersfield,Cal State Bakersfield
 Ball State,Ball State
 Baylor,Baylor
 Bellarmine,Bellarmine
@@ -24,6 +26,7 @@ Bethune-Cookman,Bethune-Cookman
 Binghamton,Binghamton
 Boise State,Boise State
 Boston,Boston University
+Boston University,Boston University
 Boston College,Boston College
 Bowling Green,Bowling Green State
 Bradley,Bradley
@@ -38,6 +41,7 @@ Cal State Fullerton,Cal State Fullerton
 California,California
 California Baptist,California Baptist
 California-San Diego,UC-San Diego
+UC San Diego,UC-San Diego
 Campbell,Campbell
 Canisius,Canisius
 Central Arkansas,Central Arkansas
@@ -50,6 +54,7 @@ Chattanooga,Chattanooga
 Chicago State,Chicago State
 Cincinnati,Cincinnati
 Citadel,The Citadel
+The Citadel,The Citadel
 Clemson,Clemson
 Cleveland State,Cleveland State
 Coastal Carolina,Coastal Carolina
@@ -58,10 +63,12 @@ Colorado,Colorado
 Colorado State,Colorado State
 Columbia,Columbia
 Connecticut,UConn
+UConn,UConn
 Coppin State,Coppin State
 Cornell,Cornell
 Creighton,Creighton
 CSUN,Cal State Northridge
+Cal State Northridge,Cal State Northridge
 Dartmouth,Dartmouth
 Davidson,Davidson
 Dayton,Dayton
@@ -70,12 +77,14 @@ Delaware State,Delaware State
 Denver,Denver
 DePaul,DePaul
 Detroit,Detroit
+Detroit Mercy,Detroit
 Drake,Drake
 Drexel,Drexel
 Duke,Duke
 Duquesne,Duquesne
 East Carolina,East Carolina
 East Tennessee State,ETSU
+East Texas A&M,East Texas A&M
 Eastern Illinois,Eastern Illinois
 Eastern Kentucky,Eastern Kentucky
 Eastern Michigan,Eastern Michigan
@@ -84,7 +93,9 @@ Elon,Elon
 Evansville,Evansville
 Fairfield,Fairfield
 Fairleigh Dickinson,Fairleigh Dickinson
+FDU,Fairleigh Dickinson
 FIU,Florida International
+Florida International,Florida International
 Florida,Florida
 Florida A&M,Florida A&M
 Florida Atlantic,Florida Atlantic
@@ -108,6 +119,7 @@ Green Bay,Green Bay
 Hampton,Hampton
 Harvard,Harvard
 Hawaii,Hawaii
+Hawai'i,Hawaii
 High Point,High Point
 Hofstra,Hofstra
 Holy Cross,Holy Cross
@@ -125,6 +137,7 @@ Iona,Iona
 Iowa,Iowa
 Iowa State,Iowa State
 IUPUI,IUPUI
+IU Indy,IU Indy
 Jackson State,Jackson State
 Jacksonville,Jacksonville
 Jacksonville State,Jacksonville State
@@ -139,6 +152,7 @@ La Salle,La Salle
 Lafayette,Lafayette
 Lamar,Lamar
 Lehigh,Lehigh
+Le Moyne,Le Moyne
 Liberty,Liberty
 Lindenwood,Lindenwood
 Lipscomb,Lipscomb
@@ -148,6 +162,7 @@ Long Beach State,Long Beach State
 Longwood,Longwood
 Louisiana Tech,Louisiana Tech
 Louisiana-Lafayette,Louisiana
+Louisiana,Louisiana
 Louisiana-Monroe,Louisiana-Monroe
 Louisville,Louisville
 Loyola Chicago,Loyola (IL)
@@ -161,14 +176,20 @@ Marquette,Marquette
 Marshall,Marshall
 Maryland,Maryland
 Maryland Eastern Shore,Maryland-Eastern Shore
+Maryland-Eastern Shore,Maryland-Eastern Shore
 Massachusetts,UMass
+UMass,UMass
 Massachusetts-Lowell,UMass-Lowell
+UMass Lowell,UMass-Lowell
 McNeese State,McNeese State
+McNeese,McNeese State
 Memphis,Memphis
 Mercer,Mercer
 Mercyhurst,Mercyhurst
 Merrimack College,Merrimack
+Merrimack,Merrimack
 Miami,Miami (FL)
+Miami (FL,Miami (FL)
 Miami (OH,Miami (OH)
 Michigan,Michigan
 Michigan State,Michigan State
@@ -195,6 +216,7 @@ New Mexico State,New Mexico State
 New Orleans,New Orleans
 Niagara,Niagara
 Nicholls,Nicholls State
+Nicholls State,Nicholls State
 NJIT,NJIT
 Norfolk State,Norfolk State
 North Alabama,North Alabama
@@ -240,6 +262,7 @@ Providence,Providence
 Purdue,Purdue
 Purdue Fort Wayne,Purdue-Fort Wayne
 Queens (NC,Queens (NC)
+Queens University,Queens (NC)
 Quinnipiac,Quinnipiac
 Radford,Radford
 Rhode Island,Rhode Island
@@ -251,11 +274,13 @@ Rutgers,Rutgers
 Sacramento State,Sacramento State
 Sacred Heart,Sacred Heart
 Saint Francis U,Saint Francis (PA)
+Saint Francis (PA,Saint Francis (PA)
 Saint Joseph's,St. Joseph's
 Saint Louis,Saint Louis
 Saint Mary's,Saint Mary's
 Saint Peter's,St. Peter's
 Sam Houston,Sam Houston State
+Sam Houston State,Sam Houston State
 Samford,Samford
 San Diego,San Diego
 San Diego State,San Diego State
@@ -266,6 +291,7 @@ Seattle,Seattle
 Seton Hall,Seton Hall
 Siena,Siena
 SIUE,SIU-Edwardsville
+SIU-Edwardsville,SIU-Edwardsville
 SMU,SMU
 South Alabama,South Alabama
 South Carolina,South Carolina
@@ -276,6 +302,7 @@ South Florida,South Florida
 Southeast Missouri State,Southeast Missouri State
 Southeastern Louisiana,Southeastern Louisiana
 Southern,Southern
+Southern University,Southern
 Southern Illinois,Southern Illinois
 Southern Indiana,Southern Indiana
 Southern Miss,Southern Miss
@@ -284,6 +311,7 @@ St. Bonaventure,St. Bonaventure
 St. Francis Brooklyn,St. Francis (NY)
 St. John's,St. John's (NY)
 St. Thomas (MN,St. Thomas
+St. Thomas,St. Thomas
 Stanford,Stanford
 Stephen F. Austin,Stephen F. Austin
 Stetson,Stetson
@@ -298,12 +326,13 @@ Tennessee State,Tennessee State
 Tennessee Tech,Tennessee Tech
 Texas,Texas
 Texas A&M,Texas A&M
-Texas A&M-Commerce,Texas A&M-Commerce
+Texas A&M-Commerce,East Texas A&M
 Texas A&M-Corpus Christi,Texas A&M-Corpus Christi
 Texas Southern,Texas Southern
 Texas State,Texas State
 Texas Tech,Texas Tech
 Texas-Rio Grande Valley,Texas-Rio Grande Valley
+UT Rio Grande Valley,Texas-Rio Grande Valley
 Toledo,Toledo
 Towson,Towson
 Troy,Troy
@@ -311,6 +340,7 @@ Tulane,Tulane
 Tulsa,Tulsa
 UAB,UAB
 UAPB,Arkansas-Pine Bluff
+Arkansas-Pine Bluff,Arkansas-Pine Bluff
 UC Davis,UC-Davis
 UC Irvine,UC-Irvine
 UC Riverside,UC-Riverside
@@ -321,12 +351,15 @@ UIC,UIC
 UMBC,UMBC
 UNC Asheville,UNC Asheville
 UNCG,UNC Greensboro
+UNC Greensboro,UNC Greensboro
 UNCW,UNC Wilmington
+UNC Wilmington,UNC Wilmington
 UNLV,UNLV
 USC,USC
 USC Upstate,USC Upstate
 UT Arlington,UT Arlington
 UT Martin,UT-Martin
+Tennessee-Martin,UT-Martin
 Utah,Utah
 Utah State,Utah State
 Utah Tech,Utah Tech
