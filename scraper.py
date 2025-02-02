@@ -16,8 +16,8 @@ URLV2 = 'https://www.scoresandodds.com/ncaab?date=YEAR-MONTH-DAY'
 DATA_FOLDER = utils.DATA_FOLDER
 NEUTRAL_MAP = None #will be set if needed. Maps (team1, team2, date) --> 1/0 depending on if the game is at a neutral site
 TR_NAMES = None #tracking this temporarily to see if there are teams with improper mapping in SR to TR
-TR_NAMES_MAP = utils.read_two_column_csv_to_dict('sr_tr_mapping.csv') #maps sport reference names (our original source of truth for names) to team rankings names
-SR_NAMES_MAP = utils.read_two_column_csv_to_dict('so_sr_mapping.csv') #maps scores & odds names to sports reference names (our original source of truth for names)
+TR_NAMES_MAP = utils.read_two_column_csv_to_dict('Data/sr_tr_mapping.csv') #maps sport reference names (our original source of truth for names) to team rankings names
+SR_NAMES_MAP = utils.read_two_column_csv_to_dict('Data/so_sr_mapping.csv') #maps scores & odds names to sports reference names (our original source of truth for names)
 
 def scrape_neutral_data():
 	'''

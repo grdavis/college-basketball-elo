@@ -490,14 +490,7 @@ def tuning(data, target = 'error1', graphs = True, verbose = False, tune_style_r
 	se1, se2 = tune(data, tune_style_random, random_iterations)
 	if verbose: print(se1, se2)
 	if not graphs: return
-	
-	# important to remember the final step after setting k, carryover, home_elo, and new_team in elo.py: run elo_vs_MoV()! 
-	# This prints out the slope of the relationship between elo differences and margins of victory. Take 1/slope and set 
-	# ELO_TO_POINTS_FACTOR equal to -(1/slope)
-
-	# start measuring after season 3 (start fall 2013), errors as of games through 1/20/2024
-	# hybrid (active):	(error1 = 0.16879, error2 = 0.50355, k_factor = 47, carryover = .64, home_elo = 82, new_team = 985), 24.78
-	
+		
 	# take the output of tuning and plot the errors over each of the variables
 	mapping = {'error1': 0, 'error2': 1}
 	for i in [2, 3, 4, 5]:
@@ -520,7 +513,12 @@ if __name__ == '__main__':
 	#start with random_tune, then switch to brute_tune when the ranges for values are tight enough so as not to take too long to run
 	# tuning(data, target = 'error1', graphs = True, verbose = True, tune_style_random = False, random_iterations = 50)
 
-'''
-through, e1, e2, k, carryover, home_elo, new_team
-1/31/25, 0.16915, 0.50430, 47, 0.64, 82, 985
-'''
+	# important to remember the final step after setting k, carryover, home_elo, and new_team in elo.py: run elo_vs_MoV()! 
+	# This prints out the slope of the relationship between elo differences and margins of victory. Take 1/slope and set 
+	# ELO_TO_POINTS_FACTOR equal to -(1/slope)
+
+	'''
+	start measuring after season 3 (start fall 2013)
+	through 1/20/2024: (error1 = 0.16879, error2 = 0.50355, k_factor = 47, carryover = .64, home_elo = 82, new_team = 985), 24.78
+	through 1/31/2025: (error1 = 0.16915, error2 = 0.50430, k_factor = 47, carryover = .64, home_elo = 82, new_team = 985), 24.78
+	'''
