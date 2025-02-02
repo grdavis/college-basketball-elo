@@ -1,5 +1,10 @@
 import pandas as pd
 
+'''
+This script finds all the team names in our data log and finds their first and last appearance dates.
+Using the exported CSV we can investigate any sudden appearances
+'''
+
 df = pd.read_csv("Data/20101101-20250131.csv", header=None, names = ['neutral', 'away', 'ascore', 'home', 'hscore', 'date', 'aspread'])
 
 # Get all team appearances in both home and away columns

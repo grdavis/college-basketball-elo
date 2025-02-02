@@ -22,10 +22,11 @@ def matchups_from_list(team_list):
 
 def add_home_advantage(home_elo):
 	'''
-	In the tuning process, we found that the flat home advantage of about 3.3 points (80 elo points) works for the majority of games
+	In the tuning process, we found that the flat home advantage of about ~3.3 points (~80 elo points) works for the majority of games
 	However, when the home team's ELO is outside of the (1600, 2000) range, a pattern of inaccuracy emerges.
 	We attempt to correct for that pattern in this function. Essentially, below 1600, home teams should get more of a boost
-	while above 2000, home teams should have their boost reduced.
+	while above 2000, home teams should have their boost reduced. The outcome isn't perfect, but it results in a more smooth relationship
+	between home ELO and our prediction accuracy (see tuning.home_pred_vs_actual_by_elo() for visual)
 	'''
 	if home_elo < 1600:
 		return (elo.HOME_ADVANTAGE + ((-75/550)*home_elo) + 218)

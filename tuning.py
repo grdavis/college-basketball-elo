@@ -12,7 +12,7 @@ from datetime import datetime
 from predictions import predict_tournament, ALL_ROUNDS, predict_game
 import math
 
-ERRORS_START = 3 #after how many seasons should we start tracking performance (3 = start with 2013 season = 10 full seasons of data 2013-2022)
+ERRORS_START = 3 #after how many seasons should we start tracking performance (3 = start with 2013 season)
 
 class Tuning_ELO_Sim(elo.ELO_Sim):
 	'''
@@ -110,9 +110,9 @@ def brute_tune(data):
 	Since brute force can take some time to run, random_tune first to help narrow possible ranges
 	'''
 	k_range = [46, 47]
-	carry_range = [.64, .66]
-	home_range = [81, 82, 83, 84]
-	new_team_range = [970, 985, 1000] 
+	carry_range = [.63, .64]
+	home_range = [81, 82]
+	new_team_range = [985, 1000] 
 	errors = []
 
 	for k in tqdm(k_range):
@@ -190,7 +190,7 @@ def elo_season_over_season(explore):
 	x_vals = [i[:4] for i in season_teams]
 	sizes = ['teams = ' + str(season_teams[i]) for i in season_teams]
 	fig = go.Figure([go.Bar(x = x_vals, y = y_vals, text = sizes, textposition = 'auto')])
-	fig.update_layout(title_text = 'Average End-of-Season Elo over Time: Spring 2011 - Spring 2022', 
+	fig.update_layout(title_text = 'Average End-of-Season Elo over Time', 
 		xaxis_title = 'Year', yaxis_title = 'End of Season Elo')
 	fig.show()
 
@@ -230,6 +230,38 @@ def home_pred_vs_actual_by_elo(explore):
 	fig = go.Figure([go.Bar(x = x_vals, y = y_vals, text = [len(bucketing.get(i, [])) for i in x_vals])])
 	fig.update_layout(title_text = 'Home Winning Margin Predictions Versus Actuals by ELO Bucket', xaxis_title = 'Elo Rating', 
 		yaxis_title = 'Average Difference between Actual Winning Margin and Predicted Winning Margin', xaxis_range = [1000, x_vals[-1]+1], yaxis_range = [-10, 10])
+	fig.show()
+
+def pred_vs_actual(explore):
+	'''
+	This function plots the win probability predicted by the model vs. the actual win probability for all games
+	'''
+	x_vals = sorted(explore.predict_tracker.keys())
+	y_vals = []
+	for x in x_vals:
+		wins = explore.win_tracker.get(x, 0)
+		total = explore.predict_tracker.get(x, 0)
+		y_vals.append(wins/total if total > 0 else 0)
+
+	# Calculate line of best fit and R^2
+	slope, intercept, r_value, p_value, std_err = linregress(x_vals, y_vals)
+	r_squared = r2_score(y_vals, [slope * x + intercept for x in x_vals])
+	fit_line = [slope * x + intercept for x in [0, 1]]
+
+	fig = go.Figure([
+		go.Scatter(x=x_vals, y=y_vals, mode='markers', name='Actual vs Predicted',
+			hovertemplate='Predicted: %{x:.2f}<br>Actual: %{y:.2f}<br>Total Games: %{customdata[0]}<br>Wins: %{customdata[1]}<extra></extra>',
+			customdata=[[explore.predict_tracker.get(x,0), explore.win_tracker.get(x,0)] for x in x_vals]),
+		go.Scatter(x=[0,1], y=[0,1], mode='lines', name='Perfect Line'),
+	])
+	
+	fig.update_layout(
+		title_text=f'Win Probability: Predicted vs Actual (R² = {r_squared:.3f})',
+		xaxis_title='Predicted Win Probability',
+		yaxis_title='Actual Win Probability',
+		xaxis_range=[0,1],
+		yaxis_range=[0,1]
+	)
 	fig.show()
 
 ##################SPREAD EVALUATION##############################
@@ -440,8 +472,9 @@ def graphing(data):
 	# error_viz(explore, explore.error2, 'Log Loss')
 	# elo_vs_MoV(explore)
 	# elo_season_over_season(explore)
+	# pred_vs_actual(explore)
 	# latest_dist(explore)
-	historical_brackets(explore)
+	# historical_brackets(explore)
 	# home_pred_vs_actual_by_elo(explore)
 	# eval_spread_over_season(explore, exclusion_threshold = 25, accuracy_cap = 325)
 	# spread_evaluation(explore, exclusion_threshold = 25, accuracy_cap = 325)
@@ -485,4 +518,9 @@ if __name__ == '__main__':
 	graphing(data)
 
 	#start with random_tune, then switch to brute_tune when the ranges for values are tight enough so as not to take too long to run
-	# tuning(data, target = 'error1', graphs = False, verbose = True, tune_style_random = False, random_iterations = 50)
+	# tuning(data, target = 'error1', graphs = True, verbose = True, tune_style_random = False, random_iterations = 50)
+
+'''
+through, e1, e2, k, carryover, home_elo, new_team
+1/31/25, 0.16915, 0.50430, 47, 0.64, 82, 985
+'''
