@@ -86916,7 +86916,7 @@
 0,Memphis,88,UAB,81,20250302, -1 
 0,Rice,56,UTSA,84,20250302, +1.5 
 1,North Florida,69,Austin Peay,90,20250302, -3.5 
-0,Central Arkansas,77,Stetson,72,20250302, +1 
+1,Central Arkansas,77,Stetson,72,20250302, +1 
 0,McNeese State,95,Stephen F. Austin,64,20250303, -13.5 
 0,Southern,73,Florida A&M,70,20250303, -5.5 
 0,Queens (NC),71,Florida Gulf Coast,65,20250303, +4.5 
@@ -86947,7 +86947,7 @@
 0,UMass-Lowell,70,Maine,71,20250304, +2.5 
 0,Georgia,73,South Carolina,64,20250304, -1.5 
 0,New Hampshire,56,Bryant,90,20250304, +18.5 
-0,Coastal Carolina,63,Southern Miss,66,20250304, +3.5 
+1,Coastal Carolina,63,Southern Miss,66,20250304, +3.5 
 0,Holy Cross,68,Lafayette,69,20250304, +6.5 
 0,Akron,96,Toledo,87,20250304, -4.5 
 0,Miami (FL),74,Georgia Tech,89,20250304, +10.5 
@@ -86988,7 +86988,7 @@
 0,Arkansas,90,Vanderbilt,77,20250304, +7.5 
 0,Arizona State,100,Arizona,113,20250304, +17.5 
 0,San Diego State,67,UNLV,74,20250304, -3.5 
-0,Southern Miss,64,Georgia Southern,78,20250305, +5.5 
+1,Southern Miss,64,Georgia Southern,78,20250305, +5.5 
 0,DePaul,80,Providence,77,20250305, +8.5 
 0,Maryland,71,Michigan,65,20250305, +1 
 0,Xavier,91,Butler,78,20250305, -3.5 
@@ -87003,10 +87003,10 @@
 0,Chicago State,57,LIU,68,20250305, +12.5 
 0,Oklahoma State,70,UCF,83,20250305, +6.5 
 0,La Salle,62,George Mason,69,20250305, +12.5 
-0,UT-Martin,70,Tennessee Tech,67,20250305, -1.5 
+1,UT-Martin,70,Tennessee Tech,67,20250305, -1.5 
 0,Rhode Island,74,St. Joseph's,91,20250305, +11.5 
 0,George Washington,81,Fordham,58,20250305, -3.5 
-0,USC Upstate,63,Gardner-Webb,83,20250305, +6.5 
+1,USC Upstate,63,Gardner-Webb,83,20250305, +6.5 
 1,Oral Roberts,56,Kansas City,73,20250305, +5.5 
 0,Colorado,75,Texas Tech,91,20250305, +18.5 
 0,Missouri,84,Oklahoma,96,20250305, -4.5 
