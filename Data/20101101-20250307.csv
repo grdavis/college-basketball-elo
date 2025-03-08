@@ -87072,7 +87072,7 @@
 0,Cal State Northridge,79,UC-Riverside,94,20250306, -1 
 0,Cal State Fullerton,61,Cal Poly,100,20250306, +14.5 
 0,Tarleton State,48,California Baptist,68,20250306, +8.5 
-0,Gardner-Webb,64,High Point,85,20250307, +15.5 
+1,Gardner-Webb,64,High Point,85,20250307, +15.5 
 1,Southern Illinois,53,Drake,70,20250307, +11.5 
 1,Stony Brook,76,Delaware,80,20250307, +7.5 
 1,Presbyterian,69,Radford,74,20250307, +3.5 
@@ -87081,7 +87081,7 @@
 1,Western Carolina,66,Mercer,67,20250307, +6.5 
 1,Georgia State,76,Marshall,79,20250307, +7.5 
 0,Ball State,66,Miami (OH),79,20250307, +9.5 
-0,Charleston Southern,60,UNC Asheville,80,20250307, +5.5 
+1,Charleston Southern,60,UNC Asheville,80,20250307, +5.5 
 1,South Dakota,85,North Dakota State,84,20250307, +1.5 
 0,Northern Illinois,83,Central Michigan,81,20250307, +15.5 
 0,Buffalo,70,Akron,88,20250307, +18.5 
@@ -87090,8 +87090,8 @@
 0,Eastern Michigan,70,Kent State,76,20250307, +11.5 
 0,Western Michigan,64,Bowling Green State,63,20250307, +3.5 
 1,Murray State,62,Bradley,70,20250307, +5.5 
-0,The Citadel,62,VMI,73,20250307, +6.5 
-0,Little Rock,59,Southeast Missouri State,78,20250307, +2.5 
+1,The Citadel,62,VMI,73,20250307, +6.5 
+1,Little Rock,59,Southeast Missouri State,78,20250307, +2.5 
 0,Purdue,80,Illinois,88,20250307, +4.5 
 1,Old Dominion,61,Appalachian State,56,20250307, +8.5 
 1,Longwood,79,Winthrop,88,20250307, +4.5 
@@ -87101,5 +87101,5 @@
 1,North Dakota,85,South Dakota State,69,20250307, +8.5 
 0,Colorado State,83,Boise State,73,20250307, +5.5 
 0,UNLV,67,New Mexico,81,20250307, +12.5 
-0,Tennessee State,69,SIU-Edwardsville,71,20250307, +2.5 
+1,Tennessee State,69,SIU-Edwardsville,71,20250307, +2.5 
 1,San Diego,74,Loyola Marymount,100,20250307, +8.5 
