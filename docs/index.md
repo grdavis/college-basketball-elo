@@ -5,29 +5,29 @@ Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new 
 
 |   Neutral | Away                  | Away Win Prob.   |   Away Pred. Spread |   Live Away Spread | Home                | Home Win Prob.   |   Home Pred. Spread |
 |----------:|:----------------------|:-----------------|--------------------:|-------------------:|:--------------------|:-----------------|--------------------:|
-|         1 | Cincinnati            | 58%              |                -2.1 |               -7.5 | Oklahoma State      | 42%              |                 2.1 |
-|         1 | Pitt                  | 57%              |                -1.8 |               -4.5 | Notre Dame          | 43%              |                 1.8 |
-|         0 | Alabama A&M           | 24%              |                 8.1 |                5.5 | Grambling           | 76%              |                -8.1 |
+|         1 | Cincinnati            | 58%              |                -2.1 |               -6.5 | Oklahoma State      | 42%              |                 2.1 |
+|         1 | Pitt                  | 57%              |                -1.8 |               -3.5 | Notre Dame          | 43%              |                 1.8 |
+|         0 | Alabama A&M           | 24%              |                 8.1 |                4.5 | Grambling           | 76%              |                -8.1 |
 |         0 | Colorado              | 37%              |                 3.6 |                2.5 | TCU                 | 63%              |                -3.6 |
 |         0 | California            | 39%              |                 3.1 |               -3.5 | Virginia Tech       | 61%              |                -3.1 |
 |         1 | Utah Tech             | 42%              |                 2.2 |               -6.5 | Southern Utah       | 58%              |                -2.2 |
-|         1 | Siena                 | 54%              |                -1   |               -3.5 | Rider               | 46%              |                 1   |
+|         1 | Siena                 | 54%              |                -1   |               -4.5 | Rider               | 46%              |                 1   |
 |         0 | Sam Houston State     | 42%              |                 2.2 |                2.5 | UTEP                | 58%              |                -2.2 |
 |         1 | Arizona State         | 37%              |                 3.9 |                6.5 | Kansas State        | 63%              |                -3.9 |
 |         1 | Syracuse              | 47%              |                 0.8 |                3.5 | Florida State       | 53%              |                -0.8 |
-|         0 | Delaware              | 19%              |                10.1 |                8.5 | UNC Wilmington      | 81%              |               -10.1 |
-|         0 | Youngstown State      | 30%              |                 6   |                3.5 | Robert Morris       | 70%              |                -6   |
-|         0 | Northwestern State    | 11%              |                14.3 |               17.5 | McNeese State       | 89%              |               -14.3 |
-|         0 | Maine                 | 28%              |                 6.8 |                4.5 | Vermont             | 72%              |                -6.8 |
+|         0 | Delaware              | 19%              |                10.2 |                8.5 | UNC Wilmington      | 81%              |               -10.2 |
+|         0 | Youngstown State      | 29%              |                 6.3 |                3.5 | Robert Morris       | 71%              |                -6.3 |
+|         0 | Northwestern State    | 12%              |                14.2 |               16.5 | McNeese State       | 88%              |               -14.2 |
+|         0 | Maine                 | 28%              |                 6.8 |                5.5 | Vermont             | 72%              |                -6.8 |
 |         0 | Saint Francis (PA)    | 14%              |                12.9 |               10.5 | Central Connecticut | 86%              |               -12.9 |
-|         0 | Fairfield             | 30%              |                 6.1 |                4.5 | Sacred Heart        | 70%              |                -6.1 |
+|         0 | Fairfield             | 30%              |                 6.1 |                5.5 | Sacred Heart        | 70%              |                -6.1 |
 |         1 | Prairie View          | 21%              |                 9.4 |                8.5 | Florida A&M         | 79%              |                -9.4 |
 |         1 | Florida International | 34%              |                 4.7 |                4.5 | Western Kentucky    | 66%              |                -4.7 |
 |         1 | Montana State         | 35%              |                 4.4 |                5.5 | Northern Colorado   | 65%              |                -4.4 |
-|         0 | Gonzaga               | 36%              |                 4.1 |               -3.5 | Saint Mary's        | 64%              |                -4.1 |
-|         0 | Albany (NY)           | 17%              |                11   |               10.5 | Bryant              | 83%              |               -11   |
-|         1 | UCF                   | 42%              |                 2.2 |                2.5 | Utah                | 58%              |                -2.2 |
-|         1 | Nicholls State        | 50%              |                 0   |                1.5 | Lamar               | 50%              |                -0   |
+|         0 | Gonzaga               | 36%              |                 4.2 |               -3.5 | Saint Mary's        | 64%              |                -4.2 |
+|         0 | Albany (NY)           | 17%              |                11   |               11.5 | Bryant              | 83%              |               -11   |
+|         1 | UCF                   | 42%              |                 2.2 |                1.5 | Utah                | 58%              |                -2.2 |
+|         1 | Nicholls State        | 50%              |                -0.1 |               -1   | Lamar               | 50%              |                 0.1 |
 |         1 | Idaho                 | 25%              |                 7.6 |                6.5 | Montana             | 75%              |                -7.6 |
 
 # Top 50 Teams by ELO Rating
@@ -44,7 +44,7 @@ Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new 
 |  9 | Texas Tech        |         1970 |            +20 |
 | 10 | Maryland          |         1961 |            +25 |
 | 11 | BYU               |         1942 |            +22 |
-| 12 | Saint Mary's      |         1940 |             +1 |
+| 12 | Saint Mary's      |         1941 |             +2 |
 | 13 | UConn             |         1939 |            +13 |
 | 14 | Gonzaga           |         1920 |            +11 |
 | 15 | Iowa State        |         1918 |             +9 |
