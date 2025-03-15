@@ -123,7 +123,8 @@ def predict_next_day(elo_state, forecast_date, auto):
 	predictions = []
 	for game in games:
 		if forecast_date.strftime('%Y%m%d')[4:] >= '0314': #force neutral site for games after 3/14 because they should all be conference tournament games
-			is_neutral = 1
+			is_neutral = True
+			game[0] = 1
 		else:
 			is_neutral = True if game[0] == 1 else False
 		winner, prob, home_spread = predict_game(elo_state, game[3], game[1], pick_mode = 1, neutral = is_neutral)
