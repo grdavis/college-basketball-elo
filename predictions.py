@@ -46,6 +46,14 @@ def predict_game(elo_state, home, away, pick_mode = False, neutral = False, verb
 	#to account for conference tournaments where there are byes, the bracket will be formatted to have a team play itself
 	if home == away:
 		return home, "BYE", "N/A"
+
+	#to account for play-in games, we need to predict those outcomes first and they will have a / in the team name
+	if '/' in home:
+		pihome, piaway = home.split('/')[0], home.split('/')[1]
+		home = predict_game(elo_state, pihome, piaway, pick_mode = pick_mode, neutral = neutral)[0]
+	elif '/' in away:
+		pihome, piaway = away.split('/')[0], away.split('/')[1]
+		away = predict_game(elo_state, pihome, piaway, pick_mode = pick_mode, neutral = neutral)[0]
 	
 	home_elo = elo_state.get_elo(home)
 	home_boost = add_home_advantage(home_elo) if not neutral else 0
@@ -96,7 +104,12 @@ def sim_tournaments(elo_state, tournamant_teams, n, verbose = False, rounds = AL
 	'''
 	sim_results = {}
 	for team in tournamant_teams:
-		sim_results[team] = [0 for _ in range(len(rounds) - 1)]
+		if '/' in team:
+			team1, team2 = team.split('/')[0], team.split('/')[1]
+			sim_results[team1] = [0 for _ in range(len(rounds) - 1)]
+			sim_results[team2] = [0 for _ in range(len(rounds) - 1)]
+		else:
+			sim_results[team] = [0 for _ in range(len(rounds) - 1)]
 
 	for _ in range(n):
 		results = predict_tournament(elo_state, tournamant_teams, rounds = rounds)
@@ -106,7 +119,7 @@ def sim_tournaments(elo_state, tournamant_teams, n, verbose = False, rounds = AL
 
 	if verbose:
 		current_rankings = elo_state.get_rankings_dict()
-		formatted = [[f'{team} (#{current_rankings[team]})'] + [round(i/n, 4) for i in sim_results[team]] for team in tournamant_teams]
+		formatted = [[f'{team} (#{current_rankings[team]})'] + [round(i/n, 4) for i in sim_results[team]] for team in sim_results]
 		output = pd.DataFrame(formatted, columns = ['team'] + rounds[1:]).sort_values(rounds[-1], ascending = False).drop_duplicates()
 		utils.table_output(output, 'Tournament Predictions Based on Ratings through ' + elo_state.date + ' and ' + str(n) + ' Simulations')
 
