@@ -5,7 +5,7 @@ Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new 
 
 |   Neutral | Away             | Away Win Prob.   |   Away Pred. Spread |   Live Away Spread | Home            | Home Win Prob.   |   Home Pred. Spread |
 |----------:|:-----------------|:-----------------|--------------------:|-------------------:|:----------------|:-----------------|--------------------:|
-|         1 | Creighton        | 47%              |                 0.9 |                2.5 | Louisville      | 53%              |                -0.9 |
+|         1 | Creighton        | 47%              |                 0.9 |                3.5 | Louisville      | 53%              |                -0.9 |
 |         1 | High Point       | 32%              |                 5.2 |                7.5 | Purdue          | 68%              |                -5.2 |
 |         1 | Montana          | 15%              |                12.2 |               16.5 | Wisconsin       | 85%              |               -12.2 |
 |         1 | SIU-Edwardsville | 2%               |                26.2 |               28.5 | Houston         | 98%              |               -26.2 |
