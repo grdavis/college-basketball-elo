@@ -87411,7 +87411,27 @@
 1,Alabama State,60,Jackson State,56,20250315,3.5 
 1,Grand Canyon,89,Utah Valley,82,20250315,-4.5 
 1,Cornell,84,Yale,90,20250316,4.5 
-1,George Mason,63,VCU,68,20250316,7.5 
+0,George Mason,63,VCU,68,20250316,7.5 
 1,Tennessee,77,Florida,86,20250316,5.5 
 1,UAB,72,Memphis,84,20250316,3.5 
-1,Wisconsin,53,Michigan,59,20250316,-5.5 
+1,Wisconsin,53,Michigan,59,20250316,-5.5
+1,Saint Francis (PA),68,Alabama State,70,20250318,3.5
+0,Kent State,75,St. Bonaventure,56,20250318,4.5
+0,Jacksonville State,81,Georgia Tech,64,20250318,6.5
+0,Chattanooga,109,Middle Tennessee,103,20250318,1.5
+0,Saint Louis,78,Arkansas State,103,20250318,5.5
+0,Wichita State,79,Oklahoma State,89,20250318,6.5
+1,UNC,95,San Diego State,68,20250318,-4.5
+0,Cal State Northridge,70,Stanford,87,20250318,8.5
+0,UC-Riverside,62,Santa Clara,101,20250318,9.5
+0,Mount St. Mary's,83,American,72,20250319,2.5
+0,Dayton,86,Florida Atlantic,79,20250319,-1.5
+0,UAB,69,St. Joseph's,65,20250319,6.5
+0,Samford,69,George Mason,86,20250319,6.5
+0,North Alabama,62,Bradley,71,20250319,4.5
+0,Furman,64,North Texas,75,20250319,8.5
+0,Northern Iowa,63,SMU,73,20250319,8.5
+1,Xavier,86,Texas,80,20250319,-2.5
+0,Northern Colorado,72,UC-Irvine,82,20250319,8.5
+0,Loyola (IL),73,San Jose State,70,20250319,-4.5
+0,Utah Valley,70,San Francisco,79,20250319,5.5
