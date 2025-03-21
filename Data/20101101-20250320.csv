@@ -87440,7 +87440,7 @@
 1,Montana,66,Wisconsin,85,20250320,16.5
 1,SIU-Edwardsville,40,Houston,78,20250320,28.5
 1,Alabama State,63,Auburn,83,20250320,31.5
-0,McNeese State,69,Clemson,67,20250320,7.5
+1,McNeese State,69,Clemson,67,20250320,7.5
 1,VCU,71,BYU,80,20250320,2.5
 1,Georgia,68,Gonzaga,89,20250320,7.5
 1,Wofford,62,Tennessee,77,20250320,18.5
@@ -87448,6 +87448,6 @@
 1,Yale,71,Texas A&M,80,20250320,7.5
 1,Drake,67,Missouri,57,20250320,5.5
 1,Utah State,47,UCLA,72,20250320,5.5
-0,Omaha,53,St. John's (NY),83,20250320,18.5
-0,UC-San Diego,65,Michigan,68,20250320,2.5
-0,UNC Wilmington,72,Texas Tech,82,20250320,15.5
+1,Omaha,53,St. John's (NY),83,20250320,18.5
+1,UC-San Diego,65,Michigan,68,20250320,2.5
+1,UNC Wilmington,72,Texas Tech,82,20250320,15.5
