@@ -16,8 +16,8 @@ URLV2 = 'https://www.scoresandodds.com/ncaab?date=YEAR-MONTH-DAY'
 DATA_FOLDER = utils.DATA_FOLDER
 NEUTRAL_MAP = None #will be set if needed. Maps (team1, team2, date) --> 1/0 depending on if the game is at a neutral site
 TR_NAMES = None #tracking this temporarily to see if there are teams with improper mapping in SR to TR
-TR_NAMES_MAP = utils.read_two_column_csv_to_dict('Data/sr_tr_mapping.csv') #maps sport reference names (our original source of truth for names) to team rankings names
-SR_NAMES_MAP = utils.read_two_column_csv_to_dict('Data/so_sr_mapping.csv') #maps scores & odds names to sports reference names (our original source of truth for names)
+TR_NAMES_MAP = utils.read_two_column_csv_to_dict(DATA_FOLDER + 'sr_tr_mapping.csv') #maps sport reference names (our original source of truth for names) to team rankings names
+SR_NAMES_MAP = utils.read_two_column_csv_to_dict(DATA_FOLDER + 'so_sr_mapping.csv') #maps scores & odds names to sports reference names (our original source of truth for names)
 
 def scrape_neutral_data():
 	'''
@@ -30,7 +30,7 @@ def scrape_neutral_data():
 	table_games_data = BeautifulSoup(data,'html.parser').find_all("tr")
 	all_rows = [i.text.split('\n') for i in table_games_data]
 
-	global NEUTRAL_MAP
+	global NEUTRAL_MAP, TR_NAMES
 	NEUTRAL_MAP = {}
 	TR_NAMES = set() #set of teams mentioned in TR
 	this_date = utils.format_tr_dates(all_rows[0][1])
@@ -48,8 +48,6 @@ def scrape_neutral_data():
 			TR_NAMES.add(teams[1])
 		else:
 			this_date = utils.format_tr_dates(val)
-
-scrape_neutral_data()
 
 def scrape_scores(date_obj):
 	'''
@@ -116,8 +114,11 @@ def scrape_scores(date_obj):
 
 		if (TR1, TR2, this_day_string) in NEUTRAL_MAP:
 			n_flag = NEUTRAL_MAP[(TR1, TR2, this_day_string)]
+		elif (TR2, TR1, this_day_string) in NEUTRAL_MAP:
+			n_flag = NEUTRAL_MAP[(TR2, TR1, this_day_string)]
 		else:
-			n_flag = NEUTRAL_MAP.get((TR2, TR1, this_day_string), 0) #if this other orientation of names isn't there, default to non-neutral (0)
+			print(f"Warning... {TR1} or {TR2} not found in teamrankings schedule. The mapping in sr_tr_mapping.csv may be incorrect")
+			n_flag = 0
 
 		day_stats.append([n_flag, away, away_score, home, home_score, this_day_string, away_spread])
 
@@ -179,3 +180,5 @@ def main(file_start, scrape_start, scrape_end, data_filepath = False):
 	else:
 		all_data = []
 	scrape_by_day(file_start, start, end, all_data)
+
+scrape_neutral_data() #automatically called when the file is imported

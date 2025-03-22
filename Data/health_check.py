@@ -1,8 +1,11 @@
 import pandas as pd
 import sys
 import os
+# Change working directory to project root before imports
+os.chdir(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import utils
+import scraper
 
 df = pd.read_csv(utils.get_latest_data_filepath(), 
                 header=None, 
@@ -58,6 +61,24 @@ def check_3():
     else:
         print("No duplicate games found")
 
+def check_4():
+    '''
+    This function checks for teams that appear in TeamRankings schedules but don't have a mapping from Sports Reference names,
+    which indicates the name we're mapping to in TR is incorrect
+    '''
+    # Find teams in TR_NAMES that don't appear in TR_NAMES_MAP values
+    mapped_teams = set(scraper.TR_NAMES_MAP.values())
+    tr_teams = set(scraper.TR_NAMES)
+    unmapped_teams = tr_teams - mapped_teams
+    
+    if len(unmapped_teams) > 0:
+        print(f"Found {len(unmapped_teams)} teams in TeamRankings that don't have Sports Reference mappings:")
+        for team in sorted(unmapped_teams):
+            print(f"  {team}")
+    else:
+        print("All TeamRankings teams have corresponding Sports Reference mappings")
+
 # check_1()
 # check_2()
 # check_3() # last checked 2025-03-09; games before that date have been validated as non-duplicates
+# check_4() # last checked 2025-03-22; 206 changes left to make, but they are small teams
