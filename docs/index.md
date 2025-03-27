@@ -1,13 +1,14 @@
-# NCAAM ELO Game Predictions for 2025-03-26 - @grdavis
+# NCAAM ELO Game Predictions for 2025-03-27 - @grdavis
 Below are predictions for today's Men's college basketball games using an ELO rating methodology. Check out the full [college-basketball-elo](https://github.com/grdavis/college-basketball-elo) repository on github to see methodology and more.
 
 Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new to the model (i.e. they haven't played any/many D1 games) and predictions are more uncertain.
 
-|   Neutral | Away           | Away Win Prob.   |   Away Pred. Spread |   Live Away Spread | Home            | Home Win Prob.   |   Home Pred. Spread |
-|----------:|:---------------|:-----------------|--------------------:|-------------------:|:----------------|:-----------------|--------------------:|
-|         1 | Illinois State | 54%              |                -1.1 |               -2.5 | Cleveland State | 46%              |                 1.1 |
-|         0 | Kent State     | 28%              |                 6.7 |                5.5 | Loyola (IL)     | 72%              |                -6.7 |
-|         0 | UAB            | 35%              |                 4.3 |                4.5 | UC-Irvine       | 65%              |                -4.3 |
+|   Neutral | Away     | Away Win Prob.   |   Away Pred. Spread |   Live Away Spread | Home       | Home Win Prob.   |   Home Pred. Spread |
+|----------:|:---------|:-----------------|--------------------:|-------------------:|:-----------|:-----------------|--------------------:|
+|         1 | BYU      | 43%              |                 1.9 |                4.5 | Alabama    | 57%              |                -1.9 |
+|         1 | Maryland | 35%              |                 4.3 |                6.5 | Florida    | 65%              |                -4.3 |
+|         1 | Arizona  | 33%              |                 5.1 |                9.5 | Duke       | 67%              |                -5.1 |
+|         1 | Arkansas | 34%              |                 4.7 |                5.5 | Texas Tech | 66%              |                -4.7 |
 
 # Top 50 Teams by ELO Rating
 |    | Team              |   Elo Rating |   7 Day Change |
@@ -50,7 +51,7 @@ Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new 
 | 36 | Marquette         |         1844 |            -21 |
 | 37 | Memphis           |         1841 |            -16 |
 | 38 | Baylor            |         1839 |             -3 |
-| 39 | Xavier            |         1838 |            -13 |
+| 39 | Xavier            |         1838 |            -25 |
 | 40 | Boise State       |         1823 |             +0 |
 | 41 | Kansas            |         1820 |            -23 |
 | 42 | Missouri          |         1810 |            -21 |
