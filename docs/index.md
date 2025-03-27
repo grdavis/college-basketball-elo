@@ -1,13 +1,13 @@
-# NCAAM ELO Game Predictions for 2025-03-24 - @grdavis
+# NCAAM ELO Game Predictions for 2025-03-26 - @grdavis
 Below are predictions for today's Men's college basketball games using an ELO rating methodology. Check out the full [college-basketball-elo](https://github.com/grdavis/college-basketball-elo) repository on github to see methodology and more.
 
 Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new to the model (i.e. they haven't played any/many D1 games) and predictions are more uncertain.
 
-|   Neutral | Away           | Away Win Prob.   |   Away Pred. Spread |   Live Away Spread | Home               | Home Win Prob.   |   Home Pred. Spread |
-|----------:|:---------------|:-----------------|--------------------:|-------------------:|:-------------------|:-----------------|--------------------:|
-|         0 | Incarnate Word | 24%              |                 8   |                3.5 | Jacksonville       | 76%              |                -8   |
-|         1 | Army           | 23%              |                 8.6 |                9.5 | Florida Gulf Coast | 77%              |                -8.6 |
-|         1 | Queens (NC)    | 41%              |                 2.4 |                3.5 | Cleveland State    | 59%              |                -2.4 |
+|   Neutral | Away           | Away Win Prob.   |   Away Pred. Spread |   Live Away Spread | Home            | Home Win Prob.   |   Home Pred. Spread |
+|----------:|:---------------|:-----------------|--------------------:|-------------------:|:----------------|:-----------------|--------------------:|
+|         1 | Illinois State | 54%              |                -1.1 |               -2.5 | Cleveland State | 46%              |                 1.1 |
+|         0 | Kent State     | 28%              |                 6.7 |                5.5 | Loyola (IL)     | 72%              |                -6.7 |
+|         0 | UAB            | 35%              |                 4.3 |                4.5 | UC-Irvine       | 65%              |                -4.3 |
 
 # Top 50 Teams by ELO Rating
 |    | Team              |   Elo Rating |   7 Day Change |
@@ -44,7 +44,7 @@ Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new 
 | 30 | Texas A&M         |         1862 |            -12 |
 | 31 | VCU               |         1862 |            -17 |
 | 32 | Drake             |         1857 |             +2 |
-| 33 | UNC               |         1851 |            +14 |
+| 33 | UNC               |         1851 |            -23 |
 | 34 | UC-San Diego      |         1849 |            -11 |
 | 35 | Clemson           |         1848 |            -20 |
 | 36 | Marquette         |         1844 |            -21 |
@@ -60,5 +60,5 @@ Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new 
 | 46 | Northwestern      |         1788 |             +0 |
 | 47 | Mississippi State |         1778 |            -10 |
 | 48 | Villanova         |         1773 |             +0 |
-| 49 | San Diego State   |         1771 |            -37 |
+| 49 | San Diego State   |         1771 |             +0 |
 | 50 | Penn State        |         1770 |             +0 |
