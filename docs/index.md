@@ -1,16 +1,12 @@
-# NCAAM ELO Game Predictions for 2025-04-01 - @grdavis
+# NCAAM ELO Game Predictions for 2025-04-02 - @grdavis
 Below are predictions for today's Men's college basketball games using an ELO rating methodology. Check out the full [college-basketball-elo](https://github.com/grdavis/college-basketball-elo) repository on github to see methodology and more.
 
 Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new to the model (i.e. they haven't played any/many D1 games) and predictions are more uncertain.
 
-|   Neutral | Away         | Away Win Prob.   |   Away Pred. Spread |   Live Away Spread | Home        | Home Win Prob.   |   Home Pred. Spread |
-|----------:|:-------------|:-----------------|--------------------:|-------------------:|:------------|:-----------------|--------------------:|
-|         1 | DePaul       | 27%              |                 6.8 |                9.5 | Cincinnati  | 73%              |                -6.8 |
-|         1 | Oregon State | 38%              |                 3.4 |                4.5 | UCF         | 62%              |                -3.4 |
-|         1 | North Texas  | 47%              |                 0.9 |               -1.5 | UC-Irvine   | 53%              |                -0.9 |
-|         1 | Colorado     | 38%              |                 3.4 |                3.5 | Villanova   | 62%              |                -3.4 |
-|         1 | Loyola (IL)  | 47%              |                 0.8 |               -2.5 | Chattanooga | 53%              |                -0.8 |
-|         1 | Tulane       | 35%              |                 4.4 |                8.5 | USC         | 65%              |                -4.4 |
+|   Neutral | Away     | Away Win Prob.   |   Away Pred. Spread |   Live Away Spread | Home        | Home Win Prob.   |   Home Pred. Spread |
+|----------:|:---------|:-----------------|--------------------:|-------------------:|:------------|:-----------------|--------------------:|
+|         1 | Butler   | 28%              |                 6.6 |                6.5 | Boise State | 72%              |                -6.6 |
+|         1 | Nebraska | 63%              |                -3.7 |               -8.5 | Georgetown  | 37%              |                 3.7 |
 
 # Top 50 Teams by ELO Rating
 |    | Team              |   Elo Rating |   7 Day Change |
@@ -57,11 +53,11 @@ Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new 
 | 40 | Xavier            |         1838 |             +0 |
 | 41 | Kansas            |         1820 |             +0 |
 | 42 | Missouri          |         1810 |             +0 |
-| 43 | Georgia           |         1793 |             +0 |
-| 44 | Oklahoma          |         1791 |             +0 |
-| 45 | Indiana           |         1790 |             +0 |
-| 46 | Northwestern      |         1788 |             +0 |
-| 47 | Mississippi State |         1778 |             +0 |
-| 48 | Villanova         |         1773 |             +0 |
+| 43 | Villanova         |         1798 |            +25 |
+| 44 | Georgia           |         1793 |             +0 |
+| 45 | Oklahoma          |         1791 |             +0 |
+| 46 | Indiana           |         1790 |             +0 |
+| 47 | Northwestern      |         1788 |             +0 |
+| 48 | Mississippi State |         1778 |             +0 |
 | 49 | San Diego State   |         1771 |             +0 |
 | 50 | Penn State        |         1770 |             +0 |
