@@ -1,12 +1,13 @@
-# NCAAM ELO Game Predictions for 2025-04-02 - @grdavis
+# NCAAM ELO Game Predictions for 2025-04-03 - @grdavis
 Below are predictions for today's Men's college basketball games using an ELO rating methodology. Check out the full [college-basketball-elo](https://github.com/grdavis/college-basketball-elo) repository on github to see methodology and more.
 
 Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new to the model (i.e. they haven't played any/many D1 games) and predictions are more uncertain.
 
-|   Neutral | Away     | Away Win Prob.   |   Away Pred. Spread |   Live Away Spread | Home        | Home Win Prob.   |   Home Pred. Spread |
-|----------:|:---------|:-----------------|--------------------:|-------------------:|:------------|:-----------------|--------------------:|
-|         1 | Butler   | 28%              |                 6.6 |                6.5 | Boise State | 72%              |                -6.6 |
-|         1 | Nebraska | 63%              |                -3.7 |               -8.5 | Georgetown  | 37%              |                 3.7 |
+|   Neutral | Away        | Away Win Prob.   |   Away Pred. Spread |   Live Away Spread | Home       | Home Win Prob.   |   Home Pred. Spread |
+|----------:|:------------|:-----------------|--------------------:|-------------------:|:-----------|:-----------------|--------------------:|
+|         1 | UCF         | 41%              |                 2.5 |                6.5 | Cincinnati | 59%              |                -2.5 |
+|         1 | Chattanooga | 51%              |                -0.3 |                3.5 | UC-Irvine  | 49%              |                 0.3 |
+|         1 | Villanova   | 57%              |                -2   |               -5.5 | USC        | 43%              |                 2   |
 
 # Top 50 Teams by ELO Rating
 |    | Team              |   Elo Rating |   7 Day Change |
@@ -44,11 +45,11 @@ Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new 
 | 31 | Drake             |         1857 |             +0 |
 | 32 | Arkansas          |         1856 |             -7 |
 | 33 | UNC               |         1851 |             +0 |
-| 34 | UC-San Diego      |         1849 |             +0 |
-| 35 | Clemson           |         1848 |             +0 |
-| 36 | Marquette         |         1844 |             +0 |
-| 37 | Memphis           |         1841 |             +0 |
-| 38 | Boise State       |         1840 |            +17 |
+| 34 | Boise State       |         1849 |            +26 |
+| 35 | UC-San Diego      |         1849 |             +0 |
+| 36 | Clemson           |         1848 |             +0 |
+| 37 | Marquette         |         1844 |             +0 |
+| 38 | Memphis           |         1841 |             +0 |
 | 39 | Baylor            |         1839 |             +0 |
 | 40 | Xavier            |         1838 |             +0 |
 | 41 | Kansas            |         1820 |             +0 |
