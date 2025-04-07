@@ -1,23 +1,23 @@
-# NCAAM ELO Game Predictions for 2025-04-06 - @grdavis
+# NCAAM ELO Game Predictions for 2025-04-07 - @grdavis
 Below are predictions for today's Men's college basketball games using an ELO rating methodology. Check out the full [college-basketball-elo](https://github.com/grdavis/college-basketball-elo) repository on github to see methodology and more.
 
 Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new to the model (i.e. they haven't played any/many D1 games) and predictions are more uncertain.
 
-|   Neutral | Away     | Away Win Prob.   |   Away Pred. Spread |   Live Away Spread | Home   | Home Win Prob.   |   Home Pred. Spread |
-|----------:|:---------|:-----------------|--------------------:|-------------------:|:-------|:-----------------|--------------------:|
-|         1 | Nebraska | 53%              |                  -1 |               -3.5 | UCF    | 47%              |                   1 |
+|   Neutral | Away    | Away Win Prob.   |   Away Pred. Spread |   Live Away Spread | Home    | Home Win Prob.   |   Home Pred. Spread |
+|----------:|:--------|:-----------------|--------------------:|-------------------:|:--------|:-----------------|--------------------:|
+|         1 | Florida | 47%              |                 0.7 |                -1  | Houston | 53%              |                -0.7 |
 
 # Top 50 Teams by ELO Rating
 |    | Team              |   Elo Rating |   7 Day Change |
 |---:|:------------------|-------------:|---------------:|
-|  1 | Houston           |         2167 |            +33 |
+|  1 | Houston           |         2167 |            +12 |
 |  2 | Florida           |         2149 |            +14 |
 |  3 | Duke              |         2117 |            -12 |
-|  4 | Auburn            |         2065 |             +3 |
-|  5 | Michigan State    |         2032 |            -17 |
+|  4 | Auburn            |         2065 |            -14 |
+|  5 | Michigan State    |         2032 |             +0 |
 |  6 | Alabama           |         2018 |             +0 |
 |  7 | St. John's (NY)   |         2012 |             +0 |
-|  8 | Tennessee         |         2007 |            -21 |
+|  8 | Tennessee         |         2007 |             +0 |
 |  9 | Maryland          |         1981 |             +0 |
 | 10 | Texas Tech        |         1978 |             +0 |
 | 11 | Gonzaga           |         1953 |             +0 |
@@ -56,7 +56,7 @@ Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new 
 | 44 | Oklahoma          |         1791 |             +0 |
 | 45 | Indiana           |         1790 |             +0 |
 | 46 | Northwestern      |         1788 |             +0 |
-| 47 | Villanova         |         1782 |             +9 |
-| 48 | Chattanooga       |         1779 |            +27 |
-| 49 | Mississippi State |         1778 |             +0 |
-| 50 | San Diego State   |         1771 |             +0 |
+| 47 | Nebraska          |         1788 |            +89 |
+| 48 | Villanova         |         1782 |             +9 |
+| 49 | Chattanooga       |         1779 |            +27 |
+| 50 | Mississippi State |         1778 |             +0 |
