@@ -8,7 +8,16 @@ DOCS_FOLDER = 'docs/'
 DATA_FOLDER = 'Data/'
 OUTPUTS_FOLDER = 'Outputs/'
 SPREAD_FOLDER = 'New_Spreads/'
-SEASON_START = 2024 #when scraping https://www.teamrankings.com/ncb/schedules/season/, which season is currently up on the site?
+
+# Dynamically determine the current basketball season start year
+# Basketball seasons start in November, so:
+# - If current month is Nov-Dec, season start is current year
+# - If current month is Jan-Oct, season start is previous year
+_current_date = datetime.now()
+_current_year = _current_date.year
+_current_month = _current_date.month
+SEASON_START = _current_year if _current_month >= 11 else _current_year - 1
+
 MO_MAP = {'Nov': '11', 'Dec': '12', 'Jan': '01', 'Feb': '02', 'Mar': '03', 'Apr': '04'}
 YR_MAP = {'Nov': SEASON_START, 'Dec': SEASON_START, 'Jan': SEASON_START+1, 'Feb': SEASON_START+1, 'Mar': SEASON_START+1, 'Apr': SEASON_START+1}
 
