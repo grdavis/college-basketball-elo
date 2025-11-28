@@ -26,7 +26,11 @@ def scrape_live_odds():
 			away = away.find('a').text.strip(' 1234567890()')
 
 		odds_obj = away_row.find('div', {'class': 'game-odds'})
-		away_spread = 'NL' if odds_obj == None else odds_obj.find('span').text.replace('+', '')
+		if odds_obj == None:
+			away_spread = 'NL'
+		else:
+			span = odds_obj.find('span')
+			away_spread = 'NL' if span == None or span.text == None else span.text.replace('+', '')
 
 		home = home_row.find('span', {'class': 'team-name'})
 		if home.find('a') == None:
@@ -57,13 +61,33 @@ def add_spreads_to_todays_preds(predictions, forecast_date):
 	todays_spreads, timestamp = scrape_live_odds()
 	spreads_map = {}
 	for t in todays_spreads:
-		spreads_map[t[0] + " " + t[2]] = t
+		# Only add to map if we have valid data with at least 3 elements
+		if t and len(t) >= 3:
+			spreads_map[t[0] + " " + t[2]] = t
+
+	if len(spreads_map) == 0:
+		print('Warning: No valid spreads found in scraped data. Using NL for all games.')
+		return [row[:4] + ['NL'] + row[4:] for row in predictions], timestamp
 
 	new_data = []
 	for row in predictions:
 		teamindex = row[1] + " " + row[4]
 		best_match = process.extractOne(teamindex, spreads_map.keys(), scorer = fuzz.token_set_ratio)
-		spread = (spreads_map[best_match[0]][1]).replace('+', '')
+		
+		# Handle case where no match is found or best_match is None
+		if best_match is None or best_match[0] not in spreads_map:
+			print(f'Warning: No match found for {teamindex}. Using NL.')
+			new_data.append(row[:4] + ['NL'] + row[4:])
+			continue
+		
+		matched_spread_data = spreads_map[best_match[0]]
+		# Check if the matched data has the expected structure
+		if matched_spread_data is None or len(matched_spread_data) < 2:
+			print(f'Warning: Invalid spread data for {teamindex}. Using NL.')
+			new_data.append(row[:4] + ['NL'] + row[4:])
+			continue
+		
+		spread = str(matched_spread_data[1]).replace('+', '') if matched_spread_data[1] else 'NL'
 		score = best_match[1]
 		if score >= 80:
 			new_data.append(row[:4] + [spread] + row[4:])
