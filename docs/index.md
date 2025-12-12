@@ -1,19 +1,19 @@
-# NCAAM ELO Game Predictions for 2025-12-11 - @grdavis
+# NCAAM ELO Game Predictions for 2025-12-12 - @grdavis
 Below are predictions for today's Men's college basketball games using an ELO rating methodology. Check out the full [college-basketball-elo](https://github.com/grdavis/college-basketball-elo) repository on github to see methodology and more.
 
 Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new to the model (i.e. they haven't played any/many D1 games) and predictions are more uncertain.
 
-|   Neutral | Away               | Away Win Prob.   |   Away Pred. Spread | Live Away Spread   | Home                    | Home Win Prob.   |   Home Pred. Spread |
-|----------:|:-------------------|:-----------------|--------------------:|:-------------------|:------------------------|:-----------------|--------------------:|
-|         0 | Green Bay          | 46%              |                 1.1 | -1.5               | IU Indy                 | 54%              |                -1.1 |
-|         0 | Appalachian State  | 26%              |                 7.5 | 3.5                | East Carolina           | 74%              |                -7.5 |
-|         0 | Western Carolina   | 8%               |                17.6 | 20.5               | Virginia Tech           | 92%              |               -17.6 |
-|         0 | UT Arlington       | 51%              |                -0.3 | 2.5                | Texas-Rio Grande Valley | 49%              |                 0.3 |
-|         0 | Iowa               | 22%              |                 8.7 | 11.5               | Iowa State              | 78%              |                -8.7 |
-|         0 | Alabama State      | 4%               |                22   | 26.5               | Missouri                | 96%              |               -22   |
-|         0 | St. Joseph's       | 31%              |                 5.6 | 13.5               | Syracuse                | 69%              |                -5.6 |
-|         0 | Alaska Anchorage*  | 6%               |                18.9 | NL                 | Denver                  | 94%              |               -18.9 |
-|         0 | North Dakota State | 59%              |                -2.6 | -6.5               | Cal State Bakersfield   | 41%              |                 2.6 |
+|   Neutral | Away                   | Away Win Prob.   |   Away Pred. Spread | Live Away Spread   | Home               | Home Win Prob.   |   Home Pred. Spread |
+|----------:|:-----------------------|:-----------------|--------------------:|:-------------------|:-------------------|:-----------------|--------------------:|
+|         0 | Army                   | 19%              |                10   | 6.5                | UMBC               | 81%              |               -10   |
+|         0 | Missouri State         | 6%               |                19.3 | 18.5               | Xavier             | 94%              |               -19.3 |
+|         0 | Brevard College*       | 9%               |                16.2 | NL                 | Gardner-Webb       | 91%              |               -16.2 |
+|         0 | Maryland-Eastern Shore | 19%              |                10.2 | 6.5                | North Carolina A&T | 81%              |               -10.2 |
+|         0 | South Carolina State   | 18%              |                10.4 | 15.5               | Queens (NC)        | 82%              |               -10.4 |
+|         0 | Texas                  | 15%              |                11.9 | 14.5               | UConn              | 85%              |               -11.9 |
+|         0 | ETSU                   | 60%              |                -2.7 | -4.5               | Austin Peay        | 40%              |                 2.7 |
+|         0 | East Texas A&M         | 6%               |                19.7 | 19.5               | McNeese State      | 94%              |               -19.7 |
+|         0 | California Baptist     | 72%              |                -6.6 | -3.5               | Eastern Washington | 28%              |                 6.6 |
 
 # Top 50 Teams by ELO Rating
 |    | Team            |   Elo Rating |   7 Day Change |
@@ -22,8 +22,8 @@ Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new 
 |  2 | Houston         |         2030 |             +4 |
 |  3 | Duke            |         2029 |            +24 |
 |  4 | Arizona         |         1990 |            +32 |
-|  5 | Michigan State  |         1987 |            -24 |
-|  6 | Iowa State      |         1983 |            +50 |
+|  5 | Iowa State      |         1988 |            +56 |
+|  6 | Michigan State  |         1987 |            -24 |
 |  7 | Alabama         |         1981 |             +2 |
 |  8 | Florida         |         1962 |            -18 |
 |  9 | Gonzaga         |         1954 |            +33 |
@@ -41,8 +41,8 @@ Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new 
 | 21 | Kansas          |         1859 |            +35 |
 | 22 | Colorado State  |         1851 |            +11 |
 | 23 | Wisconsin       |         1849 |            -26 |
-| 24 | Iowa            |         1849 |            +22 |
-| 25 | Louisville      |         1846 |            +22 |
+| 24 | Louisville      |         1846 |            +22 |
+| 25 | Iowa            |         1844 |            +17 |
 | 26 | Georgia         |         1842 |             +0 |
 | 27 | UNC             |         1840 |            +12 |
 | 28 | Indiana         |         1840 |             +9 |
@@ -52,7 +52,7 @@ Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new 
 | 32 | New Mexico      |         1816 |            +44 |
 | 33 | USC             |         1808 |            -39 |
 | 34 | Oklahoma State  |         1807 |             +8 |
-| 35 | Missouri        |         1793 |            -35 |
+| 35 | Missouri        |         1794 |            -34 |
 | 36 | Kentucky        |         1791 |            -31 |
 | 37 | Maryland        |         1790 |            -22 |
 | 38 | Villanova       |         1789 |             -5 |
