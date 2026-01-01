@@ -6,6 +6,7 @@ import argparse
 import scraper
 import datetime
 import spread_enricher
+import datawrapper_publisher
 
 DATA_FOLDER = utils.DATA_FOLDER
 ALL_ROUNDS = ['first', 'second', 'sixteen', 'eight', 'four', 'final', 'champion']
@@ -126,7 +127,7 @@ def sim_tournaments(elo_state, tournamant_teams, n, verbose = False, rounds = AL
 def predict_next_day(elo_state, forecast_date, auto):
 	'''
 	checks scrape source for games on forecast_date and uses the elo state to predict each game's outcome 
-	outputs a Plotly table summarizing predictions and saves a csv
+	outputs to Datawrapper (interactive tables) and saves a csv
 	'''
 	scraper.scrape_neutral_data() #set the NEUTRAL_MAP for predictions
 	games = scraper.scrape_scores(forecast_date)
@@ -152,11 +153,28 @@ def predict_next_day(elo_state, forecast_date, auto):
 	if timestamp != 'N/A':
 		spreads_string = ' with Spreads as of '
 		spreads_string +=  (timestamp - datetime.timedelta(hours = 5)).strftime('%Y%m%d at %H%M') if auto else timestamp.strftime('%Y%m%d at %H%M')
+	
+	# Still save CSV for backup
 	utils.table_output(output, forecast_date.strftime('%Y%m%d') + ' Game Predictions Based on Ratings through ' + elo_state.date + spreads_string)
 	
-	#save the predictions output in markdown where github pages can find it
-	new_top_50 = pd.DataFrame(elo_state.get_top(50), columns = ['Team', 'Elo Rating', '7 Day Change']) 
-	utils.save_markdown_df(output, new_top_50, forecast_date.strftime('%Y-%m-%d'))
+	# Prepare data for Datawrapper
+	date_str = forecast_date.strftime('%Y-%m-%d')
+	new_top_50 = pd.DataFrame(elo_state.get_top(50), columns = ['Team', 'Elo Rating', '7 Day Change'])
+	
+	# Try to publish to Datawrapper, fallback to Markdown if it fails
+	try:
+		print("\n📊 Publishing to Datawrapper...")
+		pred_chart_id, pred_url = datawrapper_publisher.create_or_update_predictions_table(output, date_str, elo_state.date)
+		rank_chart_id, rank_url = datawrapper_publisher.create_or_update_rankings_table(new_top_50)
+		datawrapper_publisher.save_datawrapper_embeds(pred_url, rank_url, date_str)
+		print(f"✓ Successfully published to Datawrapper")
+		print(f"  Predictions chart: {pred_url}")
+		print(f"  Rankings chart: {rank_url}")
+	except Exception as e:
+		print(f"\n⚠ Warning: Failed to publish to Datawrapper: {e}")
+		print("Falling back to Markdown output")
+		# Fallback to original Markdown output
+		utils.save_markdown_df(output, new_top_50, date_str)
 
 def main(auto = False, forecast_date = False, matchup = False, neutral = False, sim_mode = False, stop_short = '99999999', bracket = False, pick_mode = 0, bracket_round_start = 0):
 	'''

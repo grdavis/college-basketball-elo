@@ -2,6 +2,7 @@ import csv
 import re
 import os
 import plotly.graph_objects as go
+import plotly.io as pio
 from datetime import datetime, timedelta
 
 DOCS_FOLDER = 'docs/'
@@ -129,4 +130,11 @@ def table_output(df, table_title, order = None):
 	               align='left'))
 	])
 	fig.update_layout(title = {'text': table_title, 'xanchor': 'center', 'x': .5})
-	fig.show()
+	
+	# Try to show the plot in browser (for local development)
+	# Skip if no browser available (e.g., in GitHub Actions)
+	try:
+		pio.renderers.default = 'browser'
+		fig.show()
+	except Exception:
+		pass
