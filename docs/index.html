@@ -23,6 +23,7 @@
             margin: 20px 0;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow-x: auto;
         }
         .info {
             background: #e3f2fd;
@@ -37,33 +38,887 @@
         a:hover {
             text-decoration: underline;
         }
+        
+        /* Basic Table Styles */
+        .styled-table {
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 0.9em;
+            font-family: sans-serif;
+            min-width: 400px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+            width: 100%;
+        }
+        .styled-table thead tr {
+            background-color: #0066cc;
+            color: #ffffff;
+            text-align: left;
+        }
+        .styled-table th, .styled-table td {
+            padding: 12px 15px;
+        }
+        .styled-table tbody tr {
+            border-bottom: 1px solid #dddddd;
+        }
+        .styled-table tbody tr:nth-of-type(even) {
+            background-color: #f3f3f3;
+        }
+        .styled-table tbody tr:last-of-type {
+            border-bottom: 2px solid #0066cc;
+        }
     </style>
 </head>
 <body>
+    
+    <!-- Raw markdown content for machine consumption -->
+    <script id="raw-markdown" type="text/plain" style="display: none;">
+# NCAAM ELO Game Predictions for 2026-01-04 - @grdavis
+Below are predictions for today's Men's college basketball games using an ELO rating methodology. Check out the full [college-basketball-elo](https://github.com/grdavis/college-basketball-elo) repository on github to see methodology and more.
+
+Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new to the model (i.e. they haven't played any/many D1 games) and predictions are more uncertain.
+
+|   Neutral | Away                | Away Win Prob.   |   Away Pred. Spread | Live Away Spread   | Home                  | Home Win Prob.   |   Home Pred. Spread |
+|----------:|:--------------------|:-----------------|--------------------:|:-------------------|:----------------------|:-----------------|--------------------:|
+|         0 | Sacred Heart        | 41%              |                 2.4 | -6.5               | Canisius              | 59%              |                -2.4 |
+|         0 | Creighton           | 54%              |                -1.2 | -2.5               | Seton Hall            | 46%              |                 1.2 |
+|         0 | Denver              | 16%              |                11.5 | 9.5                | St. Thomas            | 84%              |               -11.5 |
+|         0 | UAB                 | 39%              |                 3.2 | 8.5                | South Florida         | 61%              |                -3.2 |
+|         0 | Florida Atlantic    | 48%              |                 0.5 | -3.5               | Tulane                | 52%              |                -0.5 |
+|         0 | New Haven           | 12%              |                13.9 | 7.5                | Central Connecticut   | 88%              |               -13.9 |
+|         0 | Sam Houston State   | 34%              |                 4.6 | 8.5                | Middle Tennessee      | 66%              |                -4.6 |
+|         0 | Wright State        | 76%              |                -8.1 | -6.5               | IU Indy               | 24%              |                 8.1 |
+|         0 | LIU                 | 65%              |                -4.3 | -8.5               | Chicago State         | 35%              |                 4.3 |
+|         0 | Kennesaw State      | 59%              |                -2.5 | -10.5              | Delaware              | 41%              |                 2.5 |
+|         0 | Le Moyne            | 38%              |                 3.5 | 4.5                | Mercyhurst            | 62%              |                -3.5 |
+|         0 | Jacksonville State  | 21%              |                 9.2 | 11.5               | Liberty               | 79%              |                -9.2 |
+|         0 | Fairfield           | 48%              |                 0.5 | -4.5               | Niagara               | 52%              |                -0.5 |
+|         0 | Iona                | 44%              |                 1.7 | 2.5                | Marist                | 56%              |                -1.7 |
+|         0 | Siena               | 62%              |                -3.4 | -7.5               | Rider                 | 38%              |                 3.4 |
+|         0 | Mount St. Mary's    | 18%              |                10.6 | 9.5                | Quinnipiac            | 82%              |               -10.6 |
+|         0 | Cleveland State     | 29%              |                 6.4 | 11.5               | Purdue-Fort Wayne     | 71%              |                -6.4 |
+|         0 | Marquette           | 9%               |                16.6 | 17.5               | UConn                 | 91%              |               -16.6 |
+|         0 | New Mexico State    | 50%              |                 0.1 | 1.5                | Missouri State        | 50%              |                -0.1 |
+|         0 | Louisiana Tech      | 35%              |                 4.3 | 8.5                | Western Kentucky      | 65%              |                -4.3 |
+|         0 | Robert Morris       | 44%              |                 1.6 | 2.5                | Oakland               | 56%              |                -1.6 |
+|         0 | Indiana State       | 25%              |                 7.6 | 6.5                | Drake                 | 75%              |                -7.6 |
+|         0 | UIC                 | 31%              |                 5.7 | 2.5                | Valparaiso            | 69%              |                -5.7 |
+|         0 | Tulsa               | 43%              |                 2.1 | -3.5               | North Texas           | 57%              |                -2.1 |
+|         0 | Youngstown State    | 33%              |                 4.8 | 3.5                | Northern Kentucky     | 67%              |                -4.8 |
+|         0 | Northern Iowa       | 74%              |                -7.5 | -5.5               | Evansville            | 26%              |                 7.5 |
+|         0 | UTEP                | 25%              |                 7.7 | 7.5                | Florida International | 75%              |                -7.7 |
+|         0 | Stonehill           | 16%              |                11.7 | 7.5                | Wagner                | 84%              |               -11.7 |
+|         0 | Fairleigh Dickinson | 35%              |                 4.2 | NL                 | Saint Francis (PA)    | 65%              |                -4.2 |
+|         0 | Southern Illinois   | 16%              |                11.7 | 6.5                | Belmont               | 84%              |               -11.7 |
+|         0 | Bradley             | 37%              |                 3.8 | 4.5                | Murray State          | 63%              |                -3.8 |
+|         0 | Portland            | 14%              |                13   | 10.5               | San Francisco         | 86%              |               -13   |
+|         0 | Pepperdine          | 21%              |                 9.1 | 11.5               | Pacific               | 79%              |                -9.1 |
+|         0 | San Diego           | 9%               |                16.6 | 16.5               | Santa Clara           | 91%              |               -16.6 |
+|         0 | Oregon State        | 36%              |                 4   | 7.5                | Washington State      | 64%              |                -4   |
+|         0 | Washington          | 27%              |                 7.1 | 8.5                | Indiana               | 73%              |                -7.1 |
+|         0 | Seattle             | 13%              |                13.6 | 12.5               | Saint Mary's          | 87%              |               -13.6 |
+|         0 | Loyola Marymount    | 5%               |                21   | 24.5               | Gonzaga               | 95%              |               -21   |
+|         0 | Manhattan           | 23%              |                 8.4 | NL                 | Merrimack             | 77%              |                -8.4 |
+|         0 | Richmond            | 49%              |                 0.4 | NL                 | Fordham               | 51%              |                -0.4 |
+
+# Top 50 Teams by ELO Rating
+|    | Team              |   Elo Rating |   7 Day Change |
+|---:|:------------------|-------------:|---------------:|
+|  1 | Michigan          |         2078 |            +13 |
+|  2 | Houston           |         2049 |             +6 |
+|  3 | Arizona           |         2046 |            +10 |
+|  4 | Duke              |         2021 |             +3 |
+|  5 | Iowa State        |         1996 |             +7 |
+|  6 | Michigan State    |         1988 |            -10 |
+|  7 | Gonzaga           |         1985 |             +8 |
+|  8 | Purdue            |         1982 |            +32 |
+|  9 | UConn             |         1972 |            +18 |
+| 10 | Alabama           |         1971 |            +19 |
+| 11 | Florida           |         1951 |            -16 |
+| 12 | Vanderbilt        |         1949 |            +14 |
+| 13 | Texas Tech        |         1941 |            +16 |
+| 14 | BYU               |         1937 |            +11 |
+| 15 | Illinois          |         1933 |            +10 |
+| 16 | Nebraska          |         1918 |            +13 |
+| 17 | Arkansas          |         1902 |            +24 |
+| 18 | Tennessee         |         1901 |            -20 |
+| 19 | Auburn            |         1880 |             -9 |
+| 20 | Georgia           |         1877 |            +13 |
+| 21 | Villanova         |         1873 |            +29 |
+| 22 | Iowa              |         1870 |            +19 |
+| 23 | Kansas            |         1861 |            -17 |
+| 24 | Louisville        |         1855 |             +8 |
+| 25 | Creighton         |         1846 |             +6 |
+| 26 | St. John's (NY)   |         1845 |            -28 |
+| 27 | Saint Mary's      |         1843 |            +17 |
+| 28 | Kentucky          |         1837 |            -12 |
+| 29 | UNC               |         1833 |            -26 |
+| 30 | Clemson           |         1826 |            +21 |
+| 31 | Utah State        |         1825 |             +9 |
+| 32 | Indiana           |         1822 |             +0 |
+| 33 | UCLA              |         1817 |            -17 |
+| 34 | Oklahoma          |         1816 |            +17 |
+| 35 | UCF               |         1816 |            +17 |
+| 36 | Baylor            |         1812 |            -18 |
+| 37 | New Mexico        |         1811 |            -13 |
+| 38 | USC               |         1806 |             -8 |
+| 39 | Wisconsin         |         1804 |            -20 |
+| 40 | Ohio State        |         1801 |            +17 |
+| 41 | Mississippi State |         1799 |            +17 |
+| 42 | Texas A&M         |         1798 |            +10 |
+| 43 | Virginia          |         1797 |            +17 |
+| 44 | SMU               |         1795 |            +35 |
+| 45 | Oregon            |         1792 |            +37 |
+| 46 | VCU               |         1778 |            +25 |
+| 47 | Nevada            |         1775 |            +47 |
+| 48 | LSU               |         1774 |             -5 |
+| 49 | Oklahoma State    |         1774 |            -11 |
+| 50 | Missouri          |         1774 |            +18 |
+    </script>
+
     <h1>NCAAM ELO Game Predictions - 2026-01-04</h1>
     
     <div class="info">
         <p>Below are predictions for today's Men's college basketball games using an ELO rating methodology.</p>
-        <p><strong>Interactive features:</strong> Click on any column header to sort by that column. Tables are fully responsive and work on mobile devices.</p>
         <p>Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new to the model (i.e. they haven't played any/many D1 games) and predictions are more uncertain.</p>
+        <p><strong>Note:</strong> This is a static version of the predictions page generated because the interactive charts service is currently unavailable.</p>
         <p>Check out the full <a href="https://github.com/grdavis/college-basketball-elo">college-basketball-elo</a> repository on GitHub to see methodology and more.</p>
     </div>
     
     <div class="chart-container">
         <h2>Today's Game Predictions</h2>
-        <iframe title="Daily Predictions" aria-label="Table" src="https://datawrapper.dwcdn.net/sXyuF/5/" 
-                scrolling="no" frameborder="0" style="width: 100%; min-height: 600px; border: none;"></iframe>
+        <table border="0" class="dataframe styled-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Neutral</th>
+      <th>Away</th>
+      <th>Away Win Prob.</th>
+      <th>Away Pred. Spread</th>
+      <th>Live Away Spread</th>
+      <th>Home</th>
+      <th>Home Win Prob.</th>
+      <th>Home Pred. Spread</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>Sacred Heart</td>
+      <td>41%</td>
+      <td>2.4</td>
+      <td>-6.5</td>
+      <td>Canisius</td>
+      <td>59%</td>
+      <td>-2.4</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>Creighton</td>
+      <td>54%</td>
+      <td>-1.2</td>
+      <td>-2.5</td>
+      <td>Seton Hall</td>
+      <td>46%</td>
+      <td>1.2</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>Denver</td>
+      <td>16%</td>
+      <td>11.5</td>
+      <td>9.5</td>
+      <td>St. Thomas</td>
+      <td>84%</td>
+      <td>-11.5</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>UAB</td>
+      <td>39%</td>
+      <td>3.2</td>
+      <td>8.5</td>
+      <td>South Florida</td>
+      <td>61%</td>
+      <td>-3.2</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>Florida Atlantic</td>
+      <td>48%</td>
+      <td>0.5</td>
+      <td>-3.5</td>
+      <td>Tulane</td>
+      <td>52%</td>
+      <td>-0.5</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>New Haven</td>
+      <td>12%</td>
+      <td>13.9</td>
+      <td>7.5</td>
+      <td>Central Connecticut</td>
+      <td>88%</td>
+      <td>-13.9</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>Sam Houston State</td>
+      <td>34%</td>
+      <td>4.6</td>
+      <td>8.5</td>
+      <td>Middle Tennessee</td>
+      <td>66%</td>
+      <td>-4.6</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>Wright State</td>
+      <td>76%</td>
+      <td>-8.1</td>
+      <td>-6.5</td>
+      <td>IU Indy</td>
+      <td>24%</td>
+      <td>8.1</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>LIU</td>
+      <td>65%</td>
+      <td>-4.3</td>
+      <td>-8.5</td>
+      <td>Chicago State</td>
+      <td>35%</td>
+      <td>4.3</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>Kennesaw State</td>
+      <td>59%</td>
+      <td>-2.5</td>
+      <td>-10.5</td>
+      <td>Delaware</td>
+      <td>41%</td>
+      <td>2.5</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>Le Moyne</td>
+      <td>38%</td>
+      <td>3.5</td>
+      <td>4.5</td>
+      <td>Mercyhurst</td>
+      <td>62%</td>
+      <td>-3.5</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>Jacksonville State</td>
+      <td>21%</td>
+      <td>9.2</td>
+      <td>11.5</td>
+      <td>Liberty</td>
+      <td>79%</td>
+      <td>-9.2</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>Fairfield</td>
+      <td>48%</td>
+      <td>0.5</td>
+      <td>-4.5</td>
+      <td>Niagara</td>
+      <td>52%</td>
+      <td>-0.5</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>Iona</td>
+      <td>44%</td>
+      <td>1.7</td>
+      <td>2.5</td>
+      <td>Marist</td>
+      <td>56%</td>
+      <td>-1.7</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>Siena</td>
+      <td>62%</td>
+      <td>-3.4</td>
+      <td>-7.5</td>
+      <td>Rider</td>
+      <td>38%</td>
+      <td>3.4</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>Mount St. Mary's</td>
+      <td>18%</td>
+      <td>10.6</td>
+      <td>9.5</td>
+      <td>Quinnipiac</td>
+      <td>82%</td>
+      <td>-10.6</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>Cleveland State</td>
+      <td>29%</td>
+      <td>6.4</td>
+      <td>11.5</td>
+      <td>Purdue-Fort Wayne</td>
+      <td>71%</td>
+      <td>-6.4</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>Marquette</td>
+      <td>9%</td>
+      <td>16.6</td>
+      <td>17.5</td>
+      <td>UConn</td>
+      <td>91%</td>
+      <td>-16.6</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>New Mexico State</td>
+      <td>50%</td>
+      <td>0.1</td>
+      <td>1.5</td>
+      <td>Missouri State</td>
+      <td>50%</td>
+      <td>-0.1</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>Louisiana Tech</td>
+      <td>35%</td>
+      <td>4.3</td>
+      <td>8.5</td>
+      <td>Western Kentucky</td>
+      <td>65%</td>
+      <td>-4.3</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>Robert Morris</td>
+      <td>44%</td>
+      <td>1.6</td>
+      <td>2.5</td>
+      <td>Oakland</td>
+      <td>56%</td>
+      <td>-1.6</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>Indiana State</td>
+      <td>25%</td>
+      <td>7.6</td>
+      <td>6.5</td>
+      <td>Drake</td>
+      <td>75%</td>
+      <td>-7.6</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>UIC</td>
+      <td>31%</td>
+      <td>5.7</td>
+      <td>2.5</td>
+      <td>Valparaiso</td>
+      <td>69%</td>
+      <td>-5.7</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>Tulsa</td>
+      <td>43%</td>
+      <td>2.1</td>
+      <td>-3.5</td>
+      <td>North Texas</td>
+      <td>57%</td>
+      <td>-2.1</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>Youngstown State</td>
+      <td>33%</td>
+      <td>4.8</td>
+      <td>3.5</td>
+      <td>Northern Kentucky</td>
+      <td>67%</td>
+      <td>-4.8</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>Northern Iowa</td>
+      <td>74%</td>
+      <td>-7.5</td>
+      <td>-5.5</td>
+      <td>Evansville</td>
+      <td>26%</td>
+      <td>7.5</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>UTEP</td>
+      <td>25%</td>
+      <td>7.7</td>
+      <td>7.5</td>
+      <td>Florida International</td>
+      <td>75%</td>
+      <td>-7.7</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>Stonehill</td>
+      <td>16%</td>
+      <td>11.7</td>
+      <td>7.5</td>
+      <td>Wagner</td>
+      <td>84%</td>
+      <td>-11.7</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>Fairleigh Dickinson</td>
+      <td>35%</td>
+      <td>4.2</td>
+      <td>NL</td>
+      <td>Saint Francis (PA)</td>
+      <td>65%</td>
+      <td>-4.2</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>Southern Illinois</td>
+      <td>16%</td>
+      <td>11.7</td>
+      <td>6.5</td>
+      <td>Belmont</td>
+      <td>84%</td>
+      <td>-11.7</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>Bradley</td>
+      <td>37%</td>
+      <td>3.8</td>
+      <td>4.5</td>
+      <td>Murray State</td>
+      <td>63%</td>
+      <td>-3.8</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>Portland</td>
+      <td>14%</td>
+      <td>13.0</td>
+      <td>10.5</td>
+      <td>San Francisco</td>
+      <td>86%</td>
+      <td>-13.0</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>Pepperdine</td>
+      <td>21%</td>
+      <td>9.1</td>
+      <td>11.5</td>
+      <td>Pacific</td>
+      <td>79%</td>
+      <td>-9.1</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>San Diego</td>
+      <td>9%</td>
+      <td>16.6</td>
+      <td>16.5</td>
+      <td>Santa Clara</td>
+      <td>91%</td>
+      <td>-16.6</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>Oregon State</td>
+      <td>36%</td>
+      <td>4.0</td>
+      <td>7.5</td>
+      <td>Washington State</td>
+      <td>64%</td>
+      <td>-4.0</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>Washington</td>
+      <td>27%</td>
+      <td>7.1</td>
+      <td>8.5</td>
+      <td>Indiana</td>
+      <td>73%</td>
+      <td>-7.1</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>Seattle</td>
+      <td>13%</td>
+      <td>13.6</td>
+      <td>12.5</td>
+      <td>Saint Mary's</td>
+      <td>87%</td>
+      <td>-13.6</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>Loyola Marymount</td>
+      <td>5%</td>
+      <td>21.0</td>
+      <td>24.5</td>
+      <td>Gonzaga</td>
+      <td>95%</td>
+      <td>-21.0</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>Manhattan</td>
+      <td>23%</td>
+      <td>8.4</td>
+      <td>NL</td>
+      <td>Merrimack</td>
+      <td>77%</td>
+      <td>-8.4</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>Richmond</td>
+      <td>49%</td>
+      <td>0.4</td>
+      <td>NL</td>
+      <td>Fordham</td>
+      <td>51%</td>
+      <td>-0.4</td>
+    </tr>
+  </tbody>
+</table>
     </div>
     
     <div class="chart-container">
         <h2>Top 50 Teams by ELO Rating</h2>
-        <iframe title="Rankings" aria-label="Table" src="https://datawrapper.dwcdn.net/K8w4W/4/" 
-                scrolling="no" frameborder="0" style="width: 100%; min-height: 800px; border: none;"></iframe>
+        <table border="0" class="dataframe styled-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Team</th>
+      <th>Elo Rating</th>
+      <th>7 Day Change</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Michigan</td>
+      <td>2078.0</td>
+      <td>+13</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Houston</td>
+      <td>2049.0</td>
+      <td>+6</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Arizona</td>
+      <td>2046.0</td>
+      <td>+10</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Duke</td>
+      <td>2021.0</td>
+      <td>+3</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Iowa State</td>
+      <td>1996.0</td>
+      <td>+7</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Michigan State</td>
+      <td>1988.0</td>
+      <td>-10</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Gonzaga</td>
+      <td>1985.0</td>
+      <td>+8</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Purdue</td>
+      <td>1982.0</td>
+      <td>+32</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>UConn</td>
+      <td>1972.0</td>
+      <td>+18</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Alabama</td>
+      <td>1971.0</td>
+      <td>+19</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>Florida</td>
+      <td>1951.0</td>
+      <td>-16</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>Vanderbilt</td>
+      <td>1949.0</td>
+      <td>+14</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>Texas Tech</td>
+      <td>1941.0</td>
+      <td>+16</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>BYU</td>
+      <td>1937.0</td>
+      <td>+11</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>Illinois</td>
+      <td>1933.0</td>
+      <td>+10</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>Nebraska</td>
+      <td>1918.0</td>
+      <td>+13</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>Arkansas</td>
+      <td>1902.0</td>
+      <td>+24</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>Tennessee</td>
+      <td>1901.0</td>
+      <td>-20</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>Auburn</td>
+      <td>1880.0</td>
+      <td>-9</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>Georgia</td>
+      <td>1877.0</td>
+      <td>+13</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>Villanova</td>
+      <td>1873.0</td>
+      <td>+29</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>Iowa</td>
+      <td>1870.0</td>
+      <td>+19</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>Kansas</td>
+      <td>1861.0</td>
+      <td>-17</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>Louisville</td>
+      <td>1855.0</td>
+      <td>+8</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>Creighton</td>
+      <td>1846.0</td>
+      <td>+6</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>St. John's (NY)</td>
+      <td>1845.0</td>
+      <td>-28</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>Saint Mary's</td>
+      <td>1843.0</td>
+      <td>+17</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>Kentucky</td>
+      <td>1837.0</td>
+      <td>-12</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>UNC</td>
+      <td>1833.0</td>
+      <td>-26</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>Clemson</td>
+      <td>1826.0</td>
+      <td>+21</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>Utah State</td>
+      <td>1825.0</td>
+      <td>+9</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>Indiana</td>
+      <td>1822.0</td>
+      <td>+0</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>UCLA</td>
+      <td>1817.0</td>
+      <td>-17</td>
+    </tr>
+    <tr>
+      <th>33</th>
+      <td>Oklahoma</td>
+      <td>1816.0</td>
+      <td>+17</td>
+    </tr>
+    <tr>
+      <th>34</th>
+      <td>UCF</td>
+      <td>1816.0</td>
+      <td>+17</td>
+    </tr>
+    <tr>
+      <th>35</th>
+      <td>Baylor</td>
+      <td>1812.0</td>
+      <td>-18</td>
+    </tr>
+    <tr>
+      <th>36</th>
+      <td>New Mexico</td>
+      <td>1811.0</td>
+      <td>-13</td>
+    </tr>
+    <tr>
+      <th>37</th>
+      <td>USC</td>
+      <td>1806.0</td>
+      <td>-8</td>
+    </tr>
+    <tr>
+      <th>38</th>
+      <td>Wisconsin</td>
+      <td>1804.0</td>
+      <td>-20</td>
+    </tr>
+    <tr>
+      <th>39</th>
+      <td>Ohio State</td>
+      <td>1801.0</td>
+      <td>+17</td>
+    </tr>
+    <tr>
+      <th>40</th>
+      <td>Mississippi State</td>
+      <td>1799.0</td>
+      <td>+17</td>
+    </tr>
+    <tr>
+      <th>41</th>
+      <td>Texas A&M</td>
+      <td>1798.0</td>
+      <td>+10</td>
+    </tr>
+    <tr>
+      <th>42</th>
+      <td>Virginia</td>
+      <td>1797.0</td>
+      <td>+17</td>
+    </tr>
+    <tr>
+      <th>43</th>
+      <td>SMU</td>
+      <td>1795.0</td>
+      <td>+35</td>
+    </tr>
+    <tr>
+      <th>44</th>
+      <td>Oregon</td>
+      <td>1792.0</td>
+      <td>+37</td>
+    </tr>
+    <tr>
+      <th>45</th>
+      <td>VCU</td>
+      <td>1778.0</td>
+      <td>+25</td>
+    </tr>
+    <tr>
+      <th>46</th>
+      <td>Nevada</td>
+      <td>1775.0</td>
+      <td>+47</td>
+    </tr>
+    <tr>
+      <th>47</th>
+      <td>LSU</td>
+      <td>1774.0</td>
+      <td>-5</td>
+    </tr>
+    <tr>
+      <th>48</th>
+      <td>Oklahoma State</td>
+      <td>1774.0</td>
+      <td>-11</td>
+    </tr>
+    <tr>
+      <th>49</th>
+      <td>Missouri</td>
+      <td>1774.0</td>
+      <td>+18</td>
+    </tr>
+  </tbody>
+</table>
     </div>
-    
-    <script type="text/javascript">
-        // Datawrapper responsive iframe script
-        !function(){"use strict";window.addEventListener("message",(function(a){if(void 0!==a.data["datawrapper-height"]){var e=document.querySelectorAll("iframe");for(var t in a.data["datawrapper-height"])for(var r=0;r<e.length;r++)if(e[r].contentWindow===a.source){var i=a.data["datawrapper-height"][t]+"px";e[r].style.height=i}}}))}();
-    </script>
+
 </body>
 </html>

@@ -192,7 +192,7 @@ def create_or_update_rankings_table(rankings_df):
     except Exception as e:
         raise Exception(f"Failed to publish Datawrapper chart: {e}")
 
-def save_datawrapper_embeds(predictions_url, rankings_url, date_str):
+def save_datawrapper_embeds(predictions_url, rankings_url, date_str, markdown_content=None):
     """
     Generate an HTML page with embedded Datawrapper charts
     
@@ -200,7 +200,33 @@ def save_datawrapper_embeds(predictions_url, rankings_url, date_str):
         predictions_url: Public URL of predictions chart
         rankings_url: Public URL of rankings chart
         date_str: Date string for the page
+        markdown_content: Optional markdown string to include in a hidden div
     """
+    
+    markdown_section = ""
+    if markdown_content:
+        # Escape HTML comments in markdown content to prevent closing the container prematurely if we used comments
+        # But we use a div with display:none, so we just need to be careful about HTML entities if necessary.
+        # Markdown usually contains < > etc. which browsers might try to parse if not escaped.
+        # However, for LLM consumption, we want the raw text.
+        # Putting it in a <textarea> or <script type="text/markdown"> might be safer/better for preserving formatting
+        # without rendering issues.
+        # <div style="display:none"> might still try to render HTML tags inside markdown.
+        # Let's use a script tag with type="text/markdown" or similar, which browsers ignore.
+        # Or just a comment block if we are sure it doesn't contain -->
+        # The user suggested "hidden from regular users".
+        
+        # Let's use a hidden div but HTML-escape the content? 
+        # No, the LLM wants to read the markdown. If I escape it, it reads &lt;...
+        
+        # Best approach: <script id="data-markdown" type="text/plain" style="display: none;">
+        markdown_section = f"""
+    <!-- Raw markdown content for machine consumption -->
+    <script id="raw-markdown" type="text/plain" style="display: none;">
+{markdown_content}
+    </script>
+"""
+
     html_content = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -243,6 +269,7 @@ def save_datawrapper_embeds(predictions_url, rankings_url, date_str):
     </style>
 </head>
 <body>
+    {markdown_section}
     <h1>NCAAM ELO Game Predictions - {date_str}</h1>
     
     <div class="info">
@@ -280,6 +307,135 @@ def save_datawrapper_embeds(predictions_url, rankings_url, date_str):
         f.write(html_content)
     
     print(f"✓ Saved interactive HTML page to docs/index.html")
+
+def save_fallback_html(predictions_df, rankings_df, date_str, markdown_content):
+    """
+    Generate a fallback HTML page with standard HTML tables when Datawrapper fails.
+    
+    Args:
+        predictions_df: DataFrame with prediction data
+        rankings_df: DataFrame with rankings data
+        date_str: Date string for the page
+        markdown_content: Markdown string to include in a hidden div
+    """
+    
+    # Convert DataFrames to HTML tables
+    # Use some basic bootstrap styling classes if we were using bootstrap, 
+    # but here we'll just use the same CSS as before + some simple table styles
+    
+    pred_html = predictions_df.to_html(index=False, border=0, classes="styled-table", escape=False)
+    rank_html = rankings_df.to_html(index=True, border=0, classes="styled-table", escape=False)
+    
+    markdown_section = f"""
+    <!-- Raw markdown content for machine consumption -->
+    <script id="raw-markdown" type="text/plain" style="display: none;">
+{markdown_content}
+    </script>
+"""
+
+    html_content = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NCAAM ELO Predictions - {date_str}</title>
+    <style>
+        body {{
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }}
+        h1 {{
+            color: #333;
+            border-bottom: 3px solid #0066cc;
+            padding-bottom: 10px;
+        }}
+        .chart-container {{
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow-x: auto;
+        }}
+        .info {{
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }}
+        a {{
+            color: #0066cc;
+            text-decoration: none;
+        }}
+        a:hover {{
+            text-decoration: underline;
+        }}
+        
+        /* Basic Table Styles */
+        .styled-table {{
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 0.9em;
+            font-family: sans-serif;
+            min-width: 400px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+            width: 100%;
+        }}
+        .styled-table thead tr {{
+            background-color: #0066cc;
+            color: #ffffff;
+            text-align: left;
+        }}
+        .styled-table th, .styled-table td {{
+            padding: 12px 15px;
+        }}
+        .styled-table tbody tr {{
+            border-bottom: 1px solid #dddddd;
+        }}
+        .styled-table tbody tr:nth-of-type(even) {{
+            background-color: #f3f3f3;
+        }}
+        .styled-table tbody tr:last-of-type {{
+            border-bottom: 2px solid #0066cc;
+        }}
+    </style>
+</head>
+<body>
+    {markdown_section}
+    <h1>NCAAM ELO Game Predictions - {date_str}</h1>
+    
+    <div class="info">
+        <p>Below are predictions for today's Men's college basketball games using an ELO rating methodology.</p>
+        <p>Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new to the model (i.e. they haven't played any/many D1 games) and predictions are more uncertain.</p>
+        <p><strong>Note:</strong> This is a static version of the predictions page generated because the interactive charts service is currently unavailable.</p>
+        <p>Check out the full <a href="https://github.com/grdavis/college-basketball-elo">college-basketball-elo</a> repository on GitHub to see methodology and more.</p>
+    </div>
+    
+    <div class="chart-container">
+        <h2>Today's Game Predictions</h2>
+        {pred_html}
+    </div>
+    
+    <div class="chart-container">
+        <h2>Top 50 Teams by ELO Rating</h2>
+        {rank_html}
+    </div>
+
+</body>
+</html>
+"""
+    
+    # Save to docs folder for GitHub Pages
+    docs_folder = 'docs/'
+    os.makedirs(docs_folder, exist_ok=True)
+    
+    with open(f'{docs_folder}index.html', 'w') as f:
+        f.write(html_content)
+    
+    print(f"✓ Saved fallback HTML page to docs/index.html")
 
 
 

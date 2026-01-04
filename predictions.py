@@ -161,20 +161,33 @@ def predict_next_day(elo_state, forecast_date, auto):
 	date_str = forecast_date.strftime('%Y-%m-%d')
 	new_top_50 = pd.DataFrame(elo_state.get_top(50), columns = ['Team', 'Elo Rating', '7 Day Change'])
 	
+	# Generate markdown content for embedding
+	markdown_content = utils.get_markdown_content(output, new_top_50, date_str)
+	
 	# Try to publish to Datawrapper, fallback to Markdown if it fails
 	try:
 		print("\n📊 Publishing to Datawrapper...")
 		pred_chart_id, pred_url = datawrapper_publisher.create_or_update_predictions_table(output, date_str, elo_state.date)
 		rank_chart_id, rank_url = datawrapper_publisher.create_or_update_rankings_table(new_top_50)
-		datawrapper_publisher.save_datawrapper_embeds(pred_url, rank_url, date_str)
+		datawrapper_publisher.save_datawrapper_embeds(pred_url, rank_url, date_str, markdown_content)
 		print(f"✓ Successfully published to Datawrapper")
 		print(f"  Predictions chart: {pred_url}")
 		print(f"  Rankings chart: {rank_url}")
+		
+		# Also ensure index.md is updated
+		utils.save_markdown_df(output, new_top_50, date_str)
 	except Exception as e:
 		print(f"\n⚠ Warning: Failed to publish to Datawrapper: {e}")
 		print("Falling back to Markdown output")
 		# Fallback to original Markdown output
 		utils.save_markdown_df(output, new_top_50, date_str)
+		
+		# Also save a fallback HTML version so index.html is not stale
+		# This uses local HTML tables instead of Datawrapper iframes
+		try:
+			datawrapper_publisher.save_fallback_html(output, new_top_50, date_str, markdown_content)
+		except Exception as html_e:
+			print(f"⚠ Warning: Failed to save fallback HTML: {html_e}")
 
 def main(auto = False, forecast_date = False, matchup = False, neutral = False, sim_mode = False, stop_short = '99999999', bracket = False, pick_mode = 0, bracket_round_start = 0):
 	'''
