@@ -7,6 +7,7 @@ Provides functions to create/update charts and generate embeddable HTML pages.
 
 import os
 import sys
+import html
 import contextlib
 from datawrapper import Datawrapper
 import pandas as pd
@@ -205,26 +206,17 @@ def save_datawrapper_embeds(predictions_url, rankings_url, date_str, markdown_co
     
     markdown_section = ""
     if markdown_content:
-        # Escape HTML comments in markdown content to prevent closing the container prematurely if we used comments
-        # But we use a div with display:none, so we just need to be careful about HTML entities if necessary.
-        # Markdown usually contains < > etc. which browsers might try to parse if not escaped.
-        # However, for LLM consumption, we want the raw text.
-        # Putting it in a <textarea> or <script type="text/markdown"> might be safer/better for preserving formatting
-        # without rendering issues.
-        # <div style="display:none"> might still try to render HTML tags inside markdown.
-        # Let's use a script tag with type="text/markdown" or similar, which browsers ignore.
-        # Or just a comment block if we are sure it doesn't contain -->
-        # The user suggested "hidden from regular users".
-        
-        # Let's use a hidden div but HTML-escape the content? 
-        # No, the LLM wants to read the markdown. If I escape it, it reads &lt;...
-        
-        # Best approach: <script id="data-markdown" type="text/plain" style="display: none;">
+        # We use a visually hidden div to store the markdown content.
+        # This makes it accessible to tools that read the DOM/text content but might ignore script tags.
+        # We escape the HTML content to ensure it doesn't break the page structure.
+        escaped_markdown = html.escape(markdown_content)
         markdown_section = f"""
     <!-- Raw markdown content for machine consumption -->
-    <script id="raw-markdown" type="text/plain" style="display: none;">
-{markdown_content}
-    </script>
+    <div id="raw-markdown" class="visually-hidden">
+<pre>
+{escaped_markdown}
+</pre>
+    </div>
 """
 
     html_content = f"""<!DOCTYPE html>
@@ -265,6 +257,16 @@ def save_datawrapper_embeds(predictions_url, rankings_url, date_str, markdown_co
         }}
         a:hover {{
             text-decoration: underline;
+        }}
+        .visually-hidden {{
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            margin: -1px;
+            padding: 0;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
         }}
     </style>
 </head>
@@ -326,11 +328,14 @@ def save_fallback_html(predictions_df, rankings_df, date_str, markdown_content):
     pred_html = predictions_df.to_html(index=False, border=0, classes="styled-table", escape=False)
     rank_html = rankings_df.to_html(index=True, border=0, classes="styled-table", escape=False)
     
+    escaped_markdown = html.escape(markdown_content)
     markdown_section = f"""
     <!-- Raw markdown content for machine consumption -->
-    <script id="raw-markdown" type="text/plain" style="display: none;">
-{markdown_content}
-    </script>
+    <div id="raw-markdown" class="visually-hidden">
+<pre>
+{escaped_markdown}
+</pre>
+    </div>
 """
 
     html_content = f"""<!DOCTYPE html>
@@ -400,6 +405,16 @@ def save_fallback_html(predictions_df, rankings_df, date_str, markdown_content):
         }}
         .styled-table tbody tr:last-of-type {{
             border-bottom: 2px solid #0066cc;
+        }}
+        .visually-hidden {{
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            margin: -1px;
+            padding: 0;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
         }}
     </style>
 </head>
