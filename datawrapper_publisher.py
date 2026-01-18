@@ -119,17 +119,17 @@ def create_or_update_predictions_table(predictions_df, date_str, elo_date):
 
 def create_or_update_rankings_table(rankings_df):
     """
-    Create or update the top 50 rankings table in Datawrapper
+    Create or update the top 100 rankings table in Datawrapper
     
     Args:
-        rankings_df: DataFrame with top 50 team rankings
+        rankings_df: DataFrame with top 100 team rankings
     
     Returns:
         Tuple of (chart_id, public_url)
     """
     dw = get_datawrapper_client()
     
-    title = "Top 50 Teams by ELO Rating"
+    title = "Top 100 Teams by ELO Rating"
     
     if RANKINGS_CHART_ID:
         # Update existing chart
@@ -288,7 +288,7 @@ def save_datawrapper_embeds(predictions_url, rankings_url, date_str, markdown_co
     </div>
     
     <div class="chart-container">
-        <h2>Top 50 Teams by ELO Rating</h2>
+        <h2>Top 100 Teams by ELO Rating</h2>
         <iframe title="Rankings" aria-label="Table" src="{rankings_url}" 
                 scrolling="no" frameborder="0" style="width: 100%; min-height: 800px; border: none;"></iframe>
     </div>
@@ -435,7 +435,7 @@ def save_fallback_html(predictions_df, rankings_df, date_str, markdown_content):
     </div>
     
     <div class="chart-container">
-        <h2>Top 50 Teams by ELO Rating</h2>
+        <h2>Top 100 Teams by ELO Rating</h2>
         {rank_html}
     </div>
 

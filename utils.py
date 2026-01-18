@@ -96,9 +96,9 @@ def clean_up_old_outputs_and_data():
 	sorted_files = sorted(elligible_data, key = lambda x: x[:8], reverse = True)
 	remove_files([OUTPUTS_FOLDER + f for f in sorted_files], 3)
 
-def get_markdown_content(predictions, top_50, date_str):
+def get_markdown_content(predictions, top_100, date_str):
 	'''
-	Generates markdown string for predictions and top 50 teams.
+	Generates markdown string for predictions and top 100 teams.
 	'''
 	import io
 	output = io.StringIO()
@@ -107,22 +107,22 @@ def get_markdown_content(predictions, top_50, date_str):
 	output.write("Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new to the model (i.e. they haven't played any/many D1 games) and predictions are more uncertain.\n\n")
 	predictions.to_markdown(buf = output, index = False)
 	output.write('\n\n')
-	output.write('# Top 50 Teams by ELO Rating\n')
+	output.write('# Top 100 Teams by ELO Rating\n')
 	
 	# Create a copy to avoid modifying the original dataframe
-	top_50_copy = top_50.copy()
+	top_100_copy = top_100.copy()
 	# Ensure index is 1-based for ranking
-	top_50_copy.index = range(1, len(top_50_copy) + 1)
-	top_50_copy.to_markdown(buf = output, index = True)
+	top_100_copy.index = range(1, len(top_100_copy) + 1)
+	top_100_copy.to_markdown(buf = output, index = True)
 	
 	return output.getvalue()
 
-def save_markdown_df(predictions, top_50, date_str):
+def save_markdown_df(predictions, top_100, date_str):
 	'''
-	Takes in a predictions dataframe of today's predictions and a table with the top 50 team rankings
+	Takes in a predictions dataframe of today's predictions and a table with the top 100 team rankings
 	Converts tables to markdown, and saves them in the same file in the docs folder for GitHub pages to find
 	'''
-	content = get_markdown_content(predictions, top_50, date_str)
+	content = get_markdown_content(predictions, top_100, date_str)
 	with open(f"{DOCS_FOLDER}/index.md", 'w') as md:
 		md.write(content)
 
