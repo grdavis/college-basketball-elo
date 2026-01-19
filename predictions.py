@@ -145,6 +145,16 @@ def predict_next_day(elo_state, forecast_date, auto):
 	predictions, timestamp = spread_enricher.add_spreads_to_todays_preds(predictions, forecast_date)
 	output = pd.DataFrame(predictions, columns = ['Neutral', 'Away', 'Away Win Prob.', 'Away Pred. Spread', 'Live Away Spread', 'Home', 'Home Win Prob.', 'Home Pred. Spread'])
 	
+	# Add column for absolute difference between live and predicted spread
+	def calc_spread_diff(row):
+		if row['Live Away Spread'] == 'NL':
+			return 'N/A'
+		try:
+			return round(abs(float(row['Live Away Spread']) - float(row['Away Pred. Spread'])), 1)
+		except (ValueError, TypeError):
+			return 'N/A'
+	output['Abs. Pred. Diff.'] = output.apply(calc_spread_diff, axis=1)
+	
 	#add a * to the team names that are brand new to the simulation. Take those predictions with a grain of salt
 	output['Away'] = output.apply(lambda x: x['Away'] + "*" if elo_state.get_elo(x['Away']) == elo.NEW_ELO else x['Away'], axis = 1)
 	output['Home'] = output.apply(lambda x: x['Home'] + "*" if elo_state.get_elo(x['Home']) == elo.NEW_ELO else x['Home'], axis = 1)
