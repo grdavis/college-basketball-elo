@@ -177,12 +177,14 @@ def predict_next_day(elo_state, forecast_date, auto):
 	# Generate markdown content for embedding
 	markdown_content = utils.get_markdown_content(output, new_top_100, date_str)
 	
+	probs_id = os.environ.get('DW_PROBABILITIES_CHART_ID')
+	probs_url = f"https://datawrapper.dwcdn.net/{probs_id}/1/" if probs_id else None
 	# Try to publish to Datawrapper, fallback to Markdown if it fails
 	try:
 		print("\n📊 Publishing to Datawrapper...")
 		pred_chart_id, pred_url = datawrapper_publisher.create_or_update_predictions_table(output, date_str, elo_state.date)
 		rank_chart_id, rank_url = datawrapper_publisher.create_or_update_rankings_table(new_top_100)
-		datawrapper_publisher.save_datawrapper_embeds(pred_url, rank_url, date_str, markdown_content)
+		datawrapper_publisher.save_datawrapper_embeds(pred_url, rank_url, date_str, markdown_content, probabilities_url=probs_url)
 		print(f"✓ Successfully published to Datawrapper")
 		print(f"  Predictions chart: {pred_url}")
 		print(f"  Rankings chart: {rank_url}")
@@ -198,7 +200,7 @@ def predict_next_day(elo_state, forecast_date, auto):
 		# Also save a fallback HTML version so index.html is not stale
 		# This uses local HTML tables instead of Datawrapper iframes
 		try:
-			datawrapper_publisher.save_fallback_html(output, new_top_100, date_str, markdown_content)
+			datawrapper_publisher.save_fallback_html(output, new_top_100, date_str, markdown_content, probabilities_url=probs_url)
 		except Exception as html_e:
 			print(f"⚠ Warning: Failed to save fallback HTML: {html_e}")
 

@@ -286,17 +286,36 @@ def create_or_update_probabilities_table(probabilities_df, title=None, elo_date=
         raise Exception(f"Failed to publish Datawrapper chart: {e}")
 
 
-def save_datawrapper_embeds(predictions_url, rankings_url, date_str, markdown_content=None):
+def _probabilities_sections(probabilities_url):
+    """Return (info_paragraph_html, chart_container_html) for optional probabilities embed, or ('', '') if url is falsy."""
+    if not probabilities_url:
+        return "", ""
+    chart_id = probabilities_url.rstrip("/").split("/")[-2]
+    shareable = f"https://www.datawrapper.de/_/{chart_id}/"
+    info = f'        <p>See also: <a href="{shareable}">Tournament probabilities by round</a> (shareable chart).</p>\n'
+    chart = f"""
+    <div class="chart-container">
+        <h2>Tournament Probabilities by Round</h2>
+        <iframe title="Tournament Probabilities" aria-label="Table" src="{probabilities_url}" 
+                scrolling="no" frameborder="0" style="width: 100%; min-height: 600px; border: none;"></iframe>
+    </div>
+"""
+    return info, chart
+
+
+def save_datawrapper_embeds(predictions_url, rankings_url, date_str, markdown_content=None, probabilities_url=None):
     """
     Generate an HTML page with embedded Datawrapper charts
-    
+
     Args:
         predictions_url: Public URL of predictions chart
         rankings_url: Public URL of rankings chart
         date_str: Date string for the page
         markdown_content: Optional markdown string to include in a hidden div
+        probabilities_url: Optional public URL of tournament probabilities chart (embed and link shown when provided)
     """
-    
+    probabilities_info, probabilities_chart = _probabilities_sections(probabilities_url)
+
     markdown_section = ""
     if markdown_content:
         # We use a visually hidden div to store the markdown content.
@@ -370,6 +389,7 @@ def save_datawrapper_embeds(predictions_url, rankings_url, date_str, markdown_co
     <div class="info">
         <p>Below are predictions for today's Men's college basketball games using an ELO rating methodology.</p>
         <p><strong>Interactive features:</strong> Click on any column header to sort by that column. Tables are fully responsive and work on mobile devices.</p>
+        {probabilities_info}
         <p>Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new to the model (i.e. they haven't played any/many D1 games) and predictions are more uncertain.</p>
         <p>Check out the full <a href="https://github.com/grdavis/college-basketball-elo">college-basketball-elo</a> repository on GitHub to see methodology and more.</p>
     </div>
@@ -379,7 +399,7 @@ def save_datawrapper_embeds(predictions_url, rankings_url, date_str, markdown_co
         <iframe title="Daily Predictions" aria-label="Table" src="{predictions_url}" 
                 scrolling="no" frameborder="0" style="width: 100%; min-height: 600px; border: none;"></iframe>
     </div>
-    
+{probabilities_chart}
     <div class="chart-container">
         <h2>Top 100 Teams by ELO Rating</h2>
         <iframe title="Rankings" aria-label="Table" src="{rankings_url}" 
@@ -403,24 +423,21 @@ def save_datawrapper_embeds(predictions_url, rankings_url, date_str, markdown_co
     
     print(f"✓ Saved interactive HTML page to docs/index.html")
 
-def save_fallback_html(predictions_df, rankings_df, date_str, markdown_content):
+def save_fallback_html(predictions_df, rankings_df, date_str, markdown_content, probabilities_url=None):
     """
     Generate a fallback HTML page with standard HTML tables when Datawrapper fails.
-    
+
     Args:
         predictions_df: DataFrame with prediction data
         rankings_df: DataFrame with rankings data
         date_str: Date string for the page
         markdown_content: Markdown string to include in a hidden div
+        probabilities_url: Optional public URL of tournament probabilities chart (embed and link shown when provided)
     """
-    
-    # Convert DataFrames to HTML tables
-    # Use some basic bootstrap styling classes if we were using bootstrap, 
-    # but here we'll just use the same CSS as before + some simple table styles
-    
     pred_html = predictions_df.to_html(index=False, border=0, classes="styled-table", escape=False)
     rank_html = rankings_df.to_html(index=True, border=0, classes="styled-table", escape=False)
-    
+    probabilities_info, probabilities_chart = _probabilities_sections(probabilities_url)
+
     escaped_markdown = html.escape(markdown_content)
     markdown_section = f"""
     <!-- Raw markdown content for machine consumption -->
@@ -517,6 +534,7 @@ def save_fallback_html(predictions_df, rankings_df, date_str, markdown_content):
     
     <div class="info">
         <p>Below are predictions for today's Men's college basketball games using an ELO rating methodology.</p>
+        {probabilities_info}
         <p>Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new to the model (i.e. they haven't played any/many D1 games) and predictions are more uncertain.</p>
         <p><strong>Note:</strong> This is a static version of the predictions page generated because the interactive charts service is currently unavailable.</p>
         <p>Check out the full <a href="https://github.com/grdavis/college-basketball-elo">college-basketball-elo</a> repository on GitHub to see methodology and more.</p>
@@ -526,7 +544,7 @@ def save_fallback_html(predictions_df, rankings_df, date_str, markdown_content):
         <h2>Today's Game Predictions</h2>
         {pred_html}
     </div>
-    
+{probabilities_chart}
     <div class="chart-container">
         <h2>Top 100 Teams by ELO Rating</h2>
         {rank_html}
