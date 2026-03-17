@@ -7,6 +7,7 @@ import scraper
 import datetime
 import spread_enricher
 import datawrapper_publisher
+import os
 
 DATA_FOLDER = utils.DATA_FOLDER
 ALL_ROUNDS = ['first', 'second', 'sixteen', 'eight', 'four', 'final', 'champion']
@@ -123,6 +124,8 @@ def sim_tournaments(elo_state, tournamant_teams, n, verbose = False, rounds = AL
 		formatted = [[f'{team} (#{current_rankings[team]})'] + [round(i/n, 4) for i in sim_results[team]] for team in sim_results]
 		output = pd.DataFrame(formatted, columns = ['team'] + rounds[1:]).sort_values(rounds[-1], ascending = False).drop_duplicates()
 		utils.table_output(output, 'Tournament Predictions Based on Ratings through ' + elo_state.date + ' and ' + str(n) + ' Simulations')
+		return output
+	return None
 
 def predict_next_day(elo_state, forecast_date, auto):
 	'''
@@ -199,7 +202,7 @@ def predict_next_day(elo_state, forecast_date, auto):
 		except Exception as html_e:
 			print(f"⚠ Warning: Failed to save fallback HTML: {html_e}")
 
-def main(auto = False, forecast_date = False, matchup = False, neutral = False, sim_mode = False, stop_short = '99999999', bracket = False, pick_mode = 0, bracket_round_start = 0):
+def main(auto = False, forecast_date = False, matchup = False, neutral = False, sim_mode = False, stop_short = '99999999', bracket = False, pick_mode = 0, bracket_round_start = 0, sim_output_path = None, sim_publish_datawrapper = False):
 	'''
 	Retrieves an elo simulation through the specified 'stop_short' date then cascades through options:
 	1. if a 'matchup' of two teams is provided, print out predictions for that matchup - factoring in 
@@ -223,7 +226,22 @@ def main(auto = False, forecast_date = False, matchup = False, neutral = False, 
 		file, simulations = sim_mode
 		tournamant_teams = list(pd.read_csv(file).iloc[:,bracket_round_start].dropna())
 		rounds = list(pd.read_csv(file).columns)
-		sim_tournaments(elo_state, tournamant_teams, n = int(simulations), verbose = True, rounds = rounds[bracket_round_start:])
+		output = sim_tournaments(elo_state, tournamant_teams, n = int(simulations), verbose = True, rounds = rounds[bracket_round_start:])
+		if output is not None:
+			if sim_output_path:
+				d = os.path.dirname(sim_output_path)
+				if d:
+					os.makedirs(d, exist_ok = True)
+				output.to_csv(sim_output_path, index = False)
+				print(f"✓ Saved probabilities to {sim_output_path}")
+			if sim_publish_datawrapper:
+				try:
+					_, url = datawrapper_publisher.create_or_update_probabilities_table(
+						output, elo_date = elo_state.date, n_sims = int(simulations)
+					)
+					print(f"✓ Published to Datawrapper: {url}")
+				except Exception as e:
+					print(f"⚠ Datawrapper publish failed: {e}")
 	elif bracket != False:
 		tournamant_teams = list(pd.read_csv(bracket).iloc[:,bracket_round_start].dropna())
 		rounds = list(pd.read_csv(bracket).columns)
@@ -244,10 +262,13 @@ def parseArguments():
 	parser.add_argument('-P', '--PredictBracket', default = False, type = str, help = "Use to predict results of a tournament (i.e. generate a single bracket). Enter the filename storing the tournament participants in the first column. Use the -m flag to specify how each matchup should be decided. Don't forget to use -d if predicting this tournament as of a date in the past")
 	parser.add_argument('-m', '--mode', default = 0, choices = [0, 1, 2], type = int, help = "By default, the winner for each matchup in a tournament prediction is selected probabilistically (mode 0). Use 1 to have the model always pick the 'better' team according to Elo ratings. Use 2 to decide each matchup with a coinflip (random selection)")
 	parser.add_argument('-r', '--round', default = 0, type = int, help = "When using -P PredictBracket or -S SimMode, optionally specify which round of the tournament file to start making predictions from (e.g. 0 = predict advancements from the 0th column onwards in the tournament file)")
+	parser.add_argument('-o', '--output', default = None, type = str, dest = 'sim_output', help = 'When using -S SimMode, save the probabilities CSV to this path (e.g. Outputs/2026/2026 Pre-Tournament Probabilities.csv)')
+	parser.add_argument('--datawrapper', action = 'store_true', dest = 'sim_datawrapper', help = 'When using -S SimMode, publish the probabilities table to Datawrapper (requires DATAWRAPPER_API_TOKEN and optionally DW_PROBABILITIES_CHART_ID)')
 	parser.add_argument('-A', '--auto', action = 'store_true', help = 'Used only by github actions to account for the time difference on the virtual machine')
 	return parser.parse_args()
 
 if __name__ == '__main__':
 	args = parseArguments()
-	main(auto = args.auto, forecast_date = args.ForecastDate, matchup = args.GamePredictor, neutral = args.neutral, sim_mode = args.SimMode, 
-		stop_short = args.dateSim, bracket = args.PredictBracket, pick_mode = args.mode, bracket_round_start = args.round)
+	main(auto = args.auto, forecast_date = args.ForecastDate, matchup = args.GamePredictor, neutral = args.neutral, sim_mode = args.SimMode,
+		stop_short = args.dateSim, bracket = args.PredictBracket, pick_mode = args.mode, bracket_round_start = args.round,
+		sim_output_path = args.sim_output, sim_publish_datawrapper = args.sim_datawrapper)

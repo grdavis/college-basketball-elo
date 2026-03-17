@@ -16,6 +16,7 @@ import pandas as pd
 DW_API_TOKEN = os.environ.get('DATAWRAPPER_API_TOKEN')
 PREDICTIONS_CHART_ID = os.environ.get('DW_PREDICTIONS_CHART_ID', None)
 RANKINGS_CHART_ID = os.environ.get('DW_RANKINGS_CHART_ID', None)
+PROBABILITIES_CHART_ID = os.environ.get('DW_PROBABILITIES_CHART_ID', None)
 
 @contextlib.contextmanager
 def suppress_stdout():
@@ -192,6 +193,98 @@ def create_or_update_rankings_table(rankings_df):
         return chart_id, public_url
     except Exception as e:
         raise Exception(f"Failed to publish Datawrapper chart: {e}")
+
+def create_or_update_probabilities_table(probabilities_df, title=None, elo_date=None, n_sims=None):
+    """
+    Create or update the tournament probabilities table in Datawrapper
+
+    Args:
+        probabilities_df: DataFrame with columns team, first, second, sixteen, eight, four, final, champion (decimal shares)
+        title: Optional chart title (default: "Tournament Probabilities by Round")
+        elo_date: Optional ELO ratings date for subtitle (e.g. "20260315")
+        n_sims: Optional number of simulations (e.g. 50000) for subtitle
+
+    Returns:
+        Tuple of (chart_id, public_url)
+    """
+    dw = get_datawrapper_client()
+
+    if title is None:
+        title = "Tournament Probabilities by Round"
+    if elo_date or n_sims:
+        parts = [p for p in [f"Ratings through {elo_date}" if elo_date else None, f"{n_sims:,} simulations" if n_sims else None] if p]
+        title = f"{title} — {' · '.join(parts)}"
+
+    # Format probability columns as percentages with two decimals (e.g. 0.7569 -> "75.69%")
+    df_upload = probabilities_df.copy()
+    pct_cols = [c for c in df_upload.columns if c != 'team' and c in ['first', 'second', 'sixteen', 'eight', 'four', 'final', 'champion']]
+    for col in pct_cols:
+        if col in df_upload.columns and df_upload[col].dtype in (float, 'float64'):
+            df_upload[col] = (df_upload[col] * 100).round(2).astype(str) + '%'
+
+    if PROBABILITIES_CHART_ID:
+        # Update existing chart
+        chart_id = PROBABILITIES_CHART_ID
+        try:
+            with suppress_stdout():
+                dw.update_chart(chart_id, title=title)
+        except Exception as e:
+            print(f"Warning: Could not update chart title: {e}")
+    else:
+        # Create new chart
+        try:
+            with suppress_stdout():
+                chart_info = dw.create_chart(
+                    title=title,
+                    chart_type='tables',
+                    data=df_upload
+                )
+            chart_id = chart_info['id']
+            print(f"\n✓ Created new probabilities chart with ID: {chart_id}")
+            print(f"  Add this to GitHub Secrets as DW_PROBABILITIES_CHART_ID")
+        except Exception as e:
+            raise Exception(f"Failed to create Datawrapper chart: {e}")
+
+    # Upload data
+    try:
+        with suppress_stdout():
+            dw.add_data(chart_id, df_upload)
+    except Exception as e:
+        raise Exception(f"Failed to upload data to Datawrapper: {e}")
+
+    # Configure chart metadata and appearance
+    try:
+        with suppress_stdout():
+            dw.update_metadata(chart_id, {
+                'describe': {
+                    'intro': 'Share of simulations in which each team reached the given round. Sort by clicking column headers.',
+                    'source-name': 'college-basketball-elo',
+                    'source-url': 'https://github.com/grdavis/college-basketball-elo',
+                    'byline': '@grdavis'
+                },
+                'visualize': {
+                    'table': {
+                        'sorting': 'enable',
+                        'striped': True,
+                    }
+                }
+            })
+    except Exception as e:
+        print(f"Warning: Could not update chart metadata: {e}")
+
+    # Publish the chart
+    try:
+        with suppress_stdout():
+            response = dw.publish_chart(chart_id)
+
+        public_url = response.get('data', {}).get('publicUrl') or response.get('publicUrl')
+        if not public_url:
+            # Fallback: construct URL from chart ID
+            public_url = f"https://datawrapper.dwcdn.net/{chart_id}/1/"
+        return chart_id, public_url
+    except Exception as e:
+        raise Exception(f"Failed to publish Datawrapper chart: {e}")
+
 
 def save_datawrapper_embeds(predictions_url, rankings_url, date_str, markdown_content=None):
     """
