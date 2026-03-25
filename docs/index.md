@@ -1,12 +1,12 @@
-# NCAAM ELO Game Predictions for 2026-03-24 - @grdavis
+# NCAAM ELO Game Predictions for 2026-03-25 - @grdavis
 Below are predictions for today's Men's college basketball games using an ELO rating methodology. Check out the full [college-basketball-elo](https://github.com/grdavis/college-basketball-elo) repository on github to see methodology and more.
 
 Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new to the model (i.e. they haven't played any/many D1 games) and predictions are more uncertain.
 
-|   Neutral | Away          | Away Win Prob.   |   Away Pred. Spread |   Live Away Spread | Home       | Home Win Prob.   |   Home Pred. Spread |   Abs. Pred. Diff. |
-|----------:|:--------------|:-----------------|--------------------:|-------------------:|:-----------|:-----------------|--------------------:|-------------------:|
-|         0 | Wichita State | 43%              |                 2   |                3.5 | Tulsa      | 57%              |                -2   |                1.5 |
-|         0 | St. Joseph's  | 27%              |                 6.9 |               11.5 | New Mexico | 73%              |                -6.9 |                4.6 |
+|   Neutral | Away           | Away Win Prob.   |   Away Pred. Spread |   Live Away Spread | Home   | Home Win Prob.   |   Home Pred. Spread |   Abs. Pred. Diff. |
+|----------:|:---------------|:-----------------|--------------------:|-------------------:|:-------|:-----------------|--------------------:|-------------------:|
+|         0 | Illinois State | 22%              |                 8.7 |                7.5 | Dayton | 78%              |                -8.7 |                1.2 |
+|         0 | Nevada         | 27%              |                 7   |                9.5 | Auburn | 73%              |                -7   |                2.5 |
 
 # Top 100 Teams by ELO Rating
 |     | Team               |   Elo Rating |   7 Day Change |
@@ -41,7 +41,7 @@ Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new 
 |  28 | Oklahoma           |         1873 |             +0 |
 |  29 | Utah State         |         1870 |            +14 |
 |  30 | TCU                |         1869 |             +3 |
-|  31 | Texas              |         1858 |            +64 |
+|  31 | Texas              |         1858 |            +55 |
 |  32 | Cincinnati         |         1858 |             +0 |
 |  33 | VCU                |         1852 |             -6 |
 |  34 | Texas A&M          |         1840 |            +20 |
@@ -50,22 +50,22 @@ Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new 
 |  37 | Miami (FL)         |         1833 |            +17 |
 |  38 | Santa Clara        |         1832 |            -14 |
 |  39 | South Florida      |         1821 |            -12 |
-|  40 | Villanova          |         1811 |            -21 |
-|  41 | Auburn             |         1804 |             +8 |
-|  42 | New Mexico         |         1801 |            +24 |
+|  40 | New Mexico         |         1815 |            +37 |
+|  41 | Villanova          |         1811 |            -21 |
+|  42 | Auburn             |         1804 |             +5 |
 |  43 | Saint Louis        |         1799 |            +52 |
 |  44 | Georgia            |         1799 |            -59 |
 |  45 | Dayton             |         1796 |            +57 |
 |  46 | Clemson            |         1794 |            -15 |
 |  47 | San Diego State    |         1794 |             +0 |
-|  48 | Wichita State      |         1785 |            +66 |
+|  48 | Wichita State      |         1773 |            +47 |
 |  49 | Missouri           |         1772 |            -26 |
 |  50 | UCF                |         1767 |             -7 |
-|  51 | Akron              |         1763 |            -20 |
-|  52 | Indiana            |         1762 |             +0 |
-|  53 | Tulsa              |         1752 |            +22 |
+|  51 | Tulsa              |         1764 |            +27 |
+|  52 | Akron              |         1763 |            -20 |
+|  53 | Indiana            |         1762 |             +0 |
 |  54 | McNeese State      |         1751 |             -8 |
-|  55 | NC State           |         1746 |            -10 |
+|  55 | NC State           |         1746 |             +0 |
 |  56 | Northwestern       |         1744 |             +0 |
 |  57 | Florida State      |         1740 |             +0 |
 |  58 | West Virginia      |         1739 |             +0 |
@@ -83,14 +83,14 @@ Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new 
 |  70 | Boise State        |         1722 |             +0 |
 |  71 | Colorado           |         1719 |             +0 |
 |  72 | Creighton          |         1713 |             +0 |
-|  73 | St. Joseph's       |         1713 |            +36 |
-|  74 | Nevada             |         1713 |            +20 |
-|  75 | SMU                |         1708 |            -23 |
-|  76 | Minnesota          |         1702 |             +0 |
+|  73 | Nevada             |         1713 |            +20 |
+|  74 | SMU                |         1708 |            -23 |
+|  75 | Minnesota          |         1702 |             +0 |
+|  76 | St. Joseph's       |         1699 |            +22 |
 |  77 | Colorado State     |         1693 |            -24 |
 |  78 | Georgetown         |         1692 |             +0 |
-|  79 | UNLV               |         1690 |             +1 |
-|  80 | Oklahoma State     |         1690 |            -54 |
+|  79 | UNLV               |         1690 |            -15 |
+|  80 | Oklahoma State     |         1690 |            -59 |
 |  81 | Belmont            |         1688 |             +0 |
 |  82 | Hofstra            |         1681 |             -9 |
 |  83 | California Baptist |         1678 |             -8 |
@@ -99,14 +99,14 @@ Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new 
 |  86 | Utah Valley        |         1670 |            -17 |
 |  87 | Oregon             |         1667 |             +0 |
 |  88 | USC                |         1666 |             +0 |
-|  89 | Yale               |         1665 |            -15 |
+|  89 | Yale               |         1665 |             +0 |
 |  90 | Providence         |         1664 |             +0 |
 |  91 | Wake Forest        |         1662 |            -10 |
 |  92 | Illinois State     |         1662 |            +44 |
 |  93 | Maryland           |         1656 |             +0 |
 |  94 | California         |         1656 |            +11 |
 |  95 | Mississippi State  |         1653 |             +0 |
-|  96 | UC-Irvine          |         1641 |            -16 |
+|  96 | UC-Irvine          |         1641 |             +0 |
 |  97 | North Dakota State |         1639 |             -7 |
 |  98 | Xavier             |         1639 |             +0 |
 |  99 | Bradley            |         1637 |            -29 |
