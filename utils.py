@@ -10,11 +10,33 @@ DATA_FOLDER = 'Data/'
 OUTPUTS_FOLDER = 'Outputs/'
 SPREAD_FOLDER = 'New_Spreads/'
 
-# Dynamically determine the current basketball season start year
+def _nth_weekday(year, month, weekday, n):
+	'''
+	weekday: Monday=0 ... Sunday=6. n is 1-based (1 = first).
+	'''
+	first = datetime(year, month, 1)
+	offset = (weekday - first.weekday()) % 7
+	return 1 + offset + 7 * (n - 1)
+
+def current_basketball_date():
+	'''
+	Calendar date for men's college basketball, in America/Los_Angeles.
+
+	GitHub Actions and this environment run in UTC. After midnight UTC it is still
+	the previous evening in the US, which is the slate Scores and Odds is showing.
+	US Pacific DST: second Sunday in March 10:00 UTC through first Sunday in November 09:00 UTC.
+	'''
+	now = datetime.utcnow()
+	dst_start = datetime(now.year, 3, _nth_weekday(now.year, 3, 6, 2), 10)
+	dst_end = datetime(now.year, 11, _nth_weekday(now.year, 11, 6, 1), 9)
+	offset_hours = 7 if dst_start <= now < dst_end else 8
+	return (now - timedelta(hours = offset_hours)).date()
+
+# Dynamically determine the current basketball season start year.
 # Basketball seasons start in November, so:
-# - If current month is Nov-Dec, season start is current year
-# - If current month is Jan-Oct, season start is previous year
-_current_date = datetime.now()
+# - If the US Pacific month is Nov-Dec, season start is the current year
+# - If the US Pacific month is Jan-Oct, season start is the previous year
+_current_date = current_basketball_date()
 _current_year = _current_date.year
 _current_month = _current_date.month
 SEASON_START = _current_year if _current_month >= 11 else _current_year - 1
@@ -146,10 +168,11 @@ def table_output(df, table_title, order = None):
 	])
 	fig.update_layout(title = {'text': table_title, 'xanchor': 'center', 'x': .5})
 	
-	# Try to show the plot in browser (for local development)
-	# Skip if no browser available (e.g., in GitHub Actions)
+	# Try to show the plot in a local browser. Headless runs have no DISPLAY, and
+	# plotly's browser renderer can block there. The CSV is already saved.
 	try:
-		pio.renderers.default = 'browser'
-		fig.show()
+		if os.environ.get('DISPLAY'):
+			pio.renderers.default = 'browser'
+			fig.show()
 	except Exception:
 		pass

@@ -172,7 +172,9 @@ def main(topteams = False, stop_short = '99999999', period = 7):
 	- 'stop_short' of simulating through the entire dataset by specifying a day to simulate through instead
 	'''	
 	filepath = utils.get_latest_data_filepath() 
-	yesterday = (datetime.date.today() - datetime.timedelta(days = 1)).strftime('%Y%m%d')
+	# Cut off at the last full US day. UTC "yesterday" is still today on the West Coast
+	# and would close an in-progress slate (and then never revisit it).
+	yesterday = (utils.current_basketball_date() - datetime.timedelta(days = 1)).strftime('%Y%m%d')
 	if filepath[len(DATA_FOLDER):][-12:-4] != yesterday:
 		print('updating data...')
 		scrape_start = utils.shift_dstring(filepath[len(DATA_FOLDER):][-12:-4], 1)
