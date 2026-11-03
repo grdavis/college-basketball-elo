@@ -65,6 +65,19 @@ def scrape_scores(date_obj):
 	this_day_string = date_obj.strftime('%Y%m%d')
 	print(this_day_string)
 
+	def game_is_final(game):
+		'''
+		Scores and Odds renders in-progress games with a live score. Those rows must not
+		be stored as results. A finished game's header state starts with FINAL (including OT).
+		'''
+		header = game.find_previous('tr', class_ = 'event-card-header')
+		if header == None:
+			return False
+		for span in header.find_all('span', {'data-field': 'state'}):
+			if span.get_text(strip = True).upper().startswith('FINAL'):
+				return True
+		return False
+
 	def get_info_from_row(row):
 		team = row.find('span', {'class': 'team-name'})
 		if team.find('a') == None:
@@ -83,10 +96,19 @@ def scrape_scores(date_obj):
 		else:
 			return team, team_score.text.strip()
 
+	n_final = 0
 	for game in table_divs:
-		away_row, home_row = game.find_all('tr')
+		rows = game.find_all('tr')
+		if len(rows) < 2:
+			continue
+		away_row, home_row = rows[0], rows[1]
 		away, away_score = get_info_from_row(away_row) #away is now mapped to sports reference names
 		home, home_score = get_info_from_row(home_row) #home is now mapped to sports reference names
+		if game_is_final(game):
+			n_final += 1
+		else:
+			# Keep the matchup for predictions, but drop partial scores so they are not logged as finals.
+			away_score, home_score = '', ''
 
 		#if the game hasn't happened yet, no need to grab spreads from this source. This function will grab source of truth spreads when the games are final
 		spread_field = away_row.find('td', {'data-field': 'live-spread'})
@@ -122,6 +144,7 @@ def scrape_scores(date_obj):
 
 		day_stats.append([n_flag, away, away_score, home, home_score, this_day_string, away_spread])
 
+	print(f"{this_day_string}: {n_final} final of {len(day_stats)} games")
 	return day_stats
 
 def check_for_incomplete(new):

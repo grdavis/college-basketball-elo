@@ -249,8 +249,11 @@ def main(auto = False, forecast_date = False, matchup = False, neutral = False, 
 		rounds = list(pd.read_csv(bracket).columns)
 		predict_tournament(elo_state, tournamant_teams, pick_mode = pick_mode, verbose = True, rounds = rounds[bracket_round_start:])
 	else:
-		forecast_date = datetime.date.today() if forecast_date == False else datetime.datetime.strptime(forecast_date, "%Y%m%d")
-		forecast_date = forecast_date - datetime.timedelta(hours = 5) if auto else forecast_date
+		forecast_date = utils.current_basketball_date() if forecast_date == False else datetime.datetime.strptime(forecast_date, "%Y%m%d")
+		# -A shifts a UTC clock into US Eastern for the spreads timestamp below.
+		# The forecast calendar day is already the US Pacific date, so do not roll it backward.
+		if auto and isinstance(forecast_date, datetime.datetime):
+			forecast_date = forecast_date - datetime.timedelta(hours = 5)
 		predict_next_day(elo_state, forecast_date, auto)
 	utils.clean_up_old_outputs_and_data()
 

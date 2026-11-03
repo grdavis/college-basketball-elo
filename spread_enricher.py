@@ -54,7 +54,8 @@ def add_spreads_to_todays_preds(predictions, forecast_date):
 	Since these spreads are scraped directly from a site, they may be more volatile than those scraped from our 
 	official scrape source. Thus, these spreads are only displayed in predictions output and not stored long-term
 	'''
-	if forecast_date != datetime.today().date():
+	forecast_day = forecast_date.date() if isinstance(forecast_date, datetime) else forecast_date
+	if forecast_day != utils.current_basketball_date():
 		print('Accurate spreads only available when making predictions on the day of the event')
 		return [row[:4] + ['NL'] + row[4:] for row in predictions], "N/A"
 
