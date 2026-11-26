@@ -351,6 +351,13 @@ def save_datawrapper_embeds(predictions_url, rankings_url, date_str, markdown_co
             border-radius: 5px;
             margin: 20px 0;
         }}
+        .info ul {{
+            margin: 0.4em 0 0;
+            padding-left: 1.25em;
+        }}
+        .info li {{
+            margin: 0.35em 0;
+        }}
         a {{
             color: #0066cc;
             text-decoration: none;
@@ -465,6 +472,13 @@ def save_fallback_html(predictions_df, rankings_df, date_str, markdown_content, 
             padding: 15px;
             border-radius: 5px;
             margin: 20px 0;
+        }}
+        .info ul {{
+            margin: 0.4em 0 0;
+            padding-left: 1.25em;
+        }}
+        .info li {{
+            margin: 0.35em 0;
         }}
         a {{
             color: #0066cc;

@@ -29,7 +29,16 @@ DEFAULT_MODELS = ("gemini-flash-latest", "gemini-flash-lite-latest")
 # Short note, so cap the HTTP call well under the Actions job limit.
 DEFAULT_HTTP_TIMEOUT_MS = 60000
 MAX_ATTEMPTS = 2
-MAX_NOTE_CHARS = 900
+# A sentence or two plus a short bullet list, not a dump of the slate.
+MAX_NOTE_CHARS = 2000
+# Worked example for the away-team spread sign. Kept in the prompt so a
+# +2.2 model number against a -3.5 Vegas number is fading the away team.
+SIGN_EXAMPLE = (
+	"Iowa State at Tennessee, neutral: model away spread +2.2 "
+	"(Iowa State is a 2.2 underdog; model likes Tennessee by 2.2). "
+	"Vegas away spread -3.5 (market has Iowa State laying 3.5). "
+	"The model is fading Iowa State relative to the market."
+)
 TRANSIENT_STATUS = {408, 429, 500, 502, 503, 504}
 
 _ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/{0}:generateContent"
@@ -48,19 +57,63 @@ def intro_markdown(daily_note=None):
 
 
 def intro_box_html(daily_note=None):
-	"""Blue intro box: the repo sentence, then the optional daily note."""
+	"""Blue intro box: the repo sentence, then prose and a scannable list."""
 	sentence = (
 		'Check out the full <a href="{0}">college-basketball-elo</a> repository on GitHub to see methodology and more.'
 	).format(REPO_URL)
-	paragraphs = ["<p>{0}</p>".format(sentence)]
+	parts = ["<p>" + sentence + "</p>"]
+	parts.extend(_note_html_parts(daily_note))
+	inner = "\n        ".join(parts)
+	return "    <div class=\"info\">\n        " + inner + "\n    </div>"
+
+
+def _bullet_item(line):
+	if line.startswith("- ") or line.startswith("* ") or line.startswith("• "):
+		return line[2:].strip()
+	return None
+
+
+def _note_html_parts(daily_note):
+	"""Turn a prose-plus-bullets note into paragraphs and a ul.
+
+	User text is concatenated, not passed through str.format, so a brace in
+	a bullet cannot break the page.
+	"""
 	note = (daily_note or "").strip()
-	if note:
-		for block in note.split("\n\n"):
-			flat = " ".join(block.split())
-			if flat:
-				paragraphs.append("<p>{0}</p>".format(html.escape(flat)))
-	inner = "\n        ".join(paragraphs)
-	return '    <div class="info">\n        {0}\n    </div>'.format(inner)
+	if not note:
+		return []
+	parts = []
+	paragraph = []
+	items = []
+
+	def flush_paragraph():
+		text = " ".join(piece.strip() for piece in paragraph if piece.strip())
+		del paragraph[:]
+		if text:
+			parts.append("<p>" + html.escape(text) + "</p>")
+
+	def flush_items():
+		if not items:
+			return
+		lis = "\n            ".join("<li>" + html.escape(item) + "</li>" for item in items)
+		parts.append("<ul>\n            " + lis + "\n        </ul>")
+		del items[:]
+
+	for line in note.replace("\r\n", "\n").split("\n"):
+		bullet = _bullet_item(line.strip())
+		if bullet is not None:
+			flush_paragraph()
+			items.append(bullet)
+			continue
+		if not line.strip():
+			flush_paragraph()
+			flush_items()
+			continue
+		flush_items()
+		paragraph.append(line.strip())
+	flush_paragraph()
+	flush_items()
+	return parts
 
 
 def write_daily_note(predictions_df, rankings_df, date_str=None):
@@ -135,7 +188,7 @@ def _generate(prompt, api_key):
 	}
 	body = {
 		"contents": [{"role": "user", "parts": [{"text": prompt}]}],
-		"generationConfig": {"temperature": 0.4, "maxOutputTokens": 512},
+		"generationConfig": {"temperature": 0.2, "maxOutputTokens": 800},
 	}
 	timeout = _timeout_seconds()
 	models = _model_list()
@@ -164,7 +217,7 @@ def _generate(prompt, api_key):
 				text, finish = _text_from_response(payload)
 				if text:
 					if finish == "MAX_TOKENS":
-						text = _trim_to_sentence(text)
+						text = _drop_incomplete_tail(text)
 					return text
 				print("Daily wager note: {0} returned an empty response".format(model))
 				break
@@ -207,7 +260,7 @@ def _clean_note(text):
 	if len(cleaned) >= 2 and cleaned[0] == cleaned[-1] and cleaned[0] in "\"'":
 		cleaned = cleaned[1:-1].strip()
 	if len(cleaned) > MAX_NOTE_CHARS:
-		cleaned = _trim_to_sentence(cleaned[:MAX_NOTE_CHARS])
+		cleaned = _cap_note(cleaned)
 	cleaned = cleaned.strip()
 	if not cleaned:
 		return None
@@ -226,11 +279,66 @@ def _strip_fences(text):
 	return "\n".join(lines).strip()
 
 
+def _cap_note(text):
+	clipped = text[:MAX_NOTE_CHARS]
+	newline = clipped.rfind("\n")
+	if newline >= 40:
+		return clipped[:newline].strip()
+	return _trim_to_sentence(clipped)
+
+
+def _drop_incomplete_tail(text):
+	"""Drop a bullet the token limit cut off mid-line."""
+	if "\n" in text:
+		head, tail = text.rsplit("\n", 1)
+		if tail and tail[-1] not in ".?!":
+			kept = head.strip()
+			if kept:
+				return kept
+	return _trim_to_sentence(text)
+
+
 def _trim_to_sentence(text):
 	last = max(text.rfind("."), text.rfind("?"), text.rfind("!"))
 	if last >= 40:
 		return text[:last + 1].strip()
 	return text.strip()
+
+
+def side_call(model_spread, vegas_spread):
+	"""Which side to take versus the market.
+
+	Both numbers are the away team's spread. Negative means that team is favored.
+	A model number more positive than Vegas fades the away team (call "home").
+	A model number more negative than Vegas takes the away team (call "away").
+	"""
+	if model_spread > vegas_spread + 1e-9:
+		return "home"
+	if vegas_spread > model_spread + 1e-9:
+		return "away"
+	return "none"
+
+
+def describe_side(away, home, model_spread, vegas_spread):
+	"""Who each number favors, then the side to take. Never says 'keep it close'."""
+	model_clause = _favored_clause("The model", model_spread, away, home)
+	vegas_clause = _favored_clause("Vegas", vegas_spread, away, home)
+	call = side_call(model_spread, vegas_spread)
+	if call == "home":
+		call_clause = "Take {0} (fade {1}).".format(home, away)
+	elif call == "away":
+		call_clause = "Take {0} (fade {1}).".format(away, home)
+	else:
+		call_clause = "No side versus the market."
+	return "{0}. {1}. {2}".format(model_clause, vegas_clause, call_clause)
+
+
+def _favored_clause(subject, spread, away, home):
+	if spread < 0:
+		return "{0} favors {1} by {2}".format(subject, away, _format_number(abs(spread)))
+	if spread > 0:
+		return "{0} favors {1} by {2}".format(subject, home, _format_number(abs(spread)))
+	return "{0} has a pick'em".format(subject)
 
 
 def _rank_lookup(rankings_df):
@@ -301,8 +409,12 @@ def _games_table(predictions_df, ranks):
 			gap = round(abs(vegas - model), 1)
 		away_rank = ranks.get(_strip_star(away), "")
 		home_rank = ranks.get(_strip_star(home), "")
+		if model is None:
+			reading = "Model spread is missing. Do not call a side."
+		else:
+			reading = describe_side(away, home, model, vegas)
 		lines.append(
-			"{away} | {away_rank} | {away_prob} | {home} | {home_rank} | {home_prob} | {site} | {model} | {vegas} | {gap}".format(
+			"{away} | {away_rank} | {away_prob} | {home} | {home_rank} | {home_prob} | {site} | {model} | {vegas} | {gap} | {reading}".format(
 				away=away,
 				away_rank=away_rank,
 				away_prob=row["Away Win Prob."],
@@ -313,6 +425,7 @@ def _games_table(predictions_df, ranks):
 				model=_format_number(model),
 				vegas=_format_number(vegas),
 				gap=_format_number(gap),
+				reading=reading,
 			)
 		)
 	return lines
@@ -321,30 +434,48 @@ def _games_table(predictions_df, ranks):
 def _prompt(date_str, top10, game_lines):
 	header = (
 		"Away | Away Elo rank | Away win% | Home | Home Elo rank | Home win% | "
-		"Site | Model away spread | Vegas away spread | Gap"
+		"Site | Model away spread | Vegas away spread | Gap | Side reading"
 	)
 	table = "\n".join([header] + game_lines)
 	return (
 		"You write a short note for a college basketball predictions page about which "
 		"games are worth considering a wager on.\n\n"
-		"Write a few sentences a person can scan. Do not list every game. Plain prose "
-		"only: no bullets, no headings, no markdown, no preamble, and no disclaimer paragraph.\n\n"
-		"Spread sign: negative means that team is favored by that many points. Both spreads "
-		"below are for the away team. Gap is the absolute difference between the model spread "
-		"and the Vegas spread. A blank Elo rank means the team is outside the top 100. Say "
-		"which side the model likes relative to the market, in plain language.\n\n"
-		"Use your judgment. These are typical interesting spots, not a hard filter:\n"
+		"Shape of the note: one or two sentences of prose, then a bulleted list someone "
+		"can scan. Keep the prose. The list is the quick read. Do not dump every game. "
+		"No headings, no preamble, and no disclaimer paragraph. Each bullet is a line "
+		"that starts with \"- \" and ends with a period.\n\n"
+		"Each bullet must include the matchup, the model number, the Vegas number, and "
+		"which side you are calling. Before you name the side to take, say who is favored "
+		"by the model and who is favored by Vegas. Copy the Side reading on that row. "
+		"Do not flip it.\n\n"
+		"Sign rule. Negative spread means that team is favored. Both numbers in the table "
+		"are the away team's spread. A model number more positive than the Vegas number "
+		"means the model likes the away team less than the market (fade the away team / "
+		"take the home team). A model number more negative than the Vegas number means "
+		"the model likes the away team more than the market (take the away team / fade "
+		"the home team).\n\n"
+		"Exact example, which is only a sign lesson: {example} Take Tennessee. "
+		"Do not say the model likes Iowa State. Do not say the model likes Iowa State "
+		"to keep it close. Do not mention Iowa State or Tennessee unless that game is "
+		"in the table below.\n\n"
+		"Do not say \"keep it close\" unless the model spread is closer to zero than "
+		"Vegas AND you name the side that implies. If the model and Vegas favor different "
+		"teams, that is not \"keep it close.\"\n\n"
+		"Use your judgment about which games are worth a look. These are typical interesting "
+		"spots, not a hard filter:\n"
 		"- At least one of the two teams is in the Elo top 50.\n"
 		"- The absolute gap between the model spread and the Vegas spread is 5 points or more.\n"
 		"- The current Vegas absolute spread is under 12.5.\n"
 		"Also mention a matchup of two Elo top-10 teams even when the gap is small.\n"
 		"Games with no live Vegas spread are already omitted. Do not invent lines for them.\n"
+		"A blank Elo rank means the team is outside the top 100.\n"
 		"A trailing * on a team name means the team is new to the model and its rating is thin.\n\n"
 		"Date: {date}\n"
 		"Elo top 10: {top10}\n\n"
 		"Games:\n"
 		"{table}\n"
 	).format(
+		example=SIGN_EXAMPLE,
 		date=date_str or "today",
 		top10=top10 or "unavailable",
 		table=table,
