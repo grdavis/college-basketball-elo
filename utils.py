@@ -5,6 +5,8 @@ import plotly.graph_objects as go
 import plotly.io as pio
 from datetime import datetime, timedelta
 
+import wager_note
+
 DOCS_FOLDER = 'docs/'
 DATA_FOLDER = 'Data/'
 OUTPUTS_FOLDER = 'Outputs/'
@@ -118,15 +120,15 @@ def clean_up_old_outputs_and_data():
 	sorted_files = sorted(elligible_data, key = lambda x: x[:8], reverse = True)
 	remove_files([OUTPUTS_FOLDER + f for f in sorted_files], 3)
 
-def get_markdown_content(predictions, top_100, date_str):
+def get_markdown_content(predictions, top_100, date_str, daily_note = None):
 	'''
 	Generates markdown string for predictions and top 100 teams.
+	daily_note: optional short Gemini note shown under the repo link. Omitted when None.
 	'''
 	import io
 	output = io.StringIO()
 	output.write(f'# NCAAM ELO Game Predictions for {date_str} - @grdavis\n')
-	output.write("Below are predictions for today's Men's college basketball games using an ELO rating methodology. Check out the full [college-basketball-elo](https://github.com/grdavis/college-basketball-elo) repository on github to see methodology and more.\n\n")
-	output.write("Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new to the model (i.e. they haven't played any/many D1 games) and predictions are more uncertain.\n\n")
+	output.write(wager_note.intro_markdown(daily_note))
 	predictions.to_markdown(buf = output, index = False)
 	output.write('\n\n')
 	output.write('# Top 100 Teams by ELO Rating\n')
@@ -139,12 +141,12 @@ def get_markdown_content(predictions, top_100, date_str):
 	
 	return output.getvalue()
 
-def save_markdown_df(predictions, top_100, date_str):
+def save_markdown_df(predictions, top_100, date_str, daily_note = None):
 	'''
 	Takes in a predictions dataframe of today's predictions and a table with the top 100 team rankings
 	Converts tables to markdown, and saves them in the same file in the docs folder for GitHub pages to find
 	'''
-	content = get_markdown_content(predictions, top_100, date_str)
+	content = get_markdown_content(predictions, top_100, date_str, daily_note)
 	with open(f"{DOCS_FOLDER}/index.md", 'w') as md:
 		md.write(content)
 
