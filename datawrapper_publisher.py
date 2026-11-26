@@ -12,6 +12,8 @@ import contextlib
 from datawrapper import Datawrapper
 import pandas as pd
 
+import wager_note
+
 # Configuration from environment variables
 DW_API_TOKEN = os.environ.get('DATAWRAPPER_API_TOKEN')
 PREDICTIONS_CHART_ID = os.environ.get('DW_PREDICTIONS_CHART_ID', None)
@@ -286,7 +288,7 @@ def create_or_update_probabilities_table(probabilities_df, title=None, elo_date=
         raise Exception(f"Failed to publish Datawrapper chart: {e}")
 
 
-def save_datawrapper_embeds(predictions_url, rankings_url, date_str, markdown_content=None):
+def save_datawrapper_embeds(predictions_url, rankings_url, date_str, markdown_content=None, daily_note=None):
     """
     Generate an HTML page with embedded Datawrapper charts.
 
@@ -299,7 +301,9 @@ def save_datawrapper_embeds(predictions_url, rankings_url, date_str, markdown_co
         rankings_url: Public URL of rankings chart
         date_str: Date string for the page
         markdown_content: Optional markdown string to include in a hidden div
+        daily_note: Optional Gemini note shown under the repo link in the blue box
     """
+    intro_html = wager_note.intro_box_html(daily_note)
     markdown_section = ""
     if markdown_content:
         # We use a visually hidden div to store the markdown content.
@@ -370,12 +374,7 @@ def save_datawrapper_embeds(predictions_url, rankings_url, date_str, markdown_co
     {markdown_section}
     <h1>NCAAM ELO Game Predictions - {date_str}</h1>
     
-    <div class="info">
-        <p>Below are predictions for today's Men's college basketball games using an ELO rating methodology.</p>
-        <p><strong>Interactive features:</strong> Click on any column header to sort by that column. Tables are fully responsive and work on mobile devices.</p>
-        <p>Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new to the model (i.e. they haven't played any/many D1 games) and predictions are more uncertain.</p>
-        <p>Check out the full <a href="https://github.com/grdavis/college-basketball-elo">college-basketball-elo</a> repository on GitHub to see methodology and more.</p>
-    </div>
+{intro_html}
     
     <div class="chart-container">
         <h2>Today's Game Predictions</h2>
@@ -406,7 +405,7 @@ def save_datawrapper_embeds(predictions_url, rankings_url, date_str, markdown_co
     
     print(f"✓ Saved interactive HTML page to docs/index.html")
 
-def save_fallback_html(predictions_df, rankings_df, date_str, markdown_content):
+def save_fallback_html(predictions_df, rankings_df, date_str, markdown_content, daily_note=None):
     """
     Generate a fallback HTML page with standard HTML tables when Datawrapper fails.
 
@@ -418,7 +417,9 @@ def save_fallback_html(predictions_df, rankings_df, date_str, markdown_content):
         rankings_df: DataFrame with rankings data
         date_str: Date string for the page
         markdown_content: Markdown string to include in a hidden div
+        daily_note: Optional Gemini note shown under the repo link in the blue box
     """
+    intro_html = wager_note.intro_box_html(daily_note)
     pred_html = predictions_df.to_html(index=False, border=0, classes="styled-table", escape=False)
     rank_html = rankings_df.to_html(index=True, border=0, classes="styled-table", escape=False)
 
@@ -516,12 +517,7 @@ def save_fallback_html(predictions_df, rankings_df, date_str, markdown_content):
     {markdown_section}
     <h1>NCAAM ELO Game Predictions - {date_str}</h1>
     
-    <div class="info">
-        <p>Below are predictions for today's Men's college basketball games using an ELO rating methodology.</p>
-        <p>Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new to the model (i.e. they haven't played any/many D1 games) and predictions are more uncertain.</p>
-        <p><strong>Note:</strong> This is a static version of the predictions page generated because the interactive charts service is currently unavailable.</p>
-        <p>Check out the full <a href="https://github.com/grdavis/college-basketball-elo">college-basketball-elo</a> repository on GitHub to see methodology and more.</p>
-    </div>
+{intro_html}
     
     <div class="chart-container">
         <h2>Today's Game Predictions</h2>

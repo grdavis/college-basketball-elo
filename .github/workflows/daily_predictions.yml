@@ -27,6 +27,11 @@ jobs:
           DW_PREDICTIONS_CHART_ID: ${{ secrets.DW_PREDICTIONS_CHART_ID }}
           DW_RANKINGS_CHART_ID: ${{ secrets.DW_RANKINGS_CHART_ID }}
           DW_PROBABILITIES_CHART_ID: ${{ secrets.DW_PROBABILITIES_CHART_ID }}
+          # Same secret name as grdavis/transcript-summarizer. Empty if unset;
+          # the script publishes the page without the note in that case.
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODELS: ${{ secrets.GEMINI_MODELS }}
+          GEMINI_MODEL: ${{ secrets.GEMINI_MODEL }}
         run: python predictions.py -A
           
       - name: commit files

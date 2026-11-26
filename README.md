@@ -8,6 +8,8 @@ This version of the Elo rating system is primarily based on FiveThirtyEight's [N
 
 Using GitHub Actions, every morning, `predictions.py` is run to make predictions for that day's college basketball games. In addition to the Elo model's spread predictions, the output is also enriched by scraping the latest spreads from [Scores and Odds](https://www.scoresandodds.com/ncaab). Another workflow runs every Monday during the season to produce a top 100 ranking of teams. The outputs of both of these workflows can be found in the [Outputs](https://github.com/grdavis/college-basketball-elo/tree/main/Outputs) folder.
 
+The daily GitHub Pages intro links back to this repository. Under that link, the job adds a short Gemini note on games worth a look. The workflow passes the `GEMINI_API_KEY` secret (the same name used in [transcript-summarizer](https://github.com/grdavis/transcript-summarizer)). Optional `GEMINI_MODELS` or `GEMINI_MODEL` override the defaults `gemini-flash-latest` and `gemini-flash-lite-latest`. If the key is missing or the call fails, the page still publishes without the note.
+
 ## Usage
 There are several ways to use this program. They are organized into two scripts, each with several optional inputs to control functionality.
 

@@ -8,6 +8,7 @@ import datetime
 import spread_enricher
 import datawrapper_publisher
 import os
+import wager_note
 
 DATA_FOLDER = utils.DATA_FOLDER
 ALL_ROUNDS = ['first', 'second', 'sixteen', 'eight', 'four', 'final', 'champion']
@@ -174,8 +175,14 @@ def predict_next_day(elo_state, forecast_date, auto):
 	date_str = forecast_date.strftime('%Y-%m-%d')
 	new_top_100 = pd.DataFrame(elo_state.get_top(100), columns = ['Team', 'Elo Rating', '7 Day Change'])
 	
-	# Generate markdown content for embedding
-	markdown_content = utils.get_markdown_content(output, new_top_100, date_str)
+	# Generate markdown content for embedding. The wager note is optional:
+	# a missing key or a failed Gemini call leaves it off the page.
+	try:
+		daily_note = wager_note.write_daily_note(output, new_top_100, date_str)
+	except Exception as note_error:
+		print("Daily wager note skipped: {0}".format(type(note_error).__name__))
+		daily_note = None
+	markdown_content = utils.get_markdown_content(output, new_top_100, date_str, daily_note)
 
 	# Daily page is game predictions and the top 100 only. Tournament
 	# probabilities stay on the -S/--datawrapper command, not this page.
@@ -183,23 +190,23 @@ def predict_next_day(elo_state, forecast_date, auto):
 		print("\n📊 Publishing to Datawrapper...")
 		pred_chart_id, pred_url = datawrapper_publisher.create_or_update_predictions_table(output, date_str, elo_state.date)
 		rank_chart_id, rank_url = datawrapper_publisher.create_or_update_rankings_table(new_top_100)
-		datawrapper_publisher.save_datawrapper_embeds(pred_url, rank_url, date_str, markdown_content)
+		datawrapper_publisher.save_datawrapper_embeds(pred_url, rank_url, date_str, markdown_content, daily_note)
 		print(f"✓ Successfully published to Datawrapper")
 		print(f"  Predictions chart: {pred_url}")
 		print(f"  Rankings chart: {rank_url}")
 		
 		# Also ensure index.md is updated
-		utils.save_markdown_df(output, new_top_100, date_str)
+		utils.save_markdown_df(output, new_top_100, date_str, daily_note)
 	except Exception as e:
 		print(f"\n⚠ Warning: Failed to publish to Datawrapper: {e}")
 		print("Falling back to Markdown output")
 		# Fallback to original Markdown output
-		utils.save_markdown_df(output, new_top_100, date_str)
+		utils.save_markdown_df(output, new_top_100, date_str, daily_note)
 		
 		# Also save a fallback HTML version so index.html is not stale
 		# This uses local HTML tables instead of Datawrapper iframes
 		try:
-			datawrapper_publisher.save_fallback_html(output, new_top_100, date_str, markdown_content)
+			datawrapper_publisher.save_fallback_html(output, new_top_100, date_str, markdown_content, daily_note)
 		except Exception as html_e:
 			print(f"⚠ Warning: Failed to save fallback HTML: {html_e}")
 

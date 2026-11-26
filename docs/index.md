@@ -1,7 +1,5 @@
 # NCAAM ELO Game Predictions for 2026-11-26 - @grdavis
-Below are predictions for today's Men's college basketball games using an ELO rating methodology. Check out the full [college-basketball-elo](https://github.com/grdavis/college-basketball-elo) repository on github to see methodology and more.
-
-Note: Teams with * or those written as abbreviations (e.g. BREC) are likely new to the model (i.e. they haven't played any/many D1 games) and predictions are more uncertain.
+Check out the full [college-basketball-elo](https://github.com/grdavis/college-basketball-elo) repository on GitHub to see methodology and more.
 
 |   Neutral | Away               | Away Win Prob.   |   Away Pred. Spread | Live Away Spread   | Home           | Home Win Prob.   |   Home Pred. Spread | Abs. Pred. Diff.   |
 |----------:|:-------------------|:-----------------|--------------------:|:-------------------|:---------------|:-----------------|--------------------:|:-------------------|
