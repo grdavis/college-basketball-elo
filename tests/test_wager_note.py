@@ -87,6 +87,25 @@ class IntroTests(unittest.TestCase):
 		self.assertLess(page.find("college-basketball-elo"), page.find("&lt;script&gt;"))
 		self.assertNotIn("<script>", page)
 
+	def test_html_box_puts_a_bullet_list_under_the_prose(self):
+		note = (
+			"Two spots stand out.\n\n"
+			"- Iowa State vs Tennessee: Vegas Iowa State -3.5, model Iowa State +2.2. Take Tennessee.\n"
+			"- Michigan vs Miami: Vegas Michigan +2.5, model Michigan -6.2. Take Michigan.\n"
+		)
+		page = wager_note.intro_box_html(note)
+		self.assertEqual(page.count("<li>"), 2)
+		self.assertLess(page.find("Two spots stand out."), page.find("<ul>"))
+		self.assertLess(page.find("<ul>"), page.find("Take Tennessee"))
+		self.assertIn("Take Tennessee", page)
+		self.assertNotIn("keep it close", page)
+
+	def test_html_box_escapes_a_bullet_and_keeps_braces(self):
+		page = wager_note.intro_box_html('A look.\n- <script>alert(1)</script> gap {model}')
+		self.assertIn("&lt;script&gt;", page)
+		self.assertNotIn("<script>", page)
+		self.assertIn("{model}", page)
+
 
 class GeminiCallTests(unittest.TestCase):
 	def setUp(self):
@@ -185,6 +204,91 @@ class GeminiCallTests(unittest.TestCase):
 		wager_note.write_daily_note(self._slate(), _rankings(), "2026-11-26")
 		self.assertIn("gemini-2.5-flash", post.call_args.args[0])
 		self.assertNotIn("gemini-flash-latest", post.call_args.args[0])
+
+	@patch("wager_note.requests.post")
+	def test_iowa_state_row_fades_iowa_state(self, post):
+		post.return_value = _ok_response("Two spots.\n\n- Take Tennessee.")
+		slate = _frame([
+			_game("Iowa State", "Tennessee", live=-3.5, model=2.2, gap=5.7, neutral=1, away_prob="42%", home_prob="58%"),
+		])
+		wager_note.write_daily_note(slate, _rankings(), "2026-11-26")
+		prompt = post.call_args.kwargs["json"]["contents"][0]["parts"][0]["text"]
+		row = [line for line in prompt.splitlines() if line.startswith("Iowa State |")][0]
+		self.assertIn(
+			"Iowa State vs Tennessee: Vegas Iowa State -3.5, model Iowa State +2.2. Take Tennessee.",
+			row,
+		)
+		self.assertNotIn("favors", row)
+		self.assertNotIn("likes Iowa State", row)
+		self.assertNotIn("keep it close", row)
+		self.assertIn(wager_note.SIGN_EXAMPLE, prompt)
+		self.assertIn("one or two sentences of prose, then a bulleted list", prompt)
+		self.assertIn("No sentences inside the bullet about who is favored.", prompt)
+		self.assertIn(
+			"A model number more positive than the Vegas number means the model likes the away team less than the market "
+			"(fade the away team / take the home team).",
+			prompt,
+		)
+		self.assertIn(
+			'Do not say "keep it close" unless the model spread is closer to zero than Vegas AND you name the side that implies.',
+			prompt,
+		)
+		lower = prompt.lower()
+		start = 0
+		found = 0
+		while True:
+			at = lower.find("likes iowa state", start)
+			if at < 0:
+				break
+			found += 1
+			window = lower[max(0, at - 48):at]
+			self.assertIn("do not", window)
+			start = at + 1
+		self.assertGreater(found, 0)
+
+
+class SideReadingTests(unittest.TestCase):
+	def test_iowa_state_plus_2_2_versus_vegas_minus_3_5_takes_tennessee(self):
+		self.assertEqual(wager_note.side_call(2.2, -3.5), "home")
+		text = wager_note.describe_side("Iowa State", "Tennessee", 2.2, -3.5)
+		self.assertEqual(
+			text,
+			"Iowa State vs Tennessee: Vegas Iowa State -3.5, model Iowa State +2.2. Take Tennessee.",
+		)
+		self.assertNotIn("likes Iowa State", text)
+		self.assertNotIn("keep it close", text)
+		self.assertNotIn("favors", text)
+
+	def test_michigan_minus_6_2_versus_vegas_plus_2_5_takes_michigan(self):
+		self.assertEqual(wager_note.side_call(-6.2, 2.5), "away")
+		text = wager_note.describe_side("Michigan", "Miami", -6.2, 2.5)
+		self.assertEqual(
+			text,
+			"Michigan vs Miami: Vegas Michigan +2.5, model Michigan -6.2. Take Michigan.",
+		)
+		self.assertNotIn("favors", text)
+
+	def test_more_negative_model_number_takes_the_away_team(self):
+		self.assertEqual(wager_note.side_call(-3.5, 2.2), "away")
+		text = wager_note.describe_side("Iowa State", "Tennessee", -3.5, 2.2)
+		self.assertEqual(
+			text,
+			"Iowa State vs Tennessee: Vegas Iowa State +2.2, model Iowa State -3.5. Take Iowa State.",
+		)
+		self.assertNotIn("favors", text)
+
+	def test_same_favorite_but_shorter_model_number_fades_that_favorite(self):
+		# Model has the away team favored by 1; Vegas has them favored by 6.
+		# -1 is more positive than -6, so fade the away team.
+		self.assertEqual(wager_note.side_call(-1.0, -6.0), "home")
+		text = wager_note.describe_side("Iowa State", "Tennessee", -1.0, -6.0)
+		self.assertEqual(
+			text,
+			"Iowa State vs Tennessee: Vegas Iowa State -6, model Iowa State -1. Take Tennessee.",
+		)
+		self.assertNotIn("keep it close", text)
+		self.assertNotIn("likes Iowa State", text)
+		self.assertNotIn("favors", text)
 
 
 if __name__ == "__main__":
