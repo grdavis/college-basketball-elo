@@ -320,25 +320,24 @@ def side_call(model_spread, vegas_spread):
 
 
 def describe_side(away, home, model_spread, vegas_spread):
-	"""Who each number favors, then the side to take. Never says 'keep it close'."""
-	model_clause = _favored_clause("The model", model_spread, away, home)
-	vegas_clause = _favored_clause("Vegas", vegas_spread, away, home)
+	"""One bullet line: matchup, Vegas number, model number, rec.
+
+	Numbers are the away team's spread. No sentence about who is favored.
+	"""
 	call = side_call(model_spread, vegas_spread)
 	if call == "home":
-		call_clause = "Take {0} (fade {1}).".format(home, away)
+		rec = "Take {0}.".format(home)
 	elif call == "away":
-		call_clause = "Take {0} (fade {1}).".format(away, home)
+		rec = "Take {0}.".format(away)
 	else:
-		call_clause = "No side versus the market."
-	return "{0}. {1}. {2}".format(model_clause, vegas_clause, call_clause)
-
-
-def _favored_clause(subject, spread, away, home):
-	if spread < 0:
-		return "{0} favors {1} by {2}".format(subject, away, _format_number(abs(spread)))
-	if spread > 0:
-		return "{0} favors {1} by {2}".format(subject, home, _format_number(abs(spread)))
-	return "{0} has a pick'em".format(subject)
+		rec = "No side."
+	return "{away} vs {home}: Vegas {away} {vegas}, model {away} {model}. {rec}".format(
+		away=away,
+		home=home,
+		vegas=_format_signed(vegas_spread),
+		model=_format_signed(model_spread),
+		rec=rec,
+	)
 
 
 def _rank_lookup(rankings_df):
@@ -389,6 +388,14 @@ def _format_number(value):
 	return str(round(value, 1))
 
 
+def _format_signed(value):
+	"""Spread with a sign, matching a betting number: +2.2, -3.5, +6."""
+	rounded = round(float(value), 1)
+	if abs(rounded - round(rounded)) < 1e-9:
+		return "{0:+d}".format(int(round(rounded)))
+	return "{0:+.1f}".format(rounded)
+
+
 def _site(value):
 	if str(value).strip() in ("1", "1.0", "True", "true"):
 		return "neutral"
@@ -434,7 +441,7 @@ def _games_table(predictions_df, ranks):
 def _prompt(date_str, top10, game_lines):
 	header = (
 		"Away | Away Elo rank | Away win% | Home | Home Elo rank | Home win% | "
-		"Site | Model away spread | Vegas away spread | Gap | Side reading"
+		"Site | Model away spread | Vegas away spread | Gap | Bullet"
 	)
 	table = "\n".join([header] + game_lines)
 	return (
@@ -442,25 +449,27 @@ def _prompt(date_str, top10, game_lines):
 		"games are worth considering a wager on.\n\n"
 		"Shape of the note: one or two sentences of prose, then a bulleted list someone "
 		"can scan. Keep the prose. The list is the quick read. Do not dump every game. "
-		"No headings, no preamble, and no disclaimer paragraph. Each bullet is a line "
-		"that starts with \"- \" and ends with a period.\n\n"
-		"Each bullet must include the matchup, the model number, the Vegas number, and "
-		"which side you are calling. Before you name the side to take, say who is favored "
-		"by the model and who is favored by Vegas. Copy the Side reading on that row. "
-		"Do not flip it.\n\n"
+		"No headings, no preamble, and no disclaimer paragraph.\n\n"
+		"Each bullet is one line and nothing more: matchup, Vegas spread, model spread, "
+		"and the rec. No sentences inside the bullet about who is favored. Do not explain "
+		"the call. Copy the Bullet column exactly, including the rec. Do not flip it.\n\n"
+		"Format samples only. Do not include these games unless they are in the table below:\n"
+		"- Iowa State vs Tennessee: Vegas Iowa State -3.5, model Iowa State +2.2. Take Tennessee.\n"
+		"- Michigan vs Miami: Vegas Michigan +2.5, model Michigan -6.2. Take Michigan.\n\n"
 		"Sign rule. Negative spread means that team is favored. Both numbers in the table "
-		"are the away team's spread. A model number more positive than the Vegas number "
-		"means the model likes the away team less than the market (fade the away team / "
-		"take the home team). A model number more negative than the Vegas number means "
-		"the model likes the away team more than the market (take the away team / fade "
-		"the home team).\n\n"
-		"Exact example, which is only a sign lesson: {example} Take Tennessee. "
+		"are the away team's spread, and the bullet writes that same number next to the "
+		"away team's name. A model number more positive than the Vegas number means the "
+		"model likes the away team less than the market (fade the away team / take the "
+		"home team). A model number more negative than the Vegas number means the model "
+		"likes the away team more than the market (take the away team / fade the home team).\n\n"
+		"Exact example, which is only a sign lesson: {example} The bullet for that game is "
+		"\"Iowa State vs Tennessee: Vegas Iowa State -3.5, model Iowa State +2.2. Take Tennessee.\" "
 		"Do not say the model likes Iowa State. Do not say the model likes Iowa State "
-		"to keep it close. Do not mention Iowa State or Tennessee unless that game is "
-		"in the table below.\n\n"
+		"to keep it close.\n\n"
 		"Do not say \"keep it close\" unless the model spread is closer to zero than "
 		"Vegas AND you name the side that implies. If the model and Vegas favor different "
-		"teams, that is not \"keep it close.\"\n\n"
+		"teams, that is not \"keep it close.\" If you use that phrase, put it in the intro "
+		"sentences, not in a bullet.\n\n"
 		"Use your judgment about which games are worth a look. These are typical interesting "
 		"spots, not a hard filter:\n"
 		"- At least one of the two teams is in the Elo top 50.\n"
