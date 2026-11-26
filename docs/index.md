@@ -1,9 +1,11 @@
 # NCAAM ELO Game Predictions for 2026-11-26 - @grdavis
 Check out the full [college-basketball-elo](https://github.com/grdavis/college-basketball-elo) repository on GitHub to see methodology and more.
 
+Top ten showdowns highlight the slate as Tennessee meets Iowa State on a neutral floor, where the model significantly likes Iowa State to keep it much closer than the three and a half point Vegas spread. Michigan matches up against Miami in another great spot, with the model strongly favoring the Wolverines to cover and win outright as small underdogs. San Diego State also catches a large five point value against Maryland on a neutral court, while Georgia offers a massive gap against Cincinnati by getting five and a half points when the model expects a pickem.
+
 |   Neutral | Away               | Away Win Prob.   |   Away Pred. Spread | Live Away Spread   | Home           | Home Win Prob.   |   Home Pred. Spread | Abs. Pred. Diff.   |
 |----------:|:-------------------|:-----------------|--------------------:|:-------------------|:---------------|:-----------------|--------------------:|:-------------------|
-|         1 | Georgia            | 50%              |                -0.1 | 3.5                | Cincinnati     | 50%              |                 0.1 | 3.6                |
+|         1 | Georgia            | 50%              |                -0.1 | 5.5                | Cincinnati     | 50%              |                 0.1 | 5.6                |
 |         1 | Oklahoma           | 33%              |                 5.1 | 4.5                | Purdue         | 67%              |                -5.1 | 0.6                |
 |         0 | Army               | 10%              |                15.2 | 11.5               | UTSA           | 90%              |               -15.2 | 3.7                |
 |         1 | San Diego State    | 61%              |                -3   | 4.5                | Maryland       | 39%              |                 3   | 7.5                |
@@ -22,7 +24,7 @@ Check out the full [college-basketball-elo](https://github.com/grdavis/college-b
 |         1 | St. John's (NY)    | 71%              |                -6.4 | -1.5               | Louisville     | 29%              |                 6.4 | 4.9                |
 |         1 | Kansas State       | 14%              |                12.8 | 13.5               | Alabama        | 86%              |               -12.8 | 0.7                |
 |         1 | Omaha              | 22%              |                 8.9 | 8.5                | Pacific        | 78%              |                -8.9 | 0.4                |
-|         1 | Oregon             | 27%              |                 6.8 | 9.5                | Texas Tech     | 73%              |                -6.8 | 2.7                |
+|         1 | Oregon             | 27%              |                 6.8 | 10.5               | Texas Tech     | 73%              |                -6.8 | 3.7                |
 |         1 | Gonzaga            | 58%              |                -2.1 | -3.5               | Baylor         | 42%              |                 2.1 | 1.4                |
 |         1 | Saint Louis        | 48%              |                 0.4 | NL                 | Stanford       | 52%              |                -0.4 | N/A                |
 |         0 | Incarnate Word     | 12%              |                14.2 | NL                 | Hawaii         | 88%              |               -14.2 | N/A                |
